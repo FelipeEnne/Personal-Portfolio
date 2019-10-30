@@ -1,0 +1,96 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #9e9e9e;
+}
+
+header{
+	height: 65px;
+}
+.container-all{
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.container-nav{
+  float: right;
+}
+
+.container-nav nav{
+  display: flex;
+  justify-content: space-around;
+  width: 286px;
+  font-family: Camphor,Open Sans,Segoe UI,sans-serif;
+  font-size: 1.2em;
+  margin-top: 40px;
+}
+
+.container-nav a{
+  position: relative;
+  text-decoration: none;
+  color: white;
+}
+
+.main-title{
+	font-family: Monaco,Consolas,Lucida Console,monospace;
+    font-size: 4.5em;
+    color: black;
+}
+
+
+.animation-nav:hover {
+    color: black;
+}
+
+.animation-nav:after { 
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: -30px;
+  width: 0;
+  height: 8px;
+  background-color: black;
+  content: "";
+  transition: width .15s;
+}
+
+.animation-nav:hover:after{ 
+  width: 100%; 
+}
+
+.container-description{
+	margin: 0 auto;
+    margin-top: 20vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.main-title{
+	font-family: Monaco,Consolas,Lucida Console,monospace;
+    font-size: 4.5em;
+    color: white;
+}
+
+.main-title:before {
+    content: ">\A0";
+}
+
+
+.main-description{
+  font-family: Camphor,Open Sans,Segoe UI,sans-serif;
+  font-weight: 200;
+  font-size: 1.3em;
+  line-height: 40px;
+  color: white;
+  margin: 80px 0;
+}
+
+.main-description a{
+    text-decoration: none;
+    color: #424242;
+    transition: .1s ease-in-out;
+}
+
+
