@@ -300,3 +300,21 @@ header{
     background: #a7a7a7;
     color: #fff;
 }
+
+.container-nav-contact{
+	text-align: center;
+	padding-bottom: 100px;
+	color: white;
+}
+
+.container-nav-contact a {
+	text-decoration: none;
+  	color: white;
+  	font-size: 20px;
+}
+
+.footer-madeby{
+	color: white;
+	text-align: center;
+	margin-bottom: 50px;
+}
