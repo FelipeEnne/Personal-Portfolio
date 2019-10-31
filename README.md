@@ -31,19 +31,21 @@
 
 ![Screenshot Image](assets/images/screenshot.png)
 
-
-
+build my portfolio
 
 ### Built With 
 
 
+* HTML
+* CSS3
+* Git
 
 
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-
+Just clone or download the project and open the index.html in your browser.
 
 
 <!-- LICENSE -->
