@@ -50,10 +50,6 @@ header {
   color: white;
 }
 
-.main-title:before {
-  content: ">\A0";
-}
-
 .main-description {
   font-family: Camphor, Open Sans, Segoe UI, sans-serif;
   font-weight: 200;
@@ -66,7 +62,6 @@ header {
 .main-description a {
   text-decoration: none;
   color: #424242;
-  transition: .1s ease-in-out;
 }
 
 .terminal-header {
@@ -104,7 +99,7 @@ header {
 .terminal-body {
   background-color: #5a5d7a;
   border-radius: 0 0 4px 4px;
-  box-shadow: 0px 50px 100px rgba(50, 50, 93, .15), 0px 15px 35px rgba(50, 50, 93, .2), 0px 5px 15px rgba(0, 0, 0, .12);
+  box-shadow: 1px 50px 100px rgba(50, 50, 93, .15), 1px 15px 35px rgba(50, 50, 93, .2), 1px 5px 15px rgba(0, 0, 0, .12);
   font-family: Monaco, Consolas, Lucida Console, monospace;
 }
 
@@ -162,8 +157,8 @@ header {
 }
 
 @-webkit-keyframes flashes {
-
   from {
+
     background-color: rgba(247, 247, 247, 0.65);
   }
   to {
@@ -174,8 +169,8 @@ header {
 /* Standard syntax */
 
 @keyframes flashes {
-
   from {
+
     background-color: rgba(247, 247, 247, 0.65);
   }
   to {
@@ -199,7 +194,6 @@ header {
 }
 
 .section-title:after {
-  content: " ";
   border: 4px solid #424242;
   display: block;
   margin: 0 auto;
@@ -217,7 +211,7 @@ header {
   margin-bottom: 60px;
   background-color: #fff;
   border-radius: 4px;
-  box-shadow: 0px 50px 100px rgba(50, 50, 93, .05), 0px 15px 35px rgba(50, 50, 93, .1), 0px 5px 15px rgba(0, 0, 0, .1);
+  box-shadow: 1px 50px 100px rgba(50, 50, 93, .05), 1px 15px 35px rgba(50, 50, 93, .1), 1px 5px 15px rgba(0, 0, 0, .1);
 }
 
 .project-img {
@@ -280,8 +274,8 @@ header {
   margin-right: 20px;
   margin-top: 20px;
   line-height: 40px;
-  padding: 0px 14px;
-  box-shadow: 0px 4px 6px rgba(50, 50, 93, .11), 0px 1px 3px rgba(0, 0, 0, .08);
+  padding: 1px 14px;
+  box-shadow: 1px 4px 6px rgba(50, 50, 93, .11), 1px 1px 3px rgba(0, 0, 0, .08);
   border-radius: 4px;
   letter-spacing: 0.025em;
   text-decoration: none;
