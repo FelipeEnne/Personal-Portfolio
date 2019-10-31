@@ -29,7 +29,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![Screenshot Image](assets/images/screenshot.png)
+![Screenshot Image](assets/image/screenshot.png)
 
 build my portfolio
 
