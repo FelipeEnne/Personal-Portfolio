@@ -209,7 +209,7 @@ header {
   margin-bottom: 60px;
   background-color: #fff;
   border-radius: 4px;
-  box-shadow: 1px 50px 100px rgba(50, 50, 93, .05), 1px 15px 35px rgba(50, 50, 93, 0.1), 1px 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 50px 100px rgba(50, 50, 93, 0.05), 1px 15px 35px rgba(50, 50, 93, 0.1), 1px 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .project-img {
