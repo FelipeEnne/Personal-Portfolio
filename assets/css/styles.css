@@ -209,7 +209,7 @@ header {
   margin-bottom: 60px;
   background-color: #fff;
   border-radius: 4px;
-  box-shadow: 1px 50px 100px rgba(50, 50, 93, .05), 1px 15px 35px rgba(50, 50, 93, .1), 1px 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 50px 100px rgba(50, 50, 93, .05), 1px 15px 35px rgba(50, 50, 93, 0.1), 1px 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .project-img {
@@ -273,7 +273,7 @@ header {
   margin-top: 20px;
   line-height: 40px;
   padding: 1px 14px;
-  box-shadow: 1px 4px 6px rgba(50, 50, 93, .11), 1px 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: 1px 4px 6px rgba(50, 50, 93, 0.11), 1px 1px 3px rgba(0, 0, 0, 0.08);
   border-radius: 4px;
   letter-spacing: 0.025em;
   text-decoration: none;
