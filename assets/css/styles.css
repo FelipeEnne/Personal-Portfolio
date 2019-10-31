@@ -153,14 +153,6 @@ header {
   margin-bottom: 80px;
 }
 
-.section-title:after {
-  border: 4px solid #424242;
-  display: block;
-  margin: 0 auto;
-  margin-top: 30px;
-  width: 50px;
-}
-
 .projects-container {
   margin: 0 auto;
   font-family: Camphor, Open Sans, Segoe UI, sans-serif;
