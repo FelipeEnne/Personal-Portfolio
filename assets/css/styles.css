@@ -37,24 +37,7 @@ header {
   color: black;
 }
 
-.animation-nav:after {
-  display: block;
-  position: absolute;
-  left: 0px;
-  bottom: -30px;
-  width: 0px;
-  height: 8px;
-  background-color: black;
-  content: "";
-  transition: width .15s;
-}
-
-.animation-nav:hover:after {
-  width: 100%;
-}
-
 .container-description {
-  margin: 0 auto;
   margin-top: 20vh;
   display: flex;
   flex-direction: column;
