@@ -33,12 +33,6 @@ header {
   color: white;
 }
 
-.main-title {
-  font-family: Monaco, Consolas, Lucida Console, monospace;
-  font-size: 4.5em;
-  color: black;
-}
-
 .animation-nav:hover {
   color: black;
 }
@@ -46,9 +40,9 @@ header {
 .animation-nav:after {
   display: block;
   position: absolute;
-  left: 0;
+  left: 0px;
   bottom: -30px;
-  width: 0;
+  width: 0px;
   height: 8px;
   background-color: black;
   content: "";
@@ -127,7 +121,7 @@ header {
 .terminal-body {
   background-color: #5a5d7a;
   border-radius: 0 0 4px 4px;
-  box-shadow: 0 50px 100px rgba(50, 50, 93, .15), 0 15px 35px rgba(50, 50, 93, .2), 0 5px 15px rgba(0, 0, 0, .12);
+  box-shadow: 0px 50px 100px rgba(50, 50, 93, .15), 0px 15px 35px rgba(50, 50, 93, .2), 0px 5px 15px rgba(0, 0, 0, .12);
   font-family: Monaco, Consolas, Lucida Console, monospace;
 }
 
@@ -150,11 +144,10 @@ header {
   margin: 0;
   font-weight: normal;
   font-size: 16px;
-  color: white;
 }
 
 .input-terminal-body:before {
-  content: ">\A0"
+  content: ">\A0";
 }
 
 .return-terminal-body {
@@ -175,8 +168,10 @@ header {
   width: 10px;
   background-color: rgba(247, 247, 247, 0.65);
   -webkit-animation-name: flashes;
+
   /* Safari 4.0 - 8.0 */
   -webkit-animation-duration: 1s;
+
   /* Safari 4.0 - 8.0 */
   animation-name: flashes;
   animation-duration: 1s;
@@ -184,6 +179,7 @@ header {
 }
 
 @-webkit-keyframes flashes {
+
   from {
     background-color: rgba(247, 247, 247, 0.65);
   }
@@ -195,6 +191,7 @@ header {
 /* Standard syntax */
 
 @keyframes flashes {
+
   from {
     background-color: rgba(247, 247, 247, 0.65);
   }
@@ -237,7 +234,7 @@ header {
   margin-bottom: 60px;
   background-color: #fff;
   border-radius: 4px;
-  box-shadow: 0 50px 100px rgba(50, 50, 93, .05), 0 15px 35px rgba(50, 50, 93, .1), 0 5px 15px rgba(0, 0, 0, .1);
+  box-shadow: 0px 50px 100px rgba(50, 50, 93, .05), 0px 15px 35px rgba(50, 50, 93, .1), 0px 5px 15px rgba(0, 0, 0, .1);
 }
 
 .project-img {
@@ -287,9 +284,8 @@ header {
   margin-right: 10px;
   margin-bottom: 10px;
   font-family: Camphor, Open Sans, Segoe UI, sans-serif;
-  font-size: .85em;
+  font-size: 0.85em;
   color: black;
-  ;
 }
 
 .project-links {
@@ -301,10 +297,10 @@ header {
   margin-right: 20px;
   margin-top: 20px;
   line-height: 40px;
-  padding: 0 14px;
-  box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+  padding: 0px 14px;
+  box-shadow: 0px 4px 6px rgba(50, 50, 93, .11), 0px 1px 3px rgba(0, 0, 0, .08);
   border-radius: 4px;
-  letter-spacing: .025em;
+  letter-spacing: 0.025em;
   text-decoration: none;
   font-weight: 600;
   background: #a7a7a7;
