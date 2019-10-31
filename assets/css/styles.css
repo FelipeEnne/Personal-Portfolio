@@ -33,14 +33,14 @@ header{
 }
 
 .main-title{
-	font-family: Monaco,Consolas,Lucida Console,monospace;
-    font-size: 4.5em;
-    color: black;
+  font-family: Monaco,Consolas,Lucida Console,monospace;
+  font-size: 4.5em;
+  color: black;
 }
 
 
 .animation-nav:hover {
-    color: black;
+  color: black;
 }
 
 .animation-nav:after { 
@@ -60,17 +60,17 @@ header{
 }
 
 .container-description{
-	margin: 0 auto;
-    margin-top: 20vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+  margin: 0 auto;
+  margin-top: 20vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .main-title{
-	font-family: Monaco,Consolas,Lucida Console,monospace;
-    font-size: 4.5em;
-    color: white;
+  font-family: Monaco,Consolas,Lucida Console,monospace;
+  font-size: 4.5em;
+  color: white;
 }
 
 .main-title:before {
@@ -88,9 +88,112 @@ header{
 }
 
 .main-description a{
-    text-decoration: none;
-    color: #424242;
-    transition: .1s ease-in-out;
+  text-decoration: none;
+  color: #424242;
+  transition: .1s ease-in-out;
+}
+
+.terminal-header{
+	height: 28px;
+    background-color: #e4e3e5;
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.terminal-header-button{
+	width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-left: 9px;
+    background-color: black;
+}
+
+.red{
+	background-color: #f96256;
+    border: 1px solid #f65549;
+}
+
+.yellow{
+	background-color: #fdbc3d;
+    border: 1px solid #ffb524;
+}
+.green{
+    background-color: #33c948;
+    border: 1px solid #2dbb41;
 }
 
 
+.terminal-body {
+	background-color: #5a5d7a;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 50px 100px rgba(50,50,93,.15), 0 15px 35px rgba(50,50,93,.2), 0 5px 15px rgba(0,0,0,.12);
+    font-family: Monaco,Consolas,Lucida Console,monospace;
+}
+
+.terminal-body section{
+  margin-bottom: 25px;
+  margin-left: 35px;
+  margin-right: 35px;
+  line-height: 24px;
+  font-size: 16px;
+  font-weight: normal;
+  font-family: Monaco,Consolas,Lucida Console,monospace;
+}
+
+.terminal-body section:first-child {
+    padding-top: 35px;
+}
+
+.input-terminal-body{
+	color: white;
+	margin: 0;
+    font-weight: normal;
+    font-size: 16px;
+    color: white;
+}
+
+.input-terminal-body:before{
+	content: ">\A0"
+}
+
+.return-terminal-body{
+	margin:0;
+	color: #e7d184;
+}
+
+.return-terminal-body a{
+	color: #35feff;
+	text-decoration: none;
+}
+
+.terminal-body:last-child {
+    padding-bottom: 60px;
+}
+
+.input-animate {
+  width: 10px;
+  background-color: rgba(247, 247, 247, 0.65);
+  -webkit-animation-name: flashes; /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 1s; /* Safari 4.0 - 8.0 */
+  animation-name: flashes;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes flashes {
+  from {background-color: rgba(247, 247, 247, 0.65);}
+  to {background-color: transparent;}
+}
+
+/* Standard syntax */
+@keyframes flashes {
+  from {background-color: rgba(247, 247, 247, 0.65);}
+  to {background-color: transparent;}
+}
+
+
+.last-section-terminal-body{
+	display: flex;
+}
