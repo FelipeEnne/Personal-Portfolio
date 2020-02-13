@@ -255,8 +255,33 @@ header {
 }
 
 
-@media only screen and (max-width: 768px) {
+@media screen and (max-width: 768px) {
   .project-img {
     display: none;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .main-title{
+    font-size: 2.5em;
+  }
+
+  .input-terminal-body{
+    font-size: 14px;
+  }
+
+  .terminal-body section{
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+
+  .input-terminal-body{
+    font-size: 12px;
+  }
+
+  .terminal-body section{
+    font-size: 12px;
   }
 }
