@@ -248,6 +248,10 @@ header {
   font-size: 20px;
 }
 
+footer {
+  font-family: Camphor, Open Sans, Segoe UI, sans-serif;
+}
+
 .footer-madeby {
   color: white;
   text-align: center;
