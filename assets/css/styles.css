@@ -168,11 +168,14 @@ header {
 
 .project-img {
   padding-top: 50px;
-  width: 100%;
+}
+
+.project-img img{
+  width: 400px;
+  height: 200px;
 }
 
 .project-card img {
-  width: 95%;
   padding-left: 10px;
 }
 
