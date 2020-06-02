@@ -171,8 +171,7 @@ header {
 }
 
 .project-img img{
-  width: 400px;
-  height: 200px;
+  width: 350px;
 }
 
 .project-card img {
@@ -261,10 +260,29 @@ footer {
   margin-bottom: 50px;
 }
 
+.project-links-responsive {
+  display: none;
+}
 
 @media screen and (max-width: 768px) {
   .project-img {
     display: none;
+  }
+  .project-links-responsive {
+    display: flex;
+  }
+  .project-links-responsive a {
+    margin-right: 20px;
+    margin-top: 20px;
+    line-height: 40px;
+    padding: 1px 14px;
+    box-shadow: 1px 4px 6px rgba(50, 50, 93, 0.11), 1px 1px 3px rgba(0, 0, 0, 0.08);
+    border-radius: 4px;
+    letter-spacing: 0.025em;
+    text-decoration: none;
+    font-weight: 600;
+    background: #a7a7a7;
+    color: #fff;
   }
 }
 
