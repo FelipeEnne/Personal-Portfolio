@@ -34,7 +34,7 @@ header {
 }
 
 .animation-nav:hover {
-  color: black;
+  color: white;
 }
 
 .container-description {
@@ -65,7 +65,7 @@ header {
 }
 
 .main-description a:hover {
-  color: black;
+  color: white;
 }
 
 .terminal-header {
@@ -268,6 +268,10 @@ footer {
   display: none;
 }
 
+.img-mobile {
+  display: none;
+}
+
 @media screen and (max-width: 768px) {
   .project-img {
     display: none;
@@ -288,6 +292,21 @@ footer {
     background: #545454;
     color: #fff;
   }
+
+  .project-card img {
+    padding-left: 0px;
+  }
+  
+  .img-mobile {
+    display: block;
+    width: 80%;
+    margin: auto;
+  }
+
+  .project-content h3 {
+    text-align: center;
+  }
+
 }
 
 @media screen and (max-width: 570px) {
@@ -317,6 +336,10 @@ footer {
   }
 
   .terminal-body section{
+    font-size: 12px;
+  }
+
+  .project-links-responsive a {
     font-size: 12px;
   }
 }
