@@ -35,6 +35,8 @@ header {
 
 .animation-nav:hover {
   color: white;
+  transition: transform 250ms;
+  transform: translateY(-5px);
 }
 
 .container-description {
@@ -240,6 +242,11 @@ header {
   font-weight: 600;
   background: #545454;
   color: #fff;
+}
+
+.project-links a:hover {
+  background: #5e5e5e;
+  transition: transform 250ms;
 }
 
 .container-nav-contact {
