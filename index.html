@@ -18,10 +18,15 @@
     <header>
       <div class="container-nav">
         <nav>
-          <a href="#project" class="animation-nav">Projects</a>
-          <a href="#contact" class="animation-nav">Contact</a>
-          <a href="https://www.linkedin.com/in/felipe-enne/" class="animation-nav linkf-mobile-displayn" target="_blanck">LinkedIn</a>
-          <a href="https://github.com/FelipeEnne" class="animation-nav linkf-mobile-displayn" target="_blanck">GitHub</a>
+          <a href="#project" class="animation-nav" data-i18n="nav.projects">Projects</a>
+          <a href="#contact" class="animation-nav" data-i18n="nav.contact">Contact</a>
+          <a href="https://www.linkedin.com/in/felipe-enne/" class="animation-nav linkf-mobile-displayn" target="_blank" data-i18n="nav.linkedin">LinkedIn</a>
+          <a href="https://github.com/FelipeEnne" class="animation-nav linkf-mobile-displayn" target="_blank" data-i18n="nav.github">GitHub</a>
+          <span class="lang-switch" aria-label="Language">
+            <button type="button" class="lang-btn" data-lang-btn="en" aria-pressed="true">EN</button>
+            <span class="lang-sep" aria-hidden="true">|</span>
+            <button type="button" class="lang-btn" data-lang-btn="pt" aria-pressed="false">PT</button>
+          </span>
         </nav>
 
       </div>
@@ -32,9 +37,8 @@
       <div class="main-title">
         > Felipe Enne
       </div>
-      <div class="main-description">
-        Full-stack developer and data scientist who specializes in JavaScript, Node.js, React, Python.
-        Passionate about designing elegant web applications that create simple solutions to complex problems.<br>
+      <div class="main-description" data-i18n-html="bio">
+        Full Stack Developer with 5+ years of experience building web applications, REST APIs, internal tools, automations, and integrations using JavaScript, TypeScript, Node.js, React, Python, PostgreSQL, MongoDB, and Salesforce.<br>
         Check out my <a href="#project">side-projects</a> below.
       </div>
 
@@ -48,19 +52,19 @@
           <div>
             <section>
               <h1 class="input-terminal-body">> Felipe.currentLocation</h1>
-              <p class="return-terminal-body">São José dos Campos, SP, Brazil</p>
+              <p class="return-terminal-body" data-i18n="terminal.location">Jacareí/SP, Brazil</p>
             </section>
             <section>
               <h1 class="input-terminal-body">> Felipe.contactInfo</h1>
               <p class="return-terminal-body">
-                ["<a href="mailto:felipeenne@gmail.com" target="_blanck">felipeenne@gmail.com</a>",
-                "<a href="https://www.linkedin.com/in/felipe-enne/" target="_blanck">Linkedin</a>",
-                <a href="https://github.com/FelipeEnne" target="_blanck">Github</a>]
+                ["<a href="mailto:felipeenne@gmail.com">felipeenne@gmail.com</a>",
+                "<a href="https://www.linkedin.com/in/felipe-enne/" target="_blank">LinkedIn</a>",
+                "<a href="https://github.com/FelipeEnne" target="_blank">GitHub</a>"]
               </p>
             </section>
             <section>
               <h1 class="input-terminal-body">> Felipe.resume</h1>
-              <p class="return-terminal-body">"<a href="assets/doc/CV.pdf" target="_blanck">felipeenne.pdf</a>"</p>
+              <p class="return-terminal-body">"<a id="resume-link" href="assets/doc/CV.pdf" target="_blank">felipeenne.pdf</a>"</p>
             </section>
             <section>
               <h1 class="input-terminal-body">> Felipe.interests</h1>
@@ -69,54 +73,73 @@
             </section>
             <section>
               <h1 class="input-terminal-body">> Felipe.education</h1>
-              <p class="return-terminal-body">Logistics Technologist - FATEC,
-                São José dos Campos</p>
+              <p class="return-terminal-body" data-i18n-html="terminal.education">Master's Degree in Logistics Systems Engineering — University of São Paulo<br>Full Stack Web Development — Microverse</p>
             </section>
             <section>
               <h1 class="input-terminal-body">> Felipe.skills</h1>
-              <p class="return-terminal-body">[ "HTML5", "CSS3", "Bootstrap", "Python", "JavaScript", "React", "Node.js", "SQL", "Git", "Github"]</p>
+              <p class="return-terminal-body" data-i18n="terminal.skills">[ "JavaScript", "TypeScript", "Python", "Node.js", "Express", "React", "PostgreSQL", "MongoDB", "Salesforce", "Docker", "Jest", "Git" ]</p>
             </section>
           </div>
         </div>
       </div>
 
-      <h1 id="project" class="section-title">Projects</h1>
+      <h1 id="project" class="section-title" data-i18n="projects.title">Projects</h1>
 
       <div class="projects-container">
 
         <div class="project-card">
           <div class="project-img">
-            <img src="assets/image/weatherapp.jpg" alt="screenshot of project weather app.">
+            <img src="assets/image/audiobook.jpg" alt="screenshot of audiobook production automation.">
 
             <div class="project-links">
-              <a href="https://felipeenne.github.io/weather-app/" target="_blanck">Demo</a>
-              <a href="https://github.com/FelipeEnne/weather-app" target="_blanck">
-                Github link</a>
+              <a href="https://www.youtube.com/@dominiopublico-audiolivros" target="_blank" data-i18n="proj.audiobook.link">YouTube</a>
             </div>
           </div>
 
           <section class="project-content">
-            <h3>Weather App</h3>
-            <img src="assets/image/weatherapp.jpg" alt="screenshot of project weather app." class="img-mobile">
-            <p>The Weather App project uses Asynchronous Javascript for fetching the weather data from an API and displaying.
+            <h3 data-i18n="proj.audiobook.title">Audiobook Production Automation</h3>
+            <img src="assets/image/audiobook.jpg" alt="screenshot of audiobook production automation." class="img-mobile">
+            <p data-i18n="proj.audiobook.desc">
+              Personal project for producing and publishing audiobooks at scale on YouTube, using Python, FastAPI, local TTS, and the YouTube API to automate audio generation, file organization, thumbnails, descriptions, playlists, and scheduled publishing.
             </p>
 
             <div class="project-skills">
-              <span>HTML5</span>
-              <span>CSS3</span>
-              <span>GIT</span>
-              <span>GITHUB</span>
-              <span>JAVASCRIPT</span>
-              <span>API</span>
-              <span>WEBPACK</span>
+              <span>PYTHON</span>
+              <span>FASTAPI</span>
+              <span>TTS</span>
+              <span>YOUTUBE API</span>
             </div>
             <div class="project-links-responsive">
-              <a href="https://felipeenne.github.io/weather-app/" target="_blanck">Demo</a>
-              <a href="https://github.com/FelipeEnne/weather-app" target="_blanck">
-                Github link</a>
+              <a href="https://www.youtube.com/@dominiopublico-audiolivros" target="_blank" data-i18n="proj.audiobook.link">YouTube</a>
             </div>
+          </section>
+        </div>
 
+        <div class="project-card">
+          <div class="project-img">
+            <img src="assets/image/wine.jpg" alt="screenshot of wine recommendation project.">
 
+            <div class="project-links">
+              <a href="https://github.com/FelipeEnne/Wine-Recommendation" target="_blank" data-i18n="proj.github">Github link</a>
+            </div>
+          </div>
+
+          <section class="project-content">
+            <h3 data-i18n="proj.wine.title">Wine Recommendation</h3>
+            <img src="assets/image/wine.jpg" alt="screenshot of wine recommendation project." class="img-mobile">
+            <p data-i18n="proj.wine.desc">
+              Wine recommendation system developed with Python/Jupyter, focused on data analysis, data processing, and recommendation logic based on product characteristics.
+            </p>
+
+            <div class="project-skills">
+              <span>PYTHON</span>
+              <span>JUPYTER</span>
+              <span>DATA ANALYSIS</span>
+              <span>GITHUB</span>
+            </div>
+            <div class="project-links-responsive">
+              <a href="https://github.com/FelipeEnne/Wine-Recommendation" target="_blank" data-i18n="proj.github">Github link</a>
+            </div>
           </section>
         </div>
 
@@ -125,109 +148,33 @@
             <img src="assets/image/climb.jpg" alt="screenshot of Climbing the Volcano.">
 
             <div class="project-links">
-              <a href="https://climbing-the-volcano-k1kdpckj8-felipeenne.vercel.app/" target="_blanck">Demo</a>
-              <a href="https://github.com/FelipeEnne/Game-With-Phaser" target="_blanck">
-                Github link</a>
+              <a href="https://climbing-the-volcano-k1kdpckj8-felipeenne.vercel.app/" target="_blank" data-i18n="proj.demo">Demo</a>
+              <a href="https://github.com/FelipeEnne/Game-With-Phaser" target="_blank" data-i18n="proj.github">Github link</a>
             </div>
           </div>
 
           <section class="project-content">
-            <h3>Climbing the Volcano - Phaser3</h3>
+            <h3 data-i18n="proj.climb.title">Climbing the Volcano</h3>
             <img src="assets/image/climb.jpg" alt="screenshot of Climbing the Volcano." class="img-mobile">
-            <p>It is a game made using the Phaser framework. <br>
-              In this game the goal to collect the coins while escaping the volcano fire.
+            <p data-i18n="proj.climb.desc">
+              2D game developed with JavaScript and Phaser, including collision logic, item collection, character movement, and tests with Jest. Focused on frontend practice, programming logic, and interactive application structure.
             </p>
 
             <div class="project-skills">
-              <span>HTML</span>
-              <span>CSS3</span>
-              <span>GIT</span>
               <span>JAVASCRIPT</span>
-              <span>API</span>
               <span>PHASER</span>
               <span>JEST</span>
-            </div>
-            <div class="project-links-responsive">
-              <a href="https://climbing-the-volcano-k1kdpckj8-felipeenne.vercel.app/" target="_blanck">Demo</a>
-              <a href="https://github.com/FelipeEnne/Game-With-Phaser" target="_blanck">
-                Github link</a>
-            </div>
-
-          </section>
-        </div>
-
-
-        <div class="project-card">
-          <div class="project-img">
-            <img src="assets/image/bootstrap.jpg" alt="screenshot of project Bootstrap framework.">
-
-            <div class="project-links">
-              <a href="https://felipeenne.github.io/Using-Bootstrap/" target="_blanck">Demo</a>
-              <a href="https://github.com/FelipeEnne/Using-Bootstrap" target="_blanck">
-                Github link</a>
-            </div>
-          </div>
-
-          <section class="project-content">
-            <h3>Using Bootstrap</h3>
-            <img src="assets/image/bootstrap.jpg" alt="screenshot of project Bootstrap framework." class="img-mobile">
-            <p>In this project, I get a chance to try out Twitter’s Bootstrap framework by building a site that actually uses it – 
-              <a href="https://www.newsweek.com/" target="_blanck">Newsweek</a>.
-            </p>
-
-            <div class="project-skills">
               <span>HTML</span>
               <span>CSS3</span>
               <span>GIT</span>
-              <span>BOOTSTRAP</span>
-              <span>GITHUB</span>
             </div>
             <div class="project-links-responsive">
-              <a href="https://felipeenne.github.io/Using-Bootstrap/" target="_blanck">Demo</a>
-              <a href="https://github.com/FelipeEnne/Using-Bootstrap" target="_blanck">
-                Github link</a>
+              <a href="https://climbing-the-volcano-k1kdpckj8-felipeenne.vercel.app/" target="_blank" data-i18n="proj.demo">Demo</a>
+              <a href="https://github.com/FelipeEnne/Game-With-Phaser" target="_blank" data-i18n="proj.github">Github link</a>
             </div>
-
           </section>
         </div>
 
-        <div class="project-card">
-          <div class="project-img">
-            <img src="assets/image/calculator.jpg" alt="screenshot of project calculator.">
-
-            <div class="project-links">
-              <a href="https://react-calculator-phi-five.vercel.app/" target="_blanck">Demo</a>
-              <a href="https://github.com/FelipeEnne/React-calculator"  target="_blanck">
-                Github link</a>
-            </div>
-          </div>
-
-          <section class="project-content">
-            <h3>Calculator</h3>
-            <img src="assets/image/calculator.jpg" alt="screenshot of project calculator." class="img-mobile">
-            <p>A Calculator is a project made using a create-react-app, a tool built by developers at Facebook to help you build React applications, saving you from time-consuming setup and configuration.
-            </p>
-
-            <div class="project-skills">
-              <span>NODE.JS</span>
-              <span>REACT</span>
-              <span>REACT-DOM</span>
-              <span>REACT-CREATE-APP</span>
-              <span>GIT</span>
-              <span>GITHUB</span>
-              <span>CSS</span>
-              <span>JAVASCRIPT</span>
-            </div>
-            <div class="project-links-responsive">
-              <a href="https://react-calculator-phi-five.vercel.app/" target="_blanck">Demo</a>
-              <a href="https://github.com/FelipeEnne/React-calculator"  target="_blanck">
-                Github link</a>
-            </div>
-
-          </section>
-        </div>
-
-      
       </div>
 
     </main>
@@ -235,20 +182,20 @@
 
     <footer>
 
-      <h1 id="contact" class="section-title">Contact me!</h1>
+      <h1 id="contact" class="section-title" data-i18n="contact.title">Contact me!</h1>
 
       <div class="container-nav-contact">
         <nav>
-          <a href="mailto:felipeenne@gmail.com" class="animation-nav" target="_blanck">felipeenne@gmail.com</a>
+          <a href="mailto:felipeenne@gmail.com" class="animation-nav">felipeenne@gmail.com</a>
           ||
-          <a href="https://www.linkedin.com/in/felipe-enne/" class="animation-nav" target="_blanck">LinkedIn</a>
+          <a href="https://www.linkedin.com/in/felipe-enne/" class="animation-nav" target="_blank" data-i18n="nav.linkedin">LinkedIn</a>
           ||
-          <a href="https://github.com/FelipeEnne" class="animation-nav" target="_blanck">GitHub</a>
+          <a href="https://github.com/FelipeEnne" class="animation-nav" target="_blank" data-i18n="nav.github">GitHub</a>
         </nav>
       </div>
 
       <div class="footer-madeby">
-        <span> Made by Felipe Enne Mendes Ribeiro 2019</span>
+        <span data-i18n="footer.madeby">Made by Felipe Enne Mendes Ribeiro 2026</span>
       </div>
 
 
@@ -256,7 +203,7 @@
 
   </div>
   <!-- Meta Pixel Code -->
-<script>
+  <script>
   !function(f,b,e,v,n,t,s)
   {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
   n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -272,17 +219,18 @@
   src="https://www.facebook.com/tr?id=625832098339867&ev=PageView&noscript=1"
   /></noscript>
   <!-- End Meta Pixel Code -->
-  
-  
+
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-174259249-1"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-  
+
     gtag('config', 'UA-174259249-1');
   </script>
+  <script src="assets/js/i18n.js"></script>
 </body>
 
 </html>

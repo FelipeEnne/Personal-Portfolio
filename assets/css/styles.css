@@ -279,6 +279,34 @@ footer {
   display: none;
 }
 
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 10px;
+  gap: 4px;
+}
+
+.lang-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.55);
+  font-family: Camphor, Open Sans, Segoe UI, sans-serif;
+  font-size: 0.85em;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+
+.lang-btn:hover,
+.lang-btn.lang-active {
+  color: white;
+}
+
+.lang-sep {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.85em;
+}
+
 @media screen and (max-width: 768px) {
   .project-img {
     display: none;
