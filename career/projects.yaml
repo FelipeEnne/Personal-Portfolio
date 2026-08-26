@@ -1,14 +1,25 @@
+```yaml
 projects:
+  # ============================================================
+  # FEATURED PROJECTS
+  # ============================================================
+
   - id: github-activity-lakehouse
     name: "GitHub Activity Lakehouse"
     type: "Personal Project"
+    status: "Completed"
     featured: true
 
     description:
       en: >
-        Built a local data engineering lakehouse that ingests GH Archive
-        events and transforms them through Bronze, Silver and Gold layers
-        using Python, PySpark, Delta Lake and Docker.
+        Data engineering lakehouse that ingests public GH Archive events
+        and transforms them into analytics-ready datasets through Bronze,
+        Silver and Gold layers.
+
+      pt: >
+        Lakehouse de engenharia de dados que ingere eventos públicos do
+        GH Archive e os transforma em datasets prontos para análise através
+        das camadas Bronze, Silver e Gold.
 
     technologies:
       - Python
@@ -28,33 +39,413 @@ projects:
 
     concepts:
       - ETL
+      - Data Engineering
       - Data Pipelines
       - Lakehouse Architecture
       - Medallion Architecture
       - Data Quality
+      - Data Lineage
+      - Data Validation
       - Automated Testing
+      - CI/CD
 
     highlights:
       - >
         Implemented Bronze, Silver and Gold data layers for processing
-        GitHub Archive event data.
+        public GitHub Archive event data.
 
       - >
-        Added data quality checks and automated tests to validate the
-        ingestion and transformation pipelines.
+        Built controlled hourly ingestion with validation of compressed
+        GH Archive files and replayable raw event storage.
 
       - >
-        Built an interactive Plotly dashboard for exploring processed
-        GitHub activity data.
+        Implemented explicit schemas, deterministic deduplication,
+        rejected-record lineage and data quality checks.
 
       - >
-        Configured the project to run locally with Docker and in
-        Databricks Free Edition using Unity Catalog.
+        Created Gold-layer analytics datasets and an interactive Plotly
+        dashboard published with GitHub Pages.
+
+      - >
+        Added automated testing, linting and CI workflows using pytest,
+        Ruff and GitHub Actions.
+
+      - >
+        Configured a Databricks Free Edition execution profile that reuses
+        the same production modules and writes demonstration data using
+        Unity Catalog.
 
     links:
       github: "https://github.com/FelipeEnne/github-activity-lakehouse"
-      demo: ""
+      demo: "https://felipeenne.github.io/github-activity-lakehouse/"
 
     skill_evidence:
       professional: false
       project_based: true
+
+    sources:
+      - github
+
+
+  - id: audiobook-production-automation
+    name: "Audiobook Production Automation Platform"
+    type: "Personal Project"
+    status: "In Development"
+    featured: true
+
+    description:
+      en: >
+        Automation platform for producing and publishing audiobooks at
+        scale on YouTube using Python, FastAPI, local text-to-speech and
+        YouTube integrations.
+
+      pt: >
+        Plataforma de automação para produção e publicação de audiolivros
+        em escala no YouTube usando Python, FastAPI, síntese de voz local
+        e integrações com o YouTube.
+
+    technologies:
+      - Python
+      - FastAPI
+      - REST APIs
+      - Local TTS
+      - YouTube API
+
+    concepts:
+      - Process Automation
+      - API Integration
+      - Text-to-Speech
+      - Content Automation
+      - File Processing
+      - Workflow Automation
+
+    highlights:
+      - >
+        Designed a workflow for automating audiobook production from
+        source text through generated audio files.
+
+      - >
+        Used local text-to-speech models to reduce dependency on
+        third-party voice generation services.
+
+      - >
+        Designed automation for file organization, thumbnails,
+        descriptions, playlists and scheduled YouTube publishing.
+
+      - >
+        Built API-based components using Python and FastAPI to orchestrate
+        parts of the content production pipeline.
+
+    links:
+      github: null
+      demo: null
+
+    skill_evidence:
+      professional: false
+      project_based: true
+
+    sources:
+      - cv
+
+    source_notes:
+      note: >
+        Project is documented in the current CV. Public repository and
+        production URL have not yet been added to the canonical data.
+
+
+  - id: climbing-the-volcano
+    name: "Climbing the Volcano"
+    type: "Microverse Capstone Project"
+    status: "Completed"
+    featured: true
+
+    description:
+      en: >
+        Browser-based 2D game where the player collects coins while
+        escaping a volcano, developed as a JavaScript capstone project
+        using Phaser.
+
+      pt: >
+        Jogo 2D para navegador no qual o jogador coleta moedas enquanto
+        escapa de um vulcão, desenvolvido como projeto final em JavaScript
+        utilizando Phaser.
+
+    technologies:
+      - JavaScript
+      - Phaser
+      - HTML
+      - CSS
+      - Jest
+      - Webpack
+      - ESLint
+      - REST API
+
+    concepts:
+      - Game Development
+      - Collision Logic
+      - Character Movement
+      - Item Collection
+      - API Integration
+      - Automated Testing
+
+    highlights:
+      - >
+        Developed game mechanics including character movement,
+        collision handling and coin collection.
+
+      - >
+        Implemented multiple game scenes including menu, gameplay,
+        game-over and leaderboard screens.
+
+      - >
+        Integrated an API-based leaderboard allowing players to submit
+        scores and view the top rankings.
+
+      - >
+        Added automated tests with Jest and bundled the application
+        using Webpack.
+
+    links:
+      github: "https://github.com/FelipeEnne/Game-With-Phaser"
+      demo: null
+
+    skill_evidence:
+      professional: false
+      project_based: true
+
+    sources:
+      - cv
+      - github
+
+
+  # ============================================================
+  # OTHER PROJECTS
+  # Kept as evidence and available for job-specific CV generation.
+  # They do not need to appear in the default portfolio.
+  # ============================================================
+
+  - id: personal-portfolio
+    name: "Personal Portfolio"
+    type: "Personal Project"
+    status: "Active"
+    featured: false
+
+    description:
+      en: >
+        Personal developer portfolio used to showcase professional
+        experience, technical skills and software projects.
+
+      pt: >
+        Portfólio pessoal utilizado para apresentar experiência
+        profissional, competências técnicas e projetos de software.
+
+    technologies:
+      - HTML
+      - CSS
+      - Git
+      - GitHub
+
+    concepts:
+      - Portfolio
+      - Responsive Web Development
+      - Static Website
+
+    highlights:
+      - >
+        Built and maintained a personal developer portfolio published
+        on the web.
+
+      - >
+        Serves as the presentation layer for professional experience,
+        skills and selected software projects.
+
+    links:
+      github: "https://github.com/FelipeEnne/Personal-Portfolio"
+      demo: "https://felipeenne.github.io/Personal-Portfolio/"
+
+    skill_evidence:
+      professional: false
+      project_based: true
+
+    sources:
+      - github
+
+
+  - id: info-covid19-app
+    name: "Info COVID-19 App"
+    type: "Personal / Learning Project"
+    status: "Completed"
+    featured: false
+
+    description:
+      en: >
+        Web application that displays COVID-19 information obtained
+        from an external API.
+
+      pt: >
+        Aplicação web que apresenta informações sobre COVID-19 obtidas
+        através de uma API externa.
+
+    technologies:
+      - JavaScript
+      - React
+      - Redux
+      - HTML
+      - CSS
+      - REST API
+
+    concepts:
+      - Frontend Development
+      - State Management
+      - API Integration
+
+    highlights:
+      - >
+        Built a React application that consumes external API data.
+
+      - >
+        Used Redux for application state management.
+
+    links:
+      github: "https://github.com/FelipeEnne/Info-covid19-app"
+      demo: null
+
+    skill_evidence:
+      professional: false
+      project_based: true
+
+    sources:
+      - github
+
+
+  - id: find-your-course
+    name: "Find Your Course"
+    type: "Personal / Learning Project"
+    status: "Completed"
+    featured: false
+
+    description:
+      en: >
+        Mobile-oriented web application for browsing courses and
+        saving favorite courses.
+
+      pt: >
+        Aplicação web orientada para dispositivos móveis para pesquisar
+        cursos e salvar cursos favoritos.
+
+    technologies:
+      - JavaScript
+      - React
+      - Redux
+      - Ruby on Rails
+
+    concepts:
+      - Full Stack Development
+      - State Management
+      - Web Application
+
+    highlights:
+      - >
+        Developed a React and Redux frontend for browsing and
+        favoriting courses.
+
+      - >
+        Used Ruby on Rails as part of the application stack.
+
+    links:
+      github: "https://github.com/FelipeEnne/find-your-course"
+      demo: null
+
+    skill_evidence:
+      professional: false
+      project_based: true
+
+    sources:
+      - github
+
+
+  - id: weather-app
+    name: "Weather App"
+    type: "Personal / Learning Project"
+    status: "Completed"
+    featured: false
+
+    description:
+      en: >
+        Searchable weather application that consumes an external API
+        to display current and forecast weather information.
+
+      pt: >
+        Aplicação de previsão do tempo com pesquisa que consome uma API
+        externa para apresentar condições atuais e previsões.
+
+    technologies:
+      - JavaScript
+      - HTML
+      - CSS
+      - REST API
+
+    concepts:
+      - API Integration
+      - Frontend Development
+
+    highlights:
+      - >
+        Integrated an external weather API to retrieve and display
+        weather information.
+
+      - >
+        Built a searchable browser-based interface using JavaScript,
+        HTML and CSS.
+
+    links:
+      github: "https://github.com/FelipeEnne/weather-app"
+      demo: null
+
+    skill_evidence:
+      professional: false
+      project_based: true
+
+    sources:
+      - github
+
+
+  - id: wine-recommendation
+    name: "Wine Recommendation"
+    type: "Personal / Learning Project"
+    status: "Completed"
+    featured: false
+
+    description:
+      en: >
+        Experimental wine recommendation project created using a dataset
+        of wine reviews.
+
+      pt: >
+        Projeto experimental de recomendação de vinhos criado a partir
+        de um conjunto de dados de avaliações de vinhos.
+
+    technologies:
+      - Python
+      - Jupyter Notebook
+
+    concepts:
+      - Data Analysis
+      - Recommendation Systems
+
+    highlights:
+      - >
+        Explored wine review data as the basis for a recommendation
+        system experiment.
+
+    links:
+      github: "https://github.com/FelipeEnne/Wine-Recommendation"
+      demo: null
+
+    skill_evidence:
+      professional: false
+      project_based: true
+
+    sources:
+      - github
+```
