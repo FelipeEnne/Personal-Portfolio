@@ -1,0 +1,6 @@
+Title: Full Stack Developer
+Requirements:
+- GraphQL
+- Node
+Responsibilities:
+- Maintain backend APIs and integrations.
