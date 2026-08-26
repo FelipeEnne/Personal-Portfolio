@@ -34,7 +34,8 @@ BASE_SCHEMA_PATH = REPOSITORY_ROOT / "resume/schema/resume-context.schema.json"
 JOB_SCHEMA_PATH = REPOSITORY_ROOT / "resume/schema/job-resume-context.schema.json"
 
 MAX_JOB_FILE_BYTES = 1_000_000
-MAX_SKILLS = 20
+MAX_SKILLS = 14
+MAX_SUPPORTING_SKILLS = 3
 MAX_EXPERIENCES = 6
 MAX_PROJECTS = 3
 MAX_EDUCATION = 2
@@ -49,14 +50,22 @@ TECHNOLOGY_ALIASES = {
     "Node.js": ("Node", "NodeJS", "Node JS"),
     "PostgreSQL": ("Postgres", "Postgre SQL"),
     "Apache Spark": ("Spark",),
-    "REST APIs": ("REST", "REST API", "RESTful API", "RESTful APIs"),
+    "REST APIs": ("REST", "REST API", "RESTful", "RESTful API", "RESTful APIs"),
     "Databricks": ("DataBricks",),
     "HTML5": ("HTML",),
     "CSS3": ("CSS",),
+    "pytest": ("automated testing", "automated tests", "testes automatizados"),
+    "GitHub Actions": (
+        "CI/CD", "continuous integration", "continuous delivery",
+        "integração contínua", "entrega contínua",
+    ),
 }
 
 KEYWORD_ALIASES = {
-    "API integrations": ("api integration", "api integrations", "integrações de api"),
+    "API integrations": (
+        "api", "apis", "rest api", "restful", "api integration",
+        "api integrations", "integrações de api",
+    ),
     "automation": ("automation", "automação", "automations", "automações"),
     "backend": ("backend", "back-end"),
     "data engineering": ("data engineering", "engenharia de dados"),
@@ -64,6 +73,10 @@ KEYWORD_ALIASES = {
     "frontend": ("frontend", "front-end"),
     "production support": ("production support", "suporte à produção"),
     "testing": ("testing", "tests", "testes"),
+    "CI/CD": (
+        "CI/CD", "continuous integration", "continuous delivery",
+        "integração contínua", "entrega contínua",
+    ),
 }
 
 SECTION_HEADINGS = {
@@ -73,12 +86,35 @@ SECTION_HEADINGS = {
     },
     "required": {
         "requirements", "required", "mandatory requirements", "requisitos",
-        "requisitos obrigatórios", "qualifications",
+        "requisitos obrigatórios", "qualifications", "habilidades",
     },
     "preferred": {
         "preferred", "nice to have", "desired", "desejável", "desejáveis",
-        "diferenciais",
+        "diferenciais", "valorizado",
     },
+}
+
+SECTION_BOUNDARIES = {
+    "about the job", "descrição", "description", "pacote de benefícios",
+    "benefícios", "benefits", "informações importantes", "important information",
+    "por que você deve vir pra cá", "why join us",
+}
+
+JOB_TITLE_TERMS = (
+    "developer", "desenvolvedor", "engenheiro de software", "software engineer",
+    "data engineer", "engenheiro de dados", "data analyst", "analista de dados",
+)
+
+GENERIC_PROJECT_SKILLS = {"Git", "GitHub"}
+
+PROJECT_SIGNAL_BOOSTS = {
+    "github-activity-lakehouse": (
+        "Python", "Docker", "automated testing", "testes automatizados",
+        "CI/CD", "continuous integration", "GitHub Actions",
+    ),
+    "audiobook-production-automation": (
+        "Python", "API", "APIs", "backend", "back-end", "FastAPI",
+    ),
 }
 
 STOP_WORDS = {
@@ -258,6 +294,44 @@ def clean_list_item(line: str) -> str:
     return re.sub(r"^(?:[-*•]|\d+[.)])\s*", "", line.strip()).strip()
 
 
+def normalized_heading(line: str) -> str:
+    without_markup = re.sub(r"^[\s>#]+", "", line).strip()
+    return fold(without_markup.rstrip(":").strip())
+
+
+def inferred_leading_title(lines: list[str]) -> str | None:
+    if not lines:
+        return None
+    candidate = clean_list_item(lines[0])
+    if ":" in candidate or len(candidate) > 120:
+        return None
+    normalized = fold(candidate)
+    if any(term in normalized for term in JOB_TITLE_TERMS):
+        return candidate
+    return None
+
+
+def requirement_key(value: str) -> str:
+    normalized = fold(value).strip()
+    compact = re.sub(r"[^a-z0-9/+.-]+", " ", normalized).strip()
+    if compact in {"back-end", "backend", "back end"}:
+        return "backend"
+    if compact in {"rest", "rest api", "rest apis", "restful", "restful api"}:
+        return "rest-apis"
+    return compact
+
+
+def deduplicate_requirements(values: list[str]) -> list[str]:
+    result = []
+    seen = set()
+    for value in values:
+        key = requirement_key(value)
+        if key and key not in seen:
+            result.append(value)
+            seen.add(key)
+    return result
+
+
 def analyze_job(
     text: str,
     source_file: str,
@@ -265,7 +339,8 @@ def analyze_job(
     groups: dict[str, list[str]],
     canonical: dict[str, dict[str, Any]],
 ) -> dict[str, Any]:
-    title = None
+    nonempty_lines = [line.strip() for line in text.splitlines() if line.strip()]
+    title = inferred_leading_title(nonempty_lines)
     company = None
     sections: dict[str, list[str]] = {
         "responsibilities": [], "required": [], "preferred": []
@@ -277,17 +352,20 @@ def analyze_job(
             continue
         title = title or parse_labeled_value(line, ("Title", "Job title", "Cargo"))
         company = company or parse_labeled_value(line, ("Company", "Empresa"))
-        normalized_heading = fold(line.rstrip(":"))
+        heading_name = normalized_heading(line)
         heading = next(
             (
                 name
                 for name, aliases in SECTION_HEADINGS.items()
-                if normalized_heading in {fold(alias) for alias in aliases}
+                if heading_name in {fold(alias) for alias in aliases}
             ),
             None,
         )
         if heading:
             current_section = heading
+            continue
+        if heading_name in {fold(value) for value in SECTION_BOUNDARIES}:
+            current_section = None
             continue
         if current_section and not parse_labeled_value(
             line, ("Title", "Job title", "Cargo", "Company", "Empresa")
@@ -295,6 +373,11 @@ def analyze_job(
             item = clean_list_item(line)
             if item:
                 sections[current_section].append(item)
+
+    sections = {
+        name: deduplicate_requirements(values)
+        for name, values in sections.items()
+    }
 
     matched = match_skills(text, groups)
     inventory = [skill for skills in groups.values() for skill in skills]
@@ -377,14 +460,45 @@ def select_projects(
     matched: set[str],
     job_tokens: set[str],
     inventory: list[str],
+    job_text: str,
 ) -> list[dict[str, Any]]:
     scored = []
     for index, record in enumerate(records):
-        score = relevance_score(record, matched, job_tokens, inventory)
+        record_values = record_skill_values(record, ("technologies", "concepts"))
+        record_skills = {
+            canonical
+            for value in record_values
+            if (canonical := canonicalize_term(value, inventory)) is not None
+        }
+        matched_record_skills = matched & record_skills
+        skill_score = sum(
+            10 if skill in GENERIC_PROJECT_SKILLS else 100
+            for skill in matched_record_skills
+        )
+        direct_score = sum(
+            40
+            for value in record_values
+            if canonicalize_term(value, inventory) is None
+            and phrase_position(job_text, value) is not None
+        )
+        overlap = len(text_tokens(localized_record_text(record)) & job_tokens)
+        signals = PROJECT_SIGNAL_BOOSTS.get(record.get("id"), ())
+        signal_score = sum(
+            25 for signal in signals if phrase_position(job_text, signal) is not None
+        )
+        score = skill_score + direct_score + min(overlap, 20) + signal_score
+        if matched_record_skills and matched_record_skills <= GENERIC_PROJECT_SKILLS:
+            score = min(score, 30)
         featured = bool(record.get("featured"))
         scored.append((score, featured, index, record))
     scored.sort(key=lambda item: (-item[0], -int(item[1]), item[2]))
-    return [record for _, _, _, record in scored[:MAX_PROJECTS]]
+    selected = scored[: min(2, len(scored))]
+    if len(scored) > 2:
+        third = scored[2]
+        highest_score = scored[0][0]
+        if third[0] >= 80 and third[0] >= highest_score * 0.6:
+            selected.append(third)
+    return [record for _, _, _, record in selected[:MAX_PROJECTS]]
 
 
 def select_education(
@@ -415,11 +529,50 @@ def rank_highlights(
 
 
 def filter_skill_groups(
-    groups: dict[str, list[str]], matched_skills: list[str]
+    groups: dict[str, list[str]],
+    matched_skills: list[str],
+    selected_experiences: list[dict[str, Any]],
+    keywords: list[str],
 ) -> list[dict[str, Any]]:
     canonical_order = [skill for values in groups.values() for skill in values]
-    selected = list(dict.fromkeys((*matched_skills, *canonical_order)))[:MAX_SKILLS]
-    selected_set = set(selected)
+    allowed_support_groups = {"languages", "backend", "databases"}
+    if "backend" in keywords or "API integrations" in keywords:
+        allowed_support_groups.update(
+            {"testing", "devops", "integrations"}
+        )
+    if "data engineering" in keywords or "data pipelines" in keywords:
+        allowed_support_groups.update(
+            {"data_engineering", "data_visualization", "testing", "devops"}
+        )
+    if "frontend" in keywords:
+        allowed_support_groups.update({"frontend", "testing", "devops"})
+
+    skill_groups = {
+        skill: group for group, values in groups.items() for skill in values
+    }
+    inventory = list(canonical_order)
+    frequency = {skill: 0 for skill in canonical_order}
+    for experience in selected_experiences:
+        for value in record_skill_values(experience, ("technologies",)):
+            canonical = canonicalize_term(value, inventory)
+            if canonical is not None:
+                frequency[canonical] += 1
+    inventory_positions = {
+        skill: index for index, skill in enumerate(canonical_order)
+    }
+    supporting = sorted(
+        (
+            skill
+            for skill in canonical_order
+            if skill not in matched_skills
+            and frequency[skill] > 0
+            and skill_groups[skill] in allowed_support_groups
+        ),
+        key=lambda skill: (-frequency[skill], inventory_positions[skill]),
+    )[:MAX_SUPPORTING_SKILLS]
+    selected = list(dict.fromkeys((*matched_skills, *supporting)))[:MAX_SKILLS]
+    matched_skills = [skill for skill in matched_skills if skill in selected]
+    supporting = [skill for skill in supporting if skill in selected]
     result = []
     matched_positions = {skill: index for index, skill in enumerate(matched_skills)}
     ordered_groups = sorted(
@@ -435,11 +588,7 @@ def filter_skill_groups(
     )
     for group, values in ordered_groups:
         items = [skill for skill in matched_skills if skill in values]
-        items.extend(
-            skill
-            for skill in values
-            if skill in selected_set and skill not in items
-        )
+        items.extend(skill for skill in values if skill in supporting)
         if items:
             result.append({"id": group, "items": items})
     return result
@@ -473,7 +622,9 @@ def build_job_context(
     selected_experiences = select_experiences(
         experiences, matched, job_tokens, inventory
     )
-    selected_projects = select_projects(projects, matched, job_tokens, inventory)
+    selected_projects = select_projects(
+        projects, matched, job_tokens, inventory, job_text
+    )
     selected_education = select_education(education, matched, job_tokens)
 
     policy = {
@@ -508,7 +659,12 @@ def build_job_context(
         "certifications": {"include_resume_eligible_only": True},
     }
     context = base.build_context(canonical, policy, language)
-    context["skills"] = filter_skill_groups(groups, analysis["matched_skills"])
+    context["skills"] = filter_skill_groups(
+        groups,
+        analysis["matched_skills"],
+        selected_experiences,
+        analysis["keywords"],
+    )
 
     experience_scores = {
         record["id"]: relevance_score(record, matched, job_tokens, inventory)

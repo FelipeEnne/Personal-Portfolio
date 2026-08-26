@@ -74,6 +74,75 @@ class BuildJobContextTests(unittest.TestCase):
         self.assertNotIn("Kubernetes", context["job"]["matched_skills"])
         self.assertNotIn("Kubernetes", self.flattened_skills(context))
 
+    def test_section_headers_are_not_requirements(self) -> None:
+        context = self.build_fixture("backend-quality-job.txt")
+        requirements = context["job"]["required"]
+        self.assertNotIn("Requisitos", requirements)
+        self.assertNotIn("Habilidades", requirements)
+        self.assertNotIn("Valorizado", requirements)
+        self.assertNotIn("Benefícios", requirements)
+        self.assertEqual(len(context["job"]["responsibilities"]), 2)
+        self.assertNotIn("Assistência médica.", context["job"]["preferred"])
+
+    def test_rest_and_backend_labels_are_deduplicated_for_analysis(self) -> None:
+        context = self.build_fixture("backend-quality-job.txt")
+        requirements = context["job"]["required"]
+        self.assertIn("REST API", requirements)
+        self.assertNotIn("RESTful", requirements)
+        self.assertIn("Back-end", requirements)
+        self.assertNotIn("Backend", requirements)
+        self.assertEqual(context["job"]["matched_skills"].count("REST APIs"), 1)
+
+    def test_git_github_and_ci_cd_map_to_canonical_project_evidence(self) -> None:
+        context = self.build_fixture("backend-quality-job.txt")
+        matched = context["job"]["matched_skills"]
+        self.assertIn("Git", matched)
+        self.assertIn("GitHub", matched)
+        self.assertIn("pytest", matched)
+        self.assertIn("GitHub Actions", matched)
+        self.assertEqual(self.evidence_for(context, "pytest")["level"], "project")
+        self.assertEqual(
+            self.evidence_for(context, "GitHub Actions")["level"], "project"
+        )
+        self.assertTrue(
+            all(
+                "pytest" not in experience["technologies"]
+                and "GitHub Actions" not in experience["technologies"]
+                for experience in context["experiences"]
+            )
+        )
+
+    def test_backend_job_does_not_expand_unmatched_groups(self) -> None:
+        context = self.build_fixture("backend-quality-job.txt")
+        skills = self.flattened_skills(context)
+        for absent in (
+            "React", "Redux", "Bootstrap", "GraphQL", "Apache Spark", "PySpark"
+        ):
+            self.assertNotIn(absent, skills)
+
+    def test_personal_portfolio_does_not_beat_backend_projects_for_git(self) -> None:
+        context = self.build_fixture("backend-quality-job.txt")
+        project_ids = [project["id"] for project in context["projects"]]
+        self.assertEqual(
+            project_ids,
+            ["github-activity-lakehouse", "audiobook-production-automation"],
+        )
+        self.assertNotIn("personal-portfolio", project_ids)
+
+    def test_absent_technology_does_not_enter_matched_skills(self) -> None:
+        context = self.build_fixture("backend-quality-job.txt")
+        self.assertNotIn("MongoDB", context["job"]["matched_skills"])
+
+    def test_company_and_title_remain_null_without_clear_evidence(self) -> None:
+        context = self.build_fixture("unlabeled-job.txt")
+        self.assertIsNone(context["job"]["company"])
+        self.assertIsNone(context["job"]["title"])
+
+    def test_clear_leading_title_is_extracted_without_guessing_company(self) -> None:
+        context = self.build_fixture("backend-quality-job.txt")
+        self.assertEqual(context["job"]["title"], "Desenvolvedor Backend II (Python)")
+        self.assertIsNone(context["job"]["company"])
+
     def test_context_uses_only_canonical_skill_inventory(self) -> None:
         context = self.build_fixture("data-job.txt")
         inventory = {
