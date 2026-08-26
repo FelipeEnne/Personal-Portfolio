@@ -561,13 +561,29 @@ The intended architecture is:
 career/*.yaml
       │
       ▼
-portfolio generation
+portfolio/config/default.yaml
+      │
+      ▼
+portfolio/scripts/build_context.py
+      │
+      ▼
+generated/portfolio/portfolio-context-*.json
       │
       ▼
 general public portfolio
 ```
 
 Job descriptions must never influence the public portfolio.
+
+`portfolio/config/default.yaml` controls general portfolio presentation,
+including selection, order, visibility, and visual asset mapping. It is not a
+source of professional facts.
+
+Portfolio context JSON files are generated artifacts, not canonical data.
+Professional facts must continue to come from `career/*.yaml`.
+
+Project images are visual presentation configuration. They are not canonical
+professional facts and should not be inferred from career data.
 
 ---
 

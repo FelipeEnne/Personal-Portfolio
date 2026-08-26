@@ -1,0 +1,49 @@
+default_portfolio:
+  profile:
+    display_name: "Felipe Enne"
+
+    show:
+      phone: false
+      medium: false
+      portfolio_link: false
+
+  skills:
+    include:
+      - JavaScript
+      - TypeScript
+      - Python
+      - Node.js
+      - Express
+      - React
+      - PostgreSQL
+      - MongoDB
+      - Salesforce
+      - Docker
+      - Git
+      - GraphQL
+      - REST APIs
+
+  education:
+    include:
+      - usp-masters
+      - microverse-full-stack
+
+  projects:
+    include:
+      - github-activity-lakehouse
+      - audiobook-production-automation
+      - climbing-the-volcano
+
+    presentation:
+      github-activity-lakehouse:
+        image: null
+
+      audiobook-production-automation:
+        image: "assets/image/audiobook.jpg"
+
+      climbing-the-volcano:
+        image: "assets/image/climb.jpg"
+
+  public_resume:
+    en: "assets/doc/CV.pdf"
+    pt: "assets/doc/Currículo.pdf"

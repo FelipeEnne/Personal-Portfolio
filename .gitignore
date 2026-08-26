@@ -4,3 +4,7 @@ career/certifications/*.pdf
 # Generated resume artifacts
 generated/resumes/**
 !generated/resumes/.gitkeep
+
+# Generated portfolio artifacts
+generated/portfolio/**
+!generated/portfolio/.gitkeep

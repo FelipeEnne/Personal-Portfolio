@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://felipeenne.dev/schemas/portfolio-context.schema.json",
+  "title": "Portfolio Context",
+  "description": "Public portfolio data derived from career/*.yaml and presentation policy.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "language",
+    "profile",
+    "skills",
+    "education",
+    "projects",
+    "public_resume"
+  ],
+  "properties": {
+    "language": {
+      "type": "string",
+      "enum": ["en", "pt"]
+    },
+    "profile": {
+      "$ref": "#/$defs/profile"
+    },
+    "skills": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "education": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/education"}
+    },
+    "projects": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/project"}
+    },
+    "public_resume": {
+      "type": "string",
+      "pattern": "^assets/doc/[^/]+\\.pdf$"
+    }
+  },
+  "$defs": {
+    "nullableString": {
+      "anyOf": [
+        {"type": "string", "minLength": 1},
+        {"type": "null"}
+      ]
+    },
+    "stringList": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1}
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "display_name",
+        "title",
+        "summary",
+        "location",
+        "contact",
+        "links",
+        "show"
+      ],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "display_name": {"type": "string", "minLength": 1},
+        "title": {"type": "string", "minLength": 1},
+        "summary": {"type": "string", "minLength": 1},
+        "location": {"$ref": "#/$defs/nullableString"},
+        "contact": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["email", "phone"],
+          "properties": {
+            "email": {"$ref": "#/$defs/nullableString"},
+            "phone": {"$ref": "#/$defs/nullableString"}
+          }
+        },
+        "links": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["github", "linkedin", "medium", "portfolio"],
+          "properties": {
+            "github": {"$ref": "#/$defs/nullableString"},
+            "linkedin": {"$ref": "#/$defs/nullableString"},
+            "medium": {"$ref": "#/$defs/nullableString"},
+            "portfolio": {"$ref": "#/$defs/nullableString"}
+          }
+        },
+        "show": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["phone", "medium", "portfolio_link"],
+          "properties": {
+            "phone": {"type": "boolean"},
+            "medium": {"type": "boolean"},
+            "portfolio_link": {"type": "boolean"}
+          }
+        }
+      }
+    },
+    "education": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "institution",
+        "institution_short",
+        "degree",
+        "field",
+        "level",
+        "start_date",
+        "end_date",
+        "location",
+        "description",
+        "topics"
+      ],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "institution": {"type": "string", "minLength": 1},
+        "institution_short": {"$ref": "#/$defs/nullableString"},
+        "degree": {"type": "string", "minLength": 1},
+        "field": {"type": "string", "minLength": 1},
+        "level": {"$ref": "#/$defs/nullableString"},
+        "start_date": {"type": "string", "minLength": 1},
+        "end_date": {"$ref": "#/$defs/nullableString"},
+        "location": {"$ref": "#/$defs/nullableString"},
+        "description": {"type": "string", "minLength": 1},
+        "topics": {"$ref": "#/$defs/stringList"}
+      }
+    },
+    "projectLinks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["github", "demo"],
+      "properties": {
+        "github": {"$ref": "#/$defs/nullableString"},
+        "demo": {"$ref": "#/$defs/nullableString"}
+      }
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "description",
+        "technologies",
+        "links",
+        "image",
+        "featured"
+      ],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "description": {"type": "string", "minLength": 1},
+        "technologies": {"$ref": "#/$defs/stringList"},
+        "links": {"$ref": "#/$defs/projectLinks"},
+        "image": {"$ref": "#/$defs/nullableString"},
+        "featured": {"type": "boolean"}
+      }
+    }
+  }
+}
