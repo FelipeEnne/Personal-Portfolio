@@ -36,7 +36,7 @@ default_portfolio:
 
     presentation:
       github-activity-lakehouse:
-        image: null
+        image: "assets/image/github-activity-lakehouse.png"
 
       audiobook-production-automation:
         image: "assets/image/audiobook.jpg"
