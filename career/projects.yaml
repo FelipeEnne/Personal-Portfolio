@@ -1,4 +1,3 @@
-```yaml
 projects:
   # ============================================================
   # FEATURED PROJECTS
@@ -178,7 +177,7 @@ projects:
       - Jest
       - Webpack
       - ESLint
-      - REST API
+      - REST APIs
 
     concepts:
       - Game Development
@@ -292,7 +291,7 @@ projects:
       - Redux
       - HTML
       - CSS
-      - REST API
+      - REST APIs
 
     concepts:
       - Frontend Development
@@ -383,7 +382,7 @@ projects:
       - JavaScript
       - HTML
       - CSS
-      - REST API
+      - REST APIs
 
     concepts:
       - API Integration
@@ -448,4 +447,3 @@ projects:
 
     sources:
       - github
-```

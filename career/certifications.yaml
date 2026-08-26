@@ -15,6 +15,7 @@ certifications:
     credential_url: null
 
     featured: true
+    resume_eligible: false
 
     source_notes:
       source: "LinkedIn"
@@ -39,6 +40,7 @@ certifications:
     credential_url: null
 
     featured: false
+    resume_eligible: false
 
     source_notes:
       source: "LinkedIn"
@@ -63,6 +65,7 @@ certifications:
     credential_url: null
 
     featured: false
+    resume_eligible: false
 
     source_notes:
       source: "LinkedIn"
@@ -88,6 +91,7 @@ certifications:
     credential_url: null
 
     featured: false
+    resume_eligible: false
 
     source_notes:
       source: "LinkedIn"
@@ -112,6 +116,7 @@ certifications:
     credential_url: null
 
     featured: false
+    resume_eligible: false
 
     source_notes:
       source: "LinkedIn"

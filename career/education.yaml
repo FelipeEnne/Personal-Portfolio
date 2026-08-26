@@ -1,4 +1,3 @@
-```yaml
 education:
   - id: usp-masters
     institution: "University of São Paulo"
@@ -138,4 +137,3 @@ education:
     source_notes:
       source: "LinkedIn"
       included_in_current_cv: false
-```
