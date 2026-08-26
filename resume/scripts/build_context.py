@@ -82,6 +82,13 @@ def localized_string(value: Any, language: str, path: str) -> str:
     return require_string(translations[language], f"{path}.{language}")
 
 
+def localized_string_list(value: Any, language: str, path: str) -> list[str]:
+    translations = require_mapping(value, path)
+    if language not in translations:
+        raise CareerDataError(f"{path} is missing language '{language}'")
+    return string_list(translations[language], f"{path}.{language}")
+
+
 def load_yaml_files(career_dir: Path) -> dict[str, dict[str, Any]]:
     if not career_dir.is_dir():
         raise CareerDataError(f"career directory not found: {career_dir}")
@@ -165,7 +172,9 @@ def positive_integer(value: Any, path: str) -> int:
     return value
 
 
-def build_experiences(data: Any, policy: Any) -> list[dict[str, Any]]:
+def build_experiences(
+    data: Any, language: str, policy: Any
+) -> list[dict[str, Any]]:
     all_records = validate_unique_ids(
         require_list(data, "experience.yaml.experiences"), "experiences"
     )
@@ -205,7 +214,9 @@ def build_experiences(data: Any, policy: Any) -> list[dict[str, Any]]:
         result.append(
             {
                 "id": record_id,
-                "role": require_string(record.get("role"), f"{path}.role"),
+                "role": localized_string(
+                    record.get("role"), language, f"{path}.role"
+                ),
                 "company": require_string(record.get("company"), f"{path}.company"),
                 "employment_type": optional_string(record.get("employment_type"), f"{path}.employment_type"),
                 "location": optional_string(record.get("location"), f"{path}.location"),
@@ -213,8 +224,8 @@ def build_experiences(data: Any, policy: Any) -> list[dict[str, Any]]:
                 "end_date": optional_string(record.get("end_date"), f"{path}.end_date"),
                 "current": require_boolean(record.get("current"), f"{path}.current"),
                 "technologies": string_list(record.get("technologies"), f"{path}.technologies"),
-                "highlights": string_list(
-                    record.get("highlights"), f"{path}.highlights"
+                "highlights": localized_string_list(
+                    record.get("highlights"), language, f"{path}.highlights"
                 )[:highlight_limit],
             }
         )
@@ -273,8 +284,8 @@ def build_projects(data: Any, language: str, policy: Any) -> list[dict[str, Any]
                 "description": localized_string(record.get("description"), language, f"{path}.description"),
                 "technologies": string_list(record.get("technologies"), f"{path}.technologies"),
                 "concepts": string_list(record.get("concepts"), f"{path}.concepts"),
-                "highlights": string_list(
-                    record.get("highlights"), f"{path}.highlights"
+                "highlights": localized_string_list(
+                    record.get("highlights"), language, f"{path}.highlights"
                 )[:highlight_limit],
                 "links": {
                     "github": optional_string(links.get("github"), f"{path}.links.github"),
@@ -390,6 +401,7 @@ def build_context(
         "skills": skill_groups,
         "experiences": build_experiences(
             canonical["experiences"].get("experiences"),
+            language,
             default_policy.get("experiences"),
         ),
         "education": build_education(

@@ -1,6 +1,8 @@
 experiences:
   - id: freelance
-    role: "Full Stack Developer"
+    role:
+      en: "Full Stack Developer"
+      pt: "Desenvolvedor Full Stack"
     company: "Workana / Self-Employed"
     employment_type: "Freelance"
     location: "Jacareí, São Paulo, Brazil"
@@ -19,20 +21,37 @@ experiences:
       - REST APIs
 
     highlights:
-      - >
-        Provide freelance software development services through Workana
-        and independent projects, focused on web applications, REST APIs,
-        integrations, automation, bug fixing, and system improvements.
+      en:
+        - >
+          Provide freelance software development services through Workana
+          and independent projects, focused on web applications, REST APIs,
+          integrations, automation, bug fixing, and system improvements.
 
-      - >
-        Develop solutions using Node.js, TypeScript, React, PostgreSQL,
-        MongoDB, Docker, Git, and API integrations, applying clean code
-        and maintainable delivery practices.
+        - >
+          Develop solutions using Node.js, TypeScript, React, PostgreSQL,
+          MongoDB, Docker, Git, and API integrations, applying clean code
+          and maintainable delivery practices.
 
-      - >
-        Communicate directly with clients to clarify requirements,
-        estimate scope, prioritize tasks, and deliver functional
-        software solutions.
+        - >
+          Communicate directly with clients to clarify requirements,
+          estimate scope, prioritize tasks, and deliver functional
+          software solutions.
+
+      pt:
+        - >
+          Presto serviços de desenvolvimento de software por meio da Workana
+          e de projetos independentes, com foco em aplicações web, APIs REST,
+          integrações, automação, correção de bugs e melhorias de sistemas.
+
+        - >
+          Desenvolvo soluções usando Node.js, TypeScript, React, PostgreSQL,
+          MongoDB, Docker, Git e integrações de APIs, aplicando código limpo
+          e práticas de entrega que favorecem a manutenção.
+
+        - >
+          Comunico-me diretamente com clientes para esclarecer requisitos,
+          estimar o escopo, priorizar tarefas e entregar soluções de software
+          funcionais.
 
     source_notes:
       cv_role: "Full Stack Developer"
@@ -40,7 +59,9 @@ experiences:
 
 
   - id: stays
-    role: "Full Stack Developer"
+    role:
+      en: "Full Stack Developer"
+      pt: "Desenvolvedor Full Stack"
     company: "Stays"
     employment_type: "Full-time"
     location: "Brazil"
@@ -62,30 +83,55 @@ experiences:
       - Conta Azul
 
     highlights:
-      - >
-        Developed and maintained web applications, REST APIs, internal
-        tools, and backend integrations using JavaScript, Node.js,
-        TypeScript, PostgreSQL, Salesforce, and third-party services.
+      en:
+        - >
+          Developed and maintained web applications, REST APIs, internal
+          tools, and backend integrations using JavaScript, Node.js,
+          TypeScript, PostgreSQL, Salesforce, and third-party services.
 
-      - >
-        Built and supported integrations between internal systems,
-        Salesforce, Conta Azul, Stripe, Pagar.me, and operational
-        platforms, improving data flow reliability and reducing
-        manual work.
+        - >
+          Built and supported integrations between internal systems,
+          Salesforce, Conta Azul, Stripe, Pagar.me, and operational
+          platforms, improving data flow reliability and reducing
+          manual work.
 
-      - >
-        Investigated and resolved production issues by analyzing logs,
-        API responses, Salesforce flows, payment errors, financial
-        integrations, edge cases, and critical business processes.
+        - >
+          Investigated and resolved production issues by analyzing logs,
+          API responses, Salesforce flows, payment errors, financial
+          integrations, edge cases, and critical business processes.
 
-      - >
-        Developed internal automations with Puppeteer and Python scripts,
-        collaborating with product, support, operations, and engineering
-        teams to deliver practical improvements.
+        - >
+          Developed internal automations with Puppeteer and Python scripts,
+          collaborating with product, support, operations, and engineering
+          teams to deliver practical improvements.
+
+      pt:
+        - >
+          Desenvolvi e mantive aplicações web, APIs REST, ferramentas
+          internas e integrações de backend usando JavaScript, Node.js,
+          TypeScript, PostgreSQL, Salesforce e serviços de terceiros.
+
+        - >
+          Criei e mantive integrações entre sistemas internos, Salesforce,
+          Conta Azul, Stripe, Pagar.me e plataformas operacionais, melhorando
+          a confiabilidade do fluxo de dados e reduzindo o trabalho manual.
+
+        - >
+          Investiguei e resolvi problemas de produção por meio da análise de
+          logs, respostas de APIs, fluxos do Salesforce, erros de pagamento,
+          integrações financeiras, casos extremos e processos críticos de
+          negócio.
+
+        - >
+          Desenvolvi automações internas com Puppeteer e scripts Python,
+          colaborando com as equipes de produto, suporte, operações e
+          engenharia para entregar melhorias práticas.
 
 
   - id: edsx
-    role: "Full Stack Developer"
+    role:
+      en: "Full Stack Developer"
+      pt: "Desenvolvedor Full Stack"
     company: "EDSX"
     employment_type: "Full-time"
     location: "Switzerland"
@@ -100,19 +146,33 @@ experiences:
       - Blockchain
 
     highlights:
-      - >
-        Built and maintained full-stack web application features using
-        JavaScript, frontend technologies, backend logic, and API
-        integrations.
+      en:
+        - >
+          Built and maintained full-stack web application features using
+          JavaScript, frontend technologies, backend logic, and API
+          integrations.
 
-      - >
-        Supported client-facing solutions and blockchain-related research,
-        collaborating with a remote international team and adapting
-        quickly to new technologies.
+        - >
+          Supported client-facing solutions and blockchain-related research,
+          collaborating with a remote international team and adapting
+          quickly to new technologies.
+
+      pt:
+        - >
+          Desenvolvi e mantive funcionalidades full stack de aplicações web
+          usando JavaScript, tecnologias de frontend, lógica de backend e
+          integrações de APIs.
+
+        - >
+          Apoiei soluções voltadas para clientes e pesquisas relacionadas a
+          blockchain, colaborando com uma equipe internacional remota e me
+          adaptando rapidamente a novas tecnologias.
 
 
   - id: embraer
-    role: "Data Analyst"
+    role:
+      en: "Data Analyst"
+      pt: "Analista de Dados"
     company: "Embraer"
     employment_type: "Full-time"
     location: "São José dos Campos, SP, Brazil"
@@ -127,18 +187,31 @@ experiences:
       - Reporting
 
     highlights:
-      - >
-        Built QlikView dashboards and reports to monitor operational
-        indicators, support internal teams, and improve data-driven
-        decision-making.
+      en:
+        - >
+          Built QlikView dashboards and reports to monitor operational
+          indicators, support internal teams, and improve data-driven
+          decision-making.
 
-      - >
-        Processed, cleaned, and analyzed operational data, identifying
-        patterns, inconsistencies, and process improvement opportunities.
+        - >
+          Processed, cleaned, and analyzed operational data, identifying
+          patterns, inconsistencies, and process improvement opportunities.
+
+      pt:
+        - >
+          Criei dashboards e relatórios no QlikView para monitorar indicadores
+          operacionais, apoiar equipes internas e melhorar a tomada de decisões
+          orientada por dados.
+
+        - >
+          Processei, limpei e analisei dados operacionais, identificando
+          padrões, inconsistências e oportunidades de melhoria de processos.
 
 
   - id: kuadro
-    role: "Full Stack Developer"
+    role:
+      en: "Full Stack Developer"
+      pt: "Desenvolvedor Full Stack"
     company: "Kuadro"
     employment_type: "Full-time"
     location: "São José dos Campos, SP, Brazil"
@@ -155,22 +228,36 @@ experiences:
       - Backend Development
 
     highlights:
-      - >
-        Built and maintained internal web applications for educational
-        operations using JavaScript, React, GraphQL, frontend/backend
-        features, bug fixes, and system improvements.
+      en:
+        - >
+          Built and maintained internal web applications for educational
+          operations using JavaScript, React, GraphQL, frontend/backend
+          features, bug fixes, and system improvements.
 
-      - >
-        Worked with technical and non-technical stakeholders to understand
-        requirements, define scope, and improve internal tools in a
-        fast-paced edtech environment.
+        - >
+          Worked with technical and non-technical stakeholders to understand
+          requirements, define scope, and improve internal tools in a
+          fast-paced edtech environment.
+
+      pt:
+        - >
+          Desenvolvi e mantive aplicações web internas para operações
+          educacionais usando JavaScript, React, GraphQL, funcionalidades de
+          frontend/backend, correções de bugs e melhorias de sistemas.
+
+        - >
+          Trabalhei com stakeholders técnicos e não técnicos para entender
+          requisitos, definir o escopo e melhorar ferramentas internas em um
+          ambiente edtech dinâmico.
 
     source_notes:
       cv_role: "Full Stack Developer"
       linkedin_role: "Full Stack Engineer"
 
   - id: usp-teaching-assistant
-    role: "Teaching Assistant"
+    role:
+      en: "Teaching Assistant"
+      pt: "Monitor"
     company: "University of São Paulo"
     employment_type: "Academic"
     location: "São Paulo, Brazil"
@@ -184,10 +271,17 @@ experiences:
       - Distance Learning
 
     highlights:
-      - >
-        Teaching Assistant in Statistics and Operations Research,
-        supporting students, grading exercises and assisting with
-        distance learning tools.
+      en:
+        - >
+          Teaching Assistant in Statistics and Operations Research,
+          supporting students, grading exercises and assisting with
+          distance learning tools.
+
+      pt:
+        - >
+          Monitor em Estatística e Pesquisa Operacional, apoiando alunos,
+          corrigindo exercícios e auxiliando com ferramentas de ensino a
+          distância.
 
     source_notes:
       cv_start_date: "2018-03"
@@ -200,7 +294,9 @@ experiences:
 
 
   - id: fatec-intern
-    role: "Intern"
+    role:
+      en: "Intern"
+      pt: "Estagiário"
     company: "FATEC - Prof. Jessen Vidal"
     employment_type: "Internship"
     location: "São José dos Campos, SP, Brazil"
@@ -214,8 +310,14 @@ experiences:
       - Reporting
 
     highlights:
-      - >
-        Supported data collection, organization, and reporting activities.
+      en:
+        - >
+          Supported data collection, organization, and reporting activities.
+
+      pt:
+        - >
+          Apoiei atividades de coleta, organização e elaboração de relatórios
+          de dados.
 
     source_notes:
       source: "LinkedIn"

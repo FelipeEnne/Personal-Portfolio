@@ -59,6 +59,12 @@ Before constructing a context, the script parses every YAML file below
 `career/` and performs basic structural validation of the five canonical
 files. Errors identify the affected file or field and cause a non-zero exit.
 
+Localized canonical fields are resolved for the requested language while the
+context is built. Required narrative fields do not fall back from Portuguese
+to English (or vice versa); a missing requested translation is an error. The
+DOCX renderer receives only the already-resolved strings and performs no
+translation.
+
 ## Selection rules in this version
 
 - `resume/config/default.yaml` controls presentation selection for the general

@@ -49,30 +49,59 @@ projects:
       - CI/CD
 
     highlights:
-      - >
-        Implemented Bronze, Silver and Gold data layers for processing
-        public GitHub Archive event data.
+      en:
+        - >
+          Implemented Bronze, Silver and Gold data layers for processing
+          public GitHub Archive event data.
 
-      - >
-        Built controlled hourly ingestion with validation of compressed
-        GH Archive files and replayable raw event storage.
+        - >
+          Built controlled hourly ingestion with validation of compressed
+          GH Archive files and replayable raw event storage.
 
-      - >
-        Implemented explicit schemas, deterministic deduplication,
-        rejected-record lineage and data quality checks.
+        - >
+          Implemented explicit schemas, deterministic deduplication,
+          rejected-record lineage and data quality checks.
 
-      - >
-        Created Gold-layer analytics datasets and an interactive Plotly
-        dashboard published with GitHub Pages.
+        - >
+          Created Gold-layer analytics datasets and an interactive Plotly
+          dashboard published with GitHub Pages.
 
-      - >
-        Added automated testing, linting and CI workflows using pytest,
-        Ruff and GitHub Actions.
+        - >
+          Added automated testing, linting and CI workflows using pytest,
+          Ruff and GitHub Actions.
 
-      - >
-        Configured a Databricks Free Edition execution profile that reuses
-        the same production modules and writes demonstration data using
-        Unity Catalog.
+        - >
+          Configured a Databricks Free Edition execution profile that reuses
+          the same production modules and writes demonstration data using
+          Unity Catalog.
+
+      pt:
+        - >
+          Implementei camadas de dados Bronze, Silver e Gold para processar
+          dados públicos de eventos do GitHub Archive.
+
+        - >
+          Criei uma ingestão horária controlada com validação de arquivos
+          compactados do GH Archive e armazenamento de eventos brutos que
+          permite reprocessamento.
+
+        - >
+          Implementei schemas explícitos, desduplicação determinística,
+          linhagem de registros rejeitados e verificações de qualidade de
+          dados.
+
+        - >
+          Criei datasets analíticos na camada Gold e um dashboard interativo
+          com Plotly publicado no GitHub Pages.
+
+        - >
+          Adicionei testes automatizados, linting e fluxos de CI usando pytest,
+          Ruff e GitHub Actions.
+
+        - >
+          Configurei um perfil de execução no Databricks Free Edition que
+          reutiliza os mesmos módulos de produção e grava dados de demonstração
+          usando Unity Catalog.
 
     links:
       github: "https://github.com/FelipeEnne/github-activity-lakehouse"
@@ -119,21 +148,39 @@ projects:
       - Workflow Automation
 
     highlights:
-      - >
-        Designed a workflow for automating audiobook production from
-        source text through generated audio files.
+      en:
+        - >
+          Designed a workflow for automating audiobook production from
+          source text through generated audio files.
 
-      - >
-        Used local text-to-speech models to reduce dependency on
-        third-party voice generation services.
+        - >
+          Used local text-to-speech models to reduce dependency on
+          third-party voice generation services.
 
-      - >
-        Designed automation for file organization, thumbnails,
-        descriptions, playlists and scheduled YouTube publishing.
+        - >
+          Designed automation for file organization, thumbnails,
+          descriptions, playlists and scheduled YouTube publishing.
 
-      - >
-        Built API-based components using Python and FastAPI to orchestrate
-        parts of the content production pipeline.
+        - >
+          Built API-based components using Python and FastAPI to orchestrate
+          parts of the content production pipeline.
+
+      pt:
+        - >
+          Projetei um fluxo de trabalho para automatizar a produção de
+          audiolivros desde o texto-fonte até os arquivos de áudio gerados.
+
+        - >
+          Usei modelos locais de conversão de texto em fala para reduzir a
+          dependência de serviços de terceiros para geração de voz.
+
+        - >
+          Projetei automações para organização de arquivos, thumbnails,
+          descrições, playlists e publicação agendada no YouTube.
+
+        - >
+          Desenvolvi componentes baseados em APIs usando Python e FastAPI para
+          orquestrar partes do pipeline de produção de conteúdo.
 
     links:
       github: null
@@ -188,21 +235,39 @@ projects:
       - Automated Testing
 
     highlights:
-      - >
-        Developed game mechanics including character movement,
-        collision handling and coin collection.
+      en:
+        - >
+          Developed game mechanics including character movement,
+          collision handling and coin collection.
 
-      - >
-        Implemented multiple game scenes including menu, gameplay,
-        game-over and leaderboard screens.
+        - >
+          Implemented multiple game scenes including menu, gameplay,
+          game-over and leaderboard screens.
 
-      - >
-        Integrated an API-based leaderboard allowing players to submit
-        scores and view the top rankings.
+        - >
+          Integrated an API-based leaderboard allowing players to submit
+          scores and view the top rankings.
 
-      - >
-        Added automated tests with Jest and bundled the application
-        using Webpack.
+        - >
+          Added automated tests with Jest and bundled the application
+          using Webpack.
+
+      pt:
+        - >
+          Desenvolvi mecânicas de jogo, incluindo movimentação do personagem,
+          tratamento de colisões e coleta de moedas.
+
+        - >
+          Implementei diversas cenas do jogo, incluindo menu, gameplay, game
+          over e telas de classificação.
+
+        - >
+          Integrei uma classificação baseada em API, permitindo que os
+          jogadores enviem pontuações e visualizem as melhores colocações.
+
+        - >
+          Adicionei testes automatizados com Jest e empacotei a aplicação
+          usando Webpack.
 
     links:
       github: "https://github.com/FelipeEnne/Game-With-Phaser"
@@ -250,13 +315,23 @@ projects:
       - Static Website
 
     highlights:
-      - >
-        Built and maintained a personal developer portfolio published
-        on the web.
+      en:
+        - >
+          Built and maintained a personal developer portfolio published
+          on the web.
 
-      - >
-        Serves as the presentation layer for professional experience,
-        skills and selected software projects.
+        - >
+          Serves as the presentation layer for professional experience,
+          skills and selected software projects.
+
+      pt:
+        - >
+          Desenvolvi e mantive um portfólio pessoal de desenvolvimento
+          publicado na web.
+
+        - >
+          Funciona como camada de apresentação para experiência profissional,
+          competências e projetos de software selecionados.
 
     links:
       github: "https://github.com/FelipeEnne/Personal-Portfolio"
@@ -299,11 +374,19 @@ projects:
       - API Integration
 
     highlights:
-      - >
-        Built a React application that consumes external API data.
+      en:
+        - >
+          Built a React application that consumes external API data.
 
-      - >
-        Used Redux for application state management.
+        - >
+          Used Redux for application state management.
+
+      pt:
+        - >
+          Desenvolvi uma aplicação React que consome dados de uma API externa.
+
+        - >
+          Usei Redux para o gerenciamento do estado da aplicação.
 
     links:
       github: "https://github.com/FelipeEnne/Info-covid19-app"
@@ -344,12 +427,21 @@ projects:
       - Web Application
 
     highlights:
-      - >
-        Developed a React and Redux frontend for browsing and
-        favoriting courses.
+      en:
+        - >
+          Developed a React and Redux frontend for browsing and
+          favoriting courses.
 
-      - >
-        Used Ruby on Rails as part of the application stack.
+        - >
+          Used Ruby on Rails as part of the application stack.
+
+      pt:
+        - >
+          Desenvolvi um frontend com React e Redux para navegar pelos cursos e
+          marcá-los como favoritos.
+
+        - >
+          Usei Ruby on Rails como parte da stack da aplicação.
 
     links:
       github: "https://github.com/FelipeEnne/find-your-course"
@@ -389,13 +481,23 @@ projects:
       - Frontend Development
 
     highlights:
-      - >
-        Integrated an external weather API to retrieve and display
-        weather information.
+      en:
+        - >
+          Integrated an external weather API to retrieve and display
+          weather information.
 
-      - >
-        Built a searchable browser-based interface using JavaScript,
-        HTML and CSS.
+        - >
+          Built a searchable browser-based interface using JavaScript,
+          HTML and CSS.
+
+      pt:
+        - >
+          Integrei uma API externa de clima para obter e exibir informações
+          meteorológicas.
+
+        - >
+          Desenvolvi uma interface pesquisável para navegador usando
+          JavaScript, HTML e CSS.
 
     links:
       github: "https://github.com/FelipeEnne/weather-app"
@@ -433,9 +535,15 @@ projects:
       - Recommendation Systems
 
     highlights:
-      - >
-        Explored wine review data as the basis for a recommendation
-        system experiment.
+      en:
+        - >
+          Explored wine review data as the basis for a recommendation
+          system experiment.
+
+      pt:
+        - >
+          Explorei dados de avaliações de vinhos como base para um experimento
+          de sistema de recomendação.
 
     links:
       github: "https://github.com/FelipeEnne/Wine-Recommendation"
