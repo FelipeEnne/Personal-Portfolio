@@ -1,0 +1,120 @@
+certifications:
+  - id: ef-b2
+    name: "EF Level 10 - Upper Intermediate - CEFR Level B2"
+    issuer: "EF"
+    category: "Language"
+
+    skills:
+      - English
+      - Professional Communication
+
+    level: "CEFR B2"
+
+    issue_date: null
+    expiration_date: null
+    credential_url: null
+
+    featured: true
+
+    source_notes:
+      source: "LinkedIn"
+      note: >
+        Certification is listed on LinkedIn, but the exported profile
+        does not provide an issue date or credential URL.
+
+
+  - id: microverse-javascript-module
+    name: "Microverse JavaScript Module"
+    issuer: "Microverse"
+    category: "Software Development"
+
+    skills:
+      - JavaScript
+      - Web Development
+
+    level: null
+
+    issue_date: null
+    expiration_date: null
+    credential_url: null
+
+    featured: false
+
+    source_notes:
+      source: "LinkedIn"
+      note: >
+        Certification is listed on LinkedIn, but the exported profile
+        does not provide an issue date or credential URL.
+
+
+  - id: microverse-ruby-databases-module
+    name: "Microverse Ruby/Databases Module"
+    issuer: "Microverse"
+    category: "Software Development"
+
+    skills:
+      - Ruby
+      - Databases
+
+    level: null
+
+    issue_date: null
+    expiration_date: null
+    credential_url: null
+
+    featured: false
+
+    source_notes:
+      source: "LinkedIn"
+      note: >
+        Certification is listed on LinkedIn, but the exported profile
+        does not provide an issue date or credential URL.
+
+
+  - id: microverse-professional-skills-module
+    name: "Microverse Professional Skills Module"
+    issuer: "Microverse"
+    category: "Professional Skills"
+
+    skills:
+      - Remote Collaboration
+      - Professional Communication
+      - Teamwork
+
+    level: null
+
+    issue_date: null
+    expiration_date: null
+    credential_url: null
+
+    featured: false
+
+    source_notes:
+      source: "LinkedIn"
+      note: >
+        Certification is listed on LinkedIn, but the exported profile
+        does not provide an issue date or credential URL.
+
+
+  - id: microverse-interview-prep-module
+    name: "Microverse Interview Prep Module"
+    issuer: "Microverse"
+    category: "Career Development"
+
+    skills:
+      - Technical Interview Preparation
+      - Career Development
+
+    level: null
+
+    issue_date: null
+    expiration_date: null
+    credential_url: null
+
+    featured: false
+
+    source_notes:
+      source: "LinkedIn"
+      note: >
+        Certification is listed on LinkedIn, but the exported profile
+        does not provide an issue date or credential URL.
