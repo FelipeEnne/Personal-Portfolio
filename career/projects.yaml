@@ -1,0 +1,60 @@
+projects:
+  - id: github-activity-lakehouse
+    name: "GitHub Activity Lakehouse"
+    type: "Personal Project"
+    featured: true
+
+    description:
+      en: >
+        Built a local data engineering lakehouse that ingests GH Archive
+        events and transforms them through Bronze, Silver and Gold layers
+        using Python, PySpark, Delta Lake and Docker.
+
+    technologies:
+      - Python
+      - PySpark
+      - Apache Spark
+      - Delta Lake
+      - Databricks
+      - Unity Catalog
+      - Pandas
+      - Plotly
+      - Docker
+      - Docker Compose
+      - GitHub Actions
+      - pytest
+      - Ruff
+      - JupyterLab
+
+    concepts:
+      - ETL
+      - Data Pipelines
+      - Lakehouse Architecture
+      - Medallion Architecture
+      - Data Quality
+      - Automated Testing
+
+    highlights:
+      - >
+        Implemented Bronze, Silver and Gold data layers for processing
+        GitHub Archive event data.
+
+      - >
+        Added data quality checks and automated tests to validate the
+        ingestion and transformation pipelines.
+
+      - >
+        Built an interactive Plotly dashboard for exploring processed
+        GitHub activity data.
+
+      - >
+        Configured the project to run locally with Docker and in
+        Databricks Free Edition using Unity Catalog.
+
+    links:
+      github: "https://github.com/FelipeEnne/github-activity-lakehouse"
+      demo: ""
+
+    skill_evidence:
+      professional: false
+      project_based: true

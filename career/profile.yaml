@@ -38,6 +38,7 @@ skills:
     - Node.js
     - Express
     - REST APIs
+    - GraphQL
 
   frontend:
     - HTML5
