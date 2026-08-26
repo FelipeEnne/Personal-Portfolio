@@ -1,8 +1,8 @@
 # Portfolio generator
 
 This directory contains the context and static rendering layers for Felipe
-Enne's general public portfolio. It builds an isolated `_site/` output and does
-not overwrite the repository's current public `index.html`.
+Enne's general public portfolio. It builds an isolated `_site/` output for
+publication through GitHub Pages.
 
 ## Architecture
 
@@ -75,9 +75,11 @@ relative page links instead of replacing professional content in the browser.
 The links work at a local root and under the GitHub Pages project path
 `/Personal-Portfolio/`.
 
-The renderer copies the existing public assets and favicon. It does not copy
-career data, generated contexts, resume templates, or development files into
-the static site. `_site/` is generated output and is ignored by Git.
+The renderer copies only the stylesheet, configured project images, public
+resume PDFs, and favicon required by the generated pages. It does not copy
+career data, generated contexts, resume templates, unused assets, or
+development files into the static site. `_site/` is generated output and is
+ignored by Git.
 
 ## Default presentation policy
 
@@ -111,12 +113,11 @@ python3 -m http.server 8000 --directory _site
 ```
 
 Open `http://localhost:8000/` for English or
-`http://localhost:8000/pt/` for Portuguese. The repository's public
-`index.html` remains separate from the template and is not overwritten.
+`http://localhost:8000/pt/` for Portuguese.
 
-## Future publication
+## Publication
 
-A future GitHub Actions workflow may run the same three build commands and
-publish `_site/` as a GitHub Pages artifact. Context JSON and `_site/` do not
-need to be versioned. Job descriptions must never influence this general
-public portfolio build.
+The GitHub Pages workflow runs the same three build commands and publishes
+only `_site/` as its Pages artifact. Context JSON and `_site/` do not need to
+be versioned. Job descriptions must never influence this general public
+portfolio build.
