@@ -655,6 +655,14 @@ assets/doc/Currículo.pdf
 
 Publishing must require an explicit action.
 
+`resume/scripts/publish_default.py` is the only official operation for
+publishing the approved general EN/PT resumes to `assets/doc/`. It uses fixed
+default-resume paths and requires explicit confirmation (interactive `YES` or
+an intentionally supplied `--yes`). Resume generation and public publication
+must remain separate operations.
+
+Job-specific resumes must never be published through `publish_default.py`.
+
 Never automatically overwrite public resume PDFs after:
 
 * job-specific generation;
