@@ -9,12 +9,13 @@ profile:
 
   contact:
     email: "felipeenne@gmail.com"
+    phone: "+55 12 98300-8732"
 
   links:
     github: "https://github.com/FelipeEnne"
     linkedin: "https://www.linkedin.com/in/felipe-enne/"
-    medium: ""
-    portfolio: ""
+    medium: "https://medium.com/@felipeenne"
+    portfolio: "https://felipeenne.github.io/Personal-Portfolio/"
 
   summary:
     en: >

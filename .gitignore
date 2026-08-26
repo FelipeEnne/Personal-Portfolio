@@ -1,2 +1,8 @@
 # Local career evidence
 career/certifications/*.pdf
+
+# Generated resume artifacts
+generated/resumes/*.json
+generated/resumes/*.docx
+generated/resumes/*.pdf
+!generated/resumes/.gitkeep

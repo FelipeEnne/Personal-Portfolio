@@ -227,6 +227,24 @@ A job description must never create new career facts.
 
 
 
+## Resume Templates: Format vs. Content
+
+The DOCX templates under `docs/CV/` define resume presentation, not canonical
+content selection.
+
+Visual differences between language templates may be preserved, including
+typography, spacing, paragraph formatting, bullets and other layout details.
+
+Historical content differences between `template-en.docx` and
+`template-pt.docx` are not template rules. Differences such as one language
+showing Wine Recommendation while another shows GitHub Activity Lakehouse must
+not be reproduced automatically. Generated content must come from
+`career/*.yaml` and follow the current selection rules.
+
+---
+
+
+
 ## Job-Tailored Resumes
 
 When generating a resume for a job:

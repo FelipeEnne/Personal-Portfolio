@@ -1,0 +1,198 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://felipeenne.dev/schemas/resume-context.schema.json",
+  "title": "Resume Context",
+  "description": "Format-independent resume data derived from career/*.yaml.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "language",
+    "candidate",
+    "title",
+    "contact",
+    "links",
+    "summary",
+    "skills",
+    "experiences",
+    "education",
+    "projects",
+    "certifications"
+  ],
+  "properties": {
+    "language": {
+      "type": "string",
+      "enum": ["en", "pt"]
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "location"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1},
+        "location": {"type": ["string", "null"]}
+      }
+    },
+    "title": {"type": "string", "minLength": 1},
+    "contact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["email", "phone"],
+      "properties": {
+        "email": {"type": ["string", "null"]},
+        "phone": {"type": ["string", "null"]}
+      }
+    },
+    "links": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["github", "linkedin", "medium", "portfolio"],
+      "properties": {
+        "github": {"type": ["string", "null"]},
+        "linkedin": {"type": ["string", "null"]},
+        "medium": {"type": ["string", "null"]},
+        "portfolio": {"type": ["string", "null"]}
+      }
+    },
+    "summary": {"type": "string", "minLength": 1},
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "items"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "items": {
+            "type": "array",
+            "items": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    },
+    "experiences": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/experience"}
+    },
+    "education": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/education"}
+    },
+    "projects": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/project"}
+    },
+    "certifications": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/certification"}
+    }
+  },
+  "$defs": {
+    "nullableString": {"type": ["string", "null"]},
+    "stringList": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1}
+    },
+    "links": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["github", "demo"],
+      "properties": {
+        "github": {"$ref": "#/$defs/nullableString"},
+        "demo": {"$ref": "#/$defs/nullableString"}
+      }
+    },
+    "experience": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id", "role", "company", "employment_type", "location",
+        "start_date", "end_date", "current", "technologies", "highlights"
+      ],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "role": {"type": "string", "minLength": 1},
+        "company": {"type": "string", "minLength": 1},
+        "employment_type": {"$ref": "#/$defs/nullableString"},
+        "location": {"$ref": "#/$defs/nullableString"},
+        "start_date": {"type": "string", "minLength": 1},
+        "end_date": {"$ref": "#/$defs/nullableString"},
+        "current": {"type": "boolean"},
+        "technologies": {"$ref": "#/$defs/stringList"},
+        "highlights": {"$ref": "#/$defs/stringList"}
+      }
+    },
+    "education": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id", "institution", "institution_short", "degree", "field",
+        "level", "start_date", "end_date", "location", "description", "topics"
+      ],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "institution": {"type": "string", "minLength": 1},
+        "institution_short": {"$ref": "#/$defs/nullableString"},
+        "degree": {"type": "string", "minLength": 1},
+        "field": {"type": "string", "minLength": 1},
+        "level": {"$ref": "#/$defs/nullableString"},
+        "start_date": {"type": "string", "minLength": 1},
+        "end_date": {"$ref": "#/$defs/nullableString"},
+        "location": {"$ref": "#/$defs/nullableString"},
+        "description": {"type": "string", "minLength": 1},
+        "topics": {"$ref": "#/$defs/stringList"}
+      }
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id", "name", "type", "status", "featured", "description",
+        "technologies", "concepts", "highlights", "links", "skill_evidence"
+      ],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "type": {"$ref": "#/$defs/nullableString"},
+        "status": {"$ref": "#/$defs/nullableString"},
+        "featured": {"type": "boolean"},
+        "description": {"type": "string", "minLength": 1},
+        "technologies": {"$ref": "#/$defs/stringList"},
+        "concepts": {"$ref": "#/$defs/stringList"},
+        "highlights": {"$ref": "#/$defs/stringList"},
+        "links": {"$ref": "#/$defs/links"},
+        "skill_evidence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["professional", "project_based"],
+          "properties": {
+            "professional": {"type": "boolean"},
+            "project_based": {"type": "boolean"}
+          }
+        }
+      }
+    },
+    "certification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id", "name", "issuer", "category", "skills", "level",
+        "issue_date", "expiration_date", "credential_url",
+        "featured", "resume_eligible"
+      ],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "issuer": {"type": "string", "minLength": 1},
+        "category": {"$ref": "#/$defs/nullableString"},
+        "skills": {"$ref": "#/$defs/stringList"},
+        "level": {"$ref": "#/$defs/nullableString"},
+        "issue_date": {"$ref": "#/$defs/nullableString"},
+        "expiration_date": {"$ref": "#/$defs/nullableString"},
+        "credential_url": {"$ref": "#/$defs/nullableString"},
+        "featured": {"type": "boolean"},
+        "resume_eligible": {"const": true}
+      }
+    }
+  }
+}
+
