@@ -1,0 +1,141 @@
+```yaml
+education:
+  - id: usp-masters
+    institution: "University of São Paulo"
+    institution_short: "USP"
+
+    degree:
+      en: "Master's Degree in Logistics Systems Engineering"
+      pt: "Mestrado em Engenharia de Sistemas Logísticos"
+
+    field:
+      en: "Logistics Systems Engineering"
+      pt: "Engenharia de Sistemas Logísticos"
+
+    level: "Master"
+
+    start_date: "2018-01"
+    end_date: "2020-06"
+
+    location: "São Paulo, Brazil"
+
+    description:
+      en: >
+        Graduate program focused on operations research, simulation,
+        systems analysis and process optimization, applying quantitative
+        methods to data-driven decision-making.
+
+      pt: >
+        Programa de pós-graduação com foco em pesquisa operacional,
+        simulação, análise de sistemas e otimização de processos,
+        aplicando métodos quantitativos à tomada de decisão orientada
+        por dados.
+
+    topics:
+      - Operations Research
+      - Statistics
+      - Simulation
+      - Systems Analysis
+      - Process Optimization
+      - Data Analysis
+      - Logistics
+      - Supply Chain
+
+    source_notes:
+      cv_period: "2018-01 to 2020-06"
+      linkedin_period: "2017 to 2020"
+      date_conflict: true
+      canonical_source: "CV"
+      note: >
+        The current CV contains more specific dates and is being used
+        as the canonical source until the exact starting date is
+        manually confirmed.
+
+
+  - id: microverse-full-stack
+    institution: "Microverse"
+
+    degree:
+      en: "Full Stack Software Developer"
+      pt: "Desenvolvimento Full Stack"
+
+    field:
+      en: "Computer Software Engineering"
+      pt: "Engenharia de Software"
+
+    level: "Professional Program"
+
+    start_date: "2019-10"
+    end_date: "2020-07"
+
+    location: "Remote"
+
+    description:
+      en: >
+        Intensive full-stack web development program covering Git,
+        HTML/CSS, Ruby, Rails, JavaScript and React. Built group
+        projects, worked through remote pair programming and
+        participated in code reviews.
+
+      pt: >
+        Programa intensivo de desenvolvimento web full stack cobrindo
+        Git, HTML/CSS, Ruby, Rails, JavaScript e React. Desenvolvimento
+        de projetos em grupo, programação em pares remota e participação
+        em revisões de código.
+
+    topics:
+      - Git
+      - HTML
+      - CSS
+      - JavaScript
+      - React
+      - Ruby
+      - Ruby on Rails
+      - Databases
+      - Pair Programming
+      - Code Review
+      - Remote Collaboration
+
+    source_notes:
+      cv_period: "2019-10 to 2020-07"
+      linkedin_period: "2019 to 2020"
+      canonical_source: "CV"
+
+
+  - id: fatec-logistics
+    institution: "FATEC - Prof. Jessen Vidal"
+
+    degree:
+      en: "Technologist Degree in Logistics"
+      pt: "Tecnólogo em Logística"
+
+    field:
+      en: "Logistics"
+      pt: "Logística"
+
+    level: "Technologist"
+
+    start_date: "2014"
+    end_date: "2016"
+
+    location: "São José dos Campos, SP, Brazil"
+
+    description:
+      en: >
+        Technologist degree focused on logistics, operations and
+        supply chain management.
+
+      pt: >
+        Curso superior de tecnologia com foco em logística, operações
+        e gestão da cadeia de suprimentos.
+
+    topics:
+      - Logistics
+      - Supply Chain
+      - Operations
+      - Process Analysis
+
+    source_notes:
+      source: "LinkedIn"
+      included_in_current_cv: false
+```
