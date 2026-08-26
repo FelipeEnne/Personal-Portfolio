@@ -44,22 +44,42 @@ skills:
     - CSS3
     - Bootstrap
     - React
+    - Redux
 
   databases:
     - PostgreSQL
     - MongoDB
 
+  data_engineering:
+    - Apache Spark
+    - PySpark
+    - Delta Lake
+    - Databricks
+    - Unity Catalog
+    - Pandas
+    - JupyterLab
+
+  data_visualization:
+    - Plotly
+    - QlikView
+
   testing:
     - Jest
+    - pytest
     - Puppeteer
 
   devops:
     - Docker
+    - Docker Compose
     - Linux
     - WSL
     - Git
     - GitHub
+    - GitHub Actions
     - Portainer
+
+  code_quality:
+    - Ruff
 
   integrations:
     - Salesforce
@@ -67,5 +87,10 @@ skills:
     - Stripe
     - Pagar.me
 
-  data:
-    - QlikView
+  concepts:
+    - ETL
+    - Data Pipelines
+    - Lakehouse Architecture
+    - Medallion Architecture
+    - Data Quality
+    - API Integrations
