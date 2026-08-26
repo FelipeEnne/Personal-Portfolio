@@ -137,7 +137,7 @@ Current default DOCX and PDF outputs are written under
 `generated/resumes/default/`. Resume contexts remain directly under
 `generated/resumes/`.
 
-A future job-specific workflow may organize artifacts as:
+The job-specific workflow organizes artifacts as:
 
 ```text
 generated/resumes/
@@ -463,6 +463,15 @@ A job application by itself is NOT a reason to update the public resume.
 # Job-Specific Resumes
 
 Job-specific resumes are separate generated artifacts.
+
+The implemented deterministic context builder is:
+
+`resume/scripts/build_job_context.py`
+
+It accepts a temporary plain-text job description, resolves only canonical
+skills and facts, records evidence strength, and writes exclusively below
+`generated/resumes/jobs/<slug>/`. Job descriptions are relevance inputs, not
+career evidence or canonical data.
 
 They must be written under:
 
@@ -1033,14 +1042,17 @@ limitation when relevant.
 The resume generator currently includes:
 
 * `resume/scripts/build_context.py`
+* `resume/scripts/build_job_context.py`
 * `resume/scripts/render_docx.py`
 * `resume/scripts/render_pdf.py`
 * `resume/schema/resume-context.schema.json`
+* `resume/schema/job-resume-context.schema.json`
 * `resume/requirements.txt`
 
-Current required Python dependency:
+Current required Python dependencies:
 
 * PyYAML
+* jsonschema
 
 Use `python3` for commands in this environment unless another interpreter is
 explicitly configured.
@@ -1080,6 +1092,12 @@ resume/scripts/render_pdf.py
 generated/resumes/default/*.pdf
 ```
 
+Job-specific contexts reuse the same DOCX templates and renderers, but every
+context, DOCX, and PDF must remain under `generated/resumes/jobs/<slug>/`.
+`render_docx.py` may infer language and output from `--context`, and
+`render_pdf.py` may infer output from `--input`. A PDF over two pages must be
+reported; fonts and margins must not be reduced automatically.
+
 Prefer modifying/filling the existing DOCX templates rather than recreating
 resume layout from scratch.
 
@@ -1099,7 +1117,7 @@ This includes:
 * `generated/resumes/*.pdf`
 
 The current `.gitignore` rules cover generated artifacts recursively, including
-the `default/` and future `jobs/` output directories, while preserving
+the `default/` and `jobs/` output directories, while preserving
 `generated/resumes/.gitkeep`.
 
 Source code, templates, schemas, configuration, and `.gitkeep` files may be

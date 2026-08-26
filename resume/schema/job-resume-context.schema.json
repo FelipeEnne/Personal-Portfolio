@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://felipeenne.dev/schemas/job-resume-context.schema.json",
+  "title": "Job-specific Resume Context",
+  "description": "A temporary job-specific projection of canonical resume data.",
+  "allOf": [
+    {
+      "$ref": "https://felipeenne.dev/schemas/resume-context.schema.json"
+    },
+    {
+      "type": "object",
+      "required": ["job"]
+    }
+  ]
+}

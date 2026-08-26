@@ -19,7 +19,7 @@ career/*.yaml
 
 `career/*.yaml` remains the only canonical source of career facts. The
 generated JSON is an intermediate representation: it does not add facts and
-does not contain DOCX-specific formatting instructions. A future vacancy-aware
+does not contain DOCX-specific formatting instructions. The job-specific
 stage may select and order existing facts, but must not create new ones.
 
 The templates in `docs/CV/` define presentation only. Generating files under
@@ -30,12 +30,13 @@ resume to the portfolio is a separate, explicit operation.
 
 - Python 3.10 or newer
 - PyYAML
+- jsonschema
 - Poppler utilities (`pdfinfo`) for explicit PDF publication
 
-PyYAML can be installed with:
+Install the Python dependencies with:
 
 ```bash
-python -m pip install PyYAML
+python3 -m pip install -r resume/requirements.txt
 ```
 
 ## Usage
@@ -173,3 +174,61 @@ publication remain separate operations.
 **Job-specific resumes must never be published through `publish_default.py`.**
 The script publishes only the fixed files under `generated/resumes/default/`
 to the two general public resume paths under `assets/doc/`.
+
+## Job-specific resumes
+
+The public/default resume and a job-specific resume are different outputs.
+The default resume follows `resume/config/default.yaml` and may be published
+only through the explicit process above. A job-specific resume is a temporary
+projection of the same `career/*.yaml` facts, selected for relevance to one job
+description. It never modifies the default policy, canonical data, public
+portfolio, or public PDFs.
+
+Place a temporary plain-text job description under `resume/jobs/` or provide
+another `.txt` file, then build a localized context:
+
+```bash
+python3 resume/scripts/build_job_context.py \
+  --job resume/jobs/example.txt \
+  --lang en
+```
+
+The filename determines a safe slug. Output is always written below:
+
+```text
+generated/resumes/jobs/<slug>/resume-context-<language>.json
+```
+
+The analyzer is local and deterministic. It extracts explicitly labelled job
+title/company values, requirement sections, responsibilities, preferred
+requirements, canonical technology matches, and a small controlled keyword
+set. It uses isolated aliases such as `Node` → `Node.js`, `Postgres` →
+`PostgreSQL`, `Spark` → `Apache Spark`, and `DataBricks` → `Databricks`.
+Unknown technologies are never added to the resume.
+
+Evidence is ranked as professional experience, practical project, education,
+course/study, then profile inventory. Experiences remain in canonical
+chronological order while relevant existing highlights are selected. Projects
+may be reordered and may include `featured: false` records when relevant. The
+first version keeps the canonical summary unchanged and limits skills,
+highlights, experiences, education, and projects for a two-page target.
+
+Render the context without changing the default commands:
+
+```bash
+python3 resume/scripts/render_docx.py \
+  --context generated/resumes/jobs/example/resume-context-en.json
+
+python3 resume/scripts/render_pdf.py \
+  --input generated/resumes/jobs/example/Felipe_Enne_Example_EN.docx
+```
+
+The DOCX renderer infers language, template, and a job-local output name from
+the context. The PDF renderer writes beside the job DOCX and warns when the
+result exceeds two pages. Job-specific inputs and outputs are confined to
+`generated/resumes/jobs/`; renderers reject direct output to `assets/doc/` and
+`docs/CV/`.
+
+Job descriptions are temporary relevance inputs, not career evidence. A
+job-specific pipeline must never invoke `publish_default.py` or replace
+`assets/doc/CV.pdf` or `assets/doc/Currículo.pdf`.

@@ -84,6 +84,9 @@
     "certifications": {
       "type": "array",
       "items": {"$ref": "#/$defs/certification"}
+    },
+    "job": {
+      "$ref": "#/$defs/job"
     }
   },
   "$defs": {
@@ -91,6 +94,42 @@
     "stringList": {
       "type": "array",
       "items": {"type": "string", "minLength": 1}
+    },
+    "job": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_file", "slug", "company", "title", "matched_skills",
+        "matched_skill_evidence", "responsibilities", "required",
+        "preferred", "keywords"
+      ],
+      "properties": {
+        "source_file": {"type": "string", "minLength": 1},
+        "slug": {"type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"},
+        "company": {"$ref": "#/$defs/nullableString"},
+        "title": {"$ref": "#/$defs/nullableString"},
+        "matched_skills": {"$ref": "#/$defs/stringList"},
+        "matched_skill_evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["skill", "level", "source_ids"],
+            "properties": {
+              "skill": {"type": "string", "minLength": 1},
+              "level": {
+                "type": "string",
+                "enum": ["professional", "project", "education", "study", "profile"]
+              },
+              "source_ids": {"$ref": "#/$defs/stringList"}
+            }
+          }
+        },
+        "responsibilities": {"$ref": "#/$defs/stringList"},
+        "required": {"$ref": "#/$defs/stringList"},
+        "preferred": {"$ref": "#/$defs/stringList"},
+        "keywords": {"$ref": "#/$defs/stringList"}
+      }
     },
     "links": {
       "type": "object",
@@ -195,4 +234,3 @@
     }
   }
 }
-

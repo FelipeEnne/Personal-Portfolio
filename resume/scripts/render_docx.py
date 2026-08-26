@@ -18,7 +18,9 @@ from zipfile import ZIP_DEFLATED, BadZipFile, ZipFile
 REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 GENERATED_DIR = REPOSITORY_ROOT / "generated" / "resumes"
 DEFAULT_RESUME_DIR = GENERATED_DIR / "default"
+JOBS_RESUME_DIR = GENERATED_DIR / "jobs"
 TEMPLATE_DIR = REPOSITORY_ROOT / "docs" / "CV"
+PUBLIC_DOC_DIR = REPOSITORY_ROOT / "assets" / "doc"
 
 WORD_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
@@ -111,6 +113,14 @@ MONTHS = {
 
 class RenderError(ValueError):
     """Raised when a context or template cannot be rendered safely."""
+
+
+def is_relative_to(path: Path, parent: Path) -> bool:
+    try:
+        path.resolve().relative_to(parent.resolve())
+    except ValueError:
+        return False
+    return True
 
 
 def require_mapping(value: Any, path: str) -> dict[str, Any]:
@@ -673,6 +683,10 @@ def render_docx(
     output_path: Path,
     language: str,
 ) -> None:
+    if is_relative_to(output_path, TEMPLATE_DIR):
+        raise RenderError("DOCX output must not be written under docs/CV/")
+    if is_relative_to(output_path, PUBLIC_DOC_DIR):
+        raise RenderError("DOCX rendering must not write to assets/doc/")
     if template_path.resolve() == output_path.resolve():
         raise RenderError("output path must not overwrite the DOCX template")
     if not template_path.is_file():
@@ -691,6 +705,26 @@ def render_docx(
         raise RenderError(
             f"context language '{context_language}' does not match --lang {language}"
         )
+    job = context.get("job")
+    if job is not None:
+        job_data = require_mapping(job, "job")
+        slug = require_string(job_data.get("slug"), "job.slug")
+        job_directory = JOBS_RESUME_DIR / slug
+        if not is_relative_to(context_path, job_directory):
+            raise RenderError(
+                "job-specific context must be read from its directory under "
+                "generated/resumes/jobs/"
+            )
+        if not is_relative_to(output_path, job_directory):
+            raise RenderError(
+                "job-specific DOCX output must stay in the same directory under "
+                "generated/resumes/jobs/"
+            )
+        expected_template = TEMPLATE_DIR / f"template-{language}.docx"
+        if template_path.resolve() != expected_template.resolve():
+            raise RenderError(
+                "job-specific resumes must use the canonical language template"
+            )
 
     try:
         with ZipFile(template_path, "r") as archive:
@@ -736,7 +770,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Render a resume context into a copy of a DOCX template."
     )
-    parser.add_argument("--lang", required=True, choices=("en", "pt"))
+    parser.add_argument("--lang", choices=("en", "pt"))
     parser.add_argument("--context", type=Path, help="input resume-context JSON")
     parser.add_argument("--template", type=Path, help="input DOCX template")
     parser.add_argument("--output", type=Path, help="output DOCX path")
@@ -745,17 +779,47 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    suffix = args.lang.upper()
-    context_path = args.context or GENERATED_DIR / f"resume-context-{args.lang}.json"
-    template_path = args.template or TEMPLATE_DIR / f"template-{args.lang}.docx"
-    output_path = (
-        args.output
-        or DEFAULT_RESUME_DIR / f"Felipe_Enne_Default_{suffix}.docx"
-    )
 
     try:
-        render_docx(template_path, context_path, output_path, args.lang)
-    except RenderError as error:
+        if args.context:
+            context_path = args.context.resolve()
+            try:
+                context_header = require_mapping(
+                    json.loads(context_path.read_text(encoding="utf-8")), "context"
+                )
+            except json.JSONDecodeError as error:
+                raise RenderError(f"invalid JSON in {context_path}: {error}") from error
+            language = require_string(context_header.get("language"), "language")
+            if language not in LANGUAGE_LABELS:
+                raise RenderError(f"unsupported context language: {language}")
+            if args.lang and args.lang != language:
+                raise RenderError(
+                    f"context language '{language}' does not match --lang {args.lang}"
+                )
+        else:
+            if not args.lang:
+                raise RenderError("--lang is required when --context is not provided")
+            language = args.lang
+            context_path = GENERATED_DIR / f"resume-context-{language}.json"
+            context_header = {}
+
+        suffix = language.upper()
+        template_path = args.template or TEMPLATE_DIR / f"template-{language}.docx"
+        job = context_header.get("job")
+        if args.output:
+            output_path = args.output.resolve()
+        elif job is not None:
+            job_data = require_mapping(job, "job")
+            slug = require_string(job_data.get("slug"), "job.slug")
+            label = "_".join(part.title() for part in slug.split("-"))
+            output_path = (
+                JOBS_RESUME_DIR / slug / f"Felipe_Enne_{label}_{suffix}.docx"
+            )
+        else:
+            output_path = DEFAULT_RESUME_DIR / f"Felipe_Enne_Default_{suffix}.docx"
+
+        render_docx(template_path, context_path, output_path, language)
+    except (RenderError, OSError) as error:
         print(f"Error: {error}", file=sys.stderr)
         return 1
 

@@ -1,0 +1,7 @@
+Title: Frontend Developer
+Company: Example Company
+Requirements:
+- React
+- JavaScript
+Responsibilities:
+- Build and test frontend applications.

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Convert a generated default-resume DOCX to PDF with LibreOffice."""
+"""Convert a generated default or job-specific DOCX to PDF with LibreOffice."""
 
 from __future__ import annotations
 
 import argparse
+import os
 import shutil
 import subprocess
 import sys
@@ -13,10 +14,39 @@ from pathlib import Path
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_RESUME_DIR = REPOSITORY_ROOT / "generated" / "resumes" / "default"
+JOBS_RESUME_DIR = REPOSITORY_ROOT / "generated" / "resumes" / "jobs"
+PUBLIC_DOC_DIR = REPOSITORY_ROOT / "assets" / "doc"
+TEMPLATE_DIR = REPOSITORY_ROOT / "docs" / "CV"
 
 
 class PdfRenderError(RuntimeError):
     """Raised when LibreOffice cannot produce the requested PDF."""
+
+
+def is_relative_to(path: Path, parent: Path) -> bool:
+    try:
+        path.resolve().relative_to(parent.resolve())
+    except ValueError:
+        return False
+    return True
+
+
+def pdf_page_count(path: Path) -> int | None:
+    executable = shutil.which("pdfinfo")
+    if executable is None:
+        return None
+    completed = subprocess.run(
+        [executable, str(path)], check=False, capture_output=True, text=True
+    )
+    if completed.returncode != 0:
+        return None
+    for line in completed.stdout.splitlines():
+        if line.startswith("Pages:"):
+            try:
+                return int(line.split(":", 1)[1].strip())
+            except ValueError:
+                return None
+    return None
 
 
 def find_libreoffice() -> str:
@@ -31,6 +61,12 @@ def find_libreoffice() -> str:
 
 
 def convert_docx_to_pdf(input_path: Path, output_path: Path) -> None:
+    if is_relative_to(output_path, PUBLIC_DOC_DIR):
+        raise PdfRenderError(
+            "PDF rendering must not publish directly to assets/doc/"
+        )
+    if is_relative_to(output_path, TEMPLATE_DIR):
+        raise PdfRenderError("PDF output must not be written under docs/CV/")
     if not input_path.is_file():
         raise PdfRenderError(f"generated DOCX not found: {input_path}")
     if input_path.suffix.lower() != ".docx":
@@ -45,7 +81,13 @@ def convert_docx_to_pdf(input_path: Path, output_path: Path) -> None:
         temporary_root = Path(temporary_dir)
         conversion_dir = temporary_root / "output"
         profile_dir = temporary_root / "libreoffice-profile"
+        config_dir = temporary_root / "xdg-config"
+        cache_dir = temporary_root / "xdg-cache"
+        runtime_dir = temporary_root / "xdg-runtime"
         conversion_dir.mkdir()
+        config_dir.mkdir()
+        cache_dir.mkdir()
+        runtime_dir.mkdir(mode=0o700)
 
         command = [
             office,
@@ -57,11 +99,20 @@ def convert_docx_to_pdf(input_path: Path, output_path: Path) -> None:
             str(conversion_dir),
             str(input_path.resolve()),
         ]
+        environment = os.environ.copy()
+        environment.update(
+            {
+                "XDG_CONFIG_HOME": str(config_dir),
+                "XDG_CACHE_HOME": str(cache_dir),
+                "XDG_RUNTIME_DIR": str(runtime_dir),
+            }
+        )
         completed = subprocess.run(
             command,
             check=False,
             capture_output=True,
             text=True,
+            env=environment,
         )
         if completed.returncode != 0:
             details = (completed.stderr or completed.stdout).strip()
@@ -88,9 +139,9 @@ def convert_docx_to_pdf(input_path: Path, output_path: Path) -> None:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Convert a generated default-resume DOCX to PDF."
+        description="Convert a generated resume DOCX to PDF."
     )
-    parser.add_argument("--lang", required=True, choices=("en", "pt"))
+    parser.add_argument("--lang", choices=("en", "pt"))
     parser.add_argument("--input", type=Path, help="input DOCX path")
     parser.add_argument("--output", type=Path, help="output PDF path")
     return parser.parse_args()
@@ -98,18 +149,45 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    suffix = args.lang.upper()
-    stem = f"Felipe_Enne_Default_{suffix}"
-    input_path = args.input or DEFAULT_RESUME_DIR / f"{stem}.docx"
-    output_path = args.output or DEFAULT_RESUME_DIR / f"{stem}.pdf"
 
     try:
+        if args.input:
+            input_path = args.input.resolve()
+            job_specific = is_relative_to(input_path, JOBS_RESUME_DIR)
+            if args.output:
+                output_path = args.output.resolve()
+            else:
+                output_path = input_path.with_suffix(".pdf")
+        else:
+            if not args.lang:
+                raise PdfRenderError("--lang is required when --input is not provided")
+            suffix = args.lang.upper()
+            stem = f"Felipe_Enne_Default_{suffix}"
+            input_path = DEFAULT_RESUME_DIR / f"{stem}.docx"
+            output_path = args.output or DEFAULT_RESUME_DIR / f"{stem}.pdf"
+            job_specific = False
+
+        if job_specific:
+            job_directory = input_path.parent
+            if not is_relative_to(output_path, job_directory):
+                raise PdfRenderError(
+                    "job-specific PDF output must stay with its DOCX under "
+                    "generated/resumes/jobs/"
+                )
         convert_docx_to_pdf(input_path, output_path)
     except (PdfRenderError, OSError) as error:
         print(f"Error: {error}", file=sys.stderr)
         return 1
 
     print(f"Rendered PDF written to {output_path}")
+    pages = pdf_page_count(output_path)
+    if pages is None:
+        print("Warning: could not determine generated PDF page count", file=sys.stderr)
+    elif pages > 2:
+        print(
+            f"Warning: generated PDF has {pages} pages; the target is at most 2",
+            file=sys.stderr,
+        )
     return 0
 
 
