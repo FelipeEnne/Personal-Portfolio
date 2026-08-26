@@ -1,0 +1,60 @@
+default_resume:
+  experiences:
+    include:
+      - freelance
+      - stays
+      - edsx
+      - embraer
+      - kuadro
+      - usp-teaching-assistant
+
+    exclude:
+      - fatec-intern
+
+    max_highlights:
+      freelance: 2
+      stays: 3
+      edsx: 2
+      embraer: 2
+      kuadro: 2
+      usp-teaching-assistant: 1
+
+  education:
+    include:
+      - microverse-full-stack
+      - usp-masters
+
+    exclude:
+      - fatec-logistics
+
+  projects:
+    include:
+      - github-activity-lakehouse
+      - audiobook-production-automation
+      - climbing-the-volcano
+
+    max_highlights_per_project: 2
+
+    max_highlights_by_language:
+      pt:
+        github-activity-lakehouse: 1
+        audiobook-production-automation: 1
+
+  skills:
+    include_groups:
+      - languages
+      - backend
+      - frontend
+      - databases
+      - data_engineering
+      - data_visualization
+      - testing
+      - devops
+      - integrations
+
+    exclude_groups:
+      - code_quality
+      - concepts
+
+  certifications:
+    include_resume_eligible_only: true

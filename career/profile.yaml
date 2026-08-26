@@ -1,0 +1,103 @@
+profile:
+  name: "Felipe Enne Mendes Ribeiro"
+
+  title:
+    en: "Full Stack Developer"
+    pt: "Desenvolvedor Full Stack"
+
+  location: "Jacareí/SP"
+
+  contact:
+    email: "felipeenne@gmail.com"
+    phone: "+55 12 98300-8732"
+
+  links:
+    github: "https://github.com/FelipeEnne"
+    linkedin: "https://www.linkedin.com/in/felipe-enne/"
+    medium: "https://medium.com/@felipeenne"
+    portfolio: "https://felipeenne.github.io/Personal-Portfolio/"
+
+  summary:
+    en: >
+      Full Stack Developer with 5+ years of experience building web
+      applications, REST APIs, internal tools, automations, and integrations
+      using JavaScript, TypeScript, Node.js, React, Python, PostgreSQL,
+      MongoDB, and Salesforce. Experienced in production support, payment
+      flows, log analysis, process automation, and freelance delivery through
+      Workana and independent projects.
+
+    pt: >
+      Desenvolvedor Full Stack com mais de 5 anos de experiência no
+      desenvolvimento de aplicações web, APIs REST, ferramentas internas,
+      automações e integrações usando JavaScript, TypeScript, Node.js, React,
+      Python, PostgreSQL, MongoDB e Salesforce. Experiência em suporte à
+      produção, fluxos de pagamento, análise de logs, automação de processos e
+      entregas como freelancer pela Workana e em projetos independentes.
+
+skills:
+  languages:
+    - JavaScript
+    - TypeScript
+    - Python
+
+  backend:
+    - Node.js
+    - Express
+    - REST APIs
+    - GraphQL
+
+  frontend:
+    - HTML5
+    - CSS3
+    - Bootstrap
+    - React
+    - Redux
+
+  databases:
+    - PostgreSQL
+    - MongoDB
+
+  data_engineering:
+    - Apache Spark
+    - PySpark
+    - Delta Lake
+    - Databricks
+    - Unity Catalog
+    - Pandas
+    - JupyterLab
+
+  data_visualization:
+    - Plotly
+    - QlikView
+
+  testing:
+    - Jest
+    - pytest
+    - Puppeteer
+
+  devops:
+    - Docker
+    - Docker Compose
+    - Linux
+    - WSL
+    - Git
+    - GitHub
+    - GitHub Actions
+    - Portainer
+
+  code_quality:
+    - Ruff
+
+  integrations:
+    - Salesforce
+    - Jira
+    - Stripe
+    - Pagar.me
+
+  concepts:
+    - ETL
+    - Data Pipelines
+    - Lakehouse Architecture
+    - Medallion Architecture
+    - Data Quality
+    - API Integrations

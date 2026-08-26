@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="{{ html_lang }}">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="{{ profile.summary }}">
+  <link rel="stylesheet" href="{{ asset_prefix }}assets/css/styles.css">
+  <title>{{ page_title }}</title>
+  <link rel="shortcut icon" href="{{ asset_prefix }}favicon.ico" type="image/x-png">
+</head>
+<body>
+
+  <div class="container-all">
+
+    <header>
+      <div class="container-nav">
+        <nav>
+          <a href="#project" class="animation-nav">{{ ui.projects }}</a>
+          <a href="#contact" class="animation-nav">{{ ui.contact }}</a>
+          {% if profile.links.linkedin %}<a href="{{ profile.links.linkedin }}" class="animation-nav linkf-mobile-displayn" target="_blank" rel="noopener noreferrer">LinkedIn</a>{% endif %}
+          {% if profile.links.github %}<a href="{{ profile.links.github }}" class="animation-nav linkf-mobile-displayn" target="_blank" rel="noopener noreferrer">GitHub</a>{% endif %}
+          <span class="lang-switch" aria-label="{{ ui.language }}">
+            <a href="{{ language_links.en }}" class="lang-btn{% if language == 'en' %} lang-active{% endif %}" style="margin: 0"{% if language == 'en' %} aria-current="page"{% endif %}>EN</a>
+            <span class="lang-sep" aria-hidden="true">|</span>
+            <a href="{{ language_links.pt }}" class="lang-btn{% if language == 'pt' %} lang-active{% endif %}" style="margin: 0"{% if language == 'pt' %} aria-current="page"{% endif %}>PT</a>
+          </span>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container-description">
+
+      <div class="main-title">
+        &gt; {{ profile.display_name }}
+      </div>
+      <div class="main-description">
+        {{ profile.summary }}<br>
+        {{ ui.projects_cta }} <a href="#project">{{ ui.projects_link }}</a> {{ ui.below }}.
+      </div>
+
+      <div class="terminal-container">
+        <div class="terminal-header">
+          <div class="terminal-header-button red"></div>
+          <div class="terminal-header-button yellow"></div>
+          <div class="terminal-header-button green"></div>
+        </div>
+        <div class="terminal-body">
+          <div>
+            {% if profile.location %}
+            <section>
+              <h1 class="input-terminal-body">&gt; {{ terminal_identifier }}.currentLocation</h1>
+              <p class="return-terminal-body">{{ profile.location }}</p>
+            </section>
+            {% endif %}
+            {% if contact_items %}
+            <section>
+              <h1 class="input-terminal-body">&gt; {{ terminal_identifier }}.contactInfo</h1>
+              <p class="return-terminal-body">[
+                {% for item in contact_items %}{% if item.href %}"<a href="{{ item.href }}"{% if item.external %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ item.label }}</a>"{% else %}"{{ item.label }}"{% endif %}{% if not loop.last %}, {% endif %}{% endfor %}
+              ]</p>
+            </section>
+            {% endif %}
+            <section>
+              <h1 class="input-terminal-body">&gt; {{ terminal_identifier }}.resume</h1>
+              <p class="return-terminal-body">"<a id="resume-link" href="{{ resume_href }}" target="_blank" rel="noopener noreferrer">{{ ui.resume_label }}</a>"</p>
+            </section>
+            {% if education %}
+            <section>
+              <h1 class="input-terminal-body">&gt; {{ terminal_identifier }}.education</h1>
+              <p class="return-terminal-body">
+                {% for item in education %}<span data-education-id="{{ item.id }}">{{ item.degree }} — {{ item.institution_short or item.institution }}</span>{% if not loop.last %}<br>{% endif %}{% endfor %}
+              </p>
+            </section>
+            {% endif %}
+            <section>
+              <h1 class="input-terminal-body">&gt; {{ terminal_identifier }}.skills</h1>
+              <p class="return-terminal-body">[ {% for skill in skills %}"{{ skill }}"{% if not loop.last %}, {% endif %}{% endfor %} ]</p>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <h1 id="project" class="section-title">{{ ui.projects }}</h1>
+
+      <div class="projects-container">
+        {% for project in projects %}
+        <div class="project-card{% if not project.image %} project-card-no-image{% endif %}" data-project-id="{{ project.id }}">
+          {% if project.image %}
+          <div class="project-img">
+            <img src="{{ project.image_href }}" alt="{{ ui.screenshot_of }} {{ project.name }}.">
+
+            {% if project.link_items %}
+            <div class="project-links">
+              {% for link in project.link_items %}<a href="{{ link.href }}" target="_blank" rel="noopener noreferrer">{{ link.label }}</a>{% endfor %}
+            </div>
+            {% endif %}
+          </div>
+          {% endif %}
+
+          <section class="project-content">
+            <h3>{{ project.name }}</h3>
+            {% if project.image %}<img src="{{ project.image_href }}" alt="{{ ui.screenshot_of }} {{ project.name }}." class="img-mobile">{% endif %}
+            <p>{{ project.description }}</p>
+
+            <div class="project-skills">
+              {% for technology in project.technologies %}<span>{{ technology|upper }}</span>{% endfor %}
+            </div>
+
+            {% if not project.image and project.link_items %}
+            <div class="project-links">
+              {% for link in project.link_items %}<a href="{{ link.href }}" target="_blank" rel="noopener noreferrer">{{ link.label }}</a>{% endfor %}
+            </div>
+            {% endif %}
+            {% if project.image and project.link_items %}
+            <div class="project-links-responsive">
+              {% for link in project.link_items %}<a href="{{ link.href }}" target="_blank" rel="noopener noreferrer">{{ link.label }}</a>{% endfor %}
+            </div>
+            {% endif %}
+          </section>
+        </div>
+        {% endfor %}
+      </div>
+
+    </main>
+
+    <footer>
+      <h1 id="contact" class="section-title">{{ ui.contact_me }}</h1>
+
+      {% if footer_contact_items %}
+      <div class="container-nav-contact">
+        <nav>
+          {% for item in footer_contact_items %}<a href="{{ item.href }}" class="animation-nav"{% if item.external %} target="_blank" rel="noopener noreferrer"{% endif %}>{{ item.label }}</a>{% if not loop.last %}
+          ||
+          {% endif %}{% endfor %}
+        </nav>
+      </div>
+      {% endif %}
+
+      <div class="footer-madeby">
+        <span>{{ ui.made_by }} {{ profile.name }} {{ build_year }}</span>
+      </div>
+    </footer>
+
+  </div>
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '625832098339867');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=625832098339867&amp;ev=PageView&amp;noscript=1"
+  alt="">
+  </noscript>
+  <!-- End Meta Pixel Code -->
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-174259249-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-174259249-1');
+  </script>
+</body>
+
+</html>
