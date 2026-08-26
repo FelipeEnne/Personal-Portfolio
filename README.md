@@ -1,65 +1,31 @@
-<!--
-*** Thanks for checking out this README Template. 
--->
+# Personal Portfolio
 
+Felipe Enne's static bilingual portfolio, generated from canonical career data
+and published through GitHub Pages.
 
-<!-- PROJECT TITLE -->
+Live site: [felipeenne.github.io/Personal-Portfolio](https://felipeenne.github.io/Personal-Portfolio/)
 
-<br />
-<h1 align="center">My portfolio</h1>
-<p align="center">
-    Creating a portfolio 
-    <br />
-</p>
+## Local build
 
+Install the Python dependencies and build both languages:
 
-<!-- TABLE OF CONTENTS -->
+```bash
+python3 -m pip install -r portfolio/requirements.txt
+python3 portfolio/scripts/build_context.py --lang en
+python3 portfolio/scripts/build_context.py --lang pt
+python3 portfolio/scripts/render_site.py
+```
 
+Serve the generated site locally:
 
-## Table of Contents
+```bash
+python3 -m http.server 8000 --directory _site
+```
 
-* [About the Project](#about-the-project)
-  * [Built With](#built-with)
-* [Getting Started](#getting-started)
-* [License](#license)
-* [Contact](#contact)
-* [Acknowledgements](#acknowledgements)
+English is available at `http://localhost:8000/` and Portuguese at
+`http://localhost:8000/pt/`. See `portfolio/README.md` for architecture and
+data-source details.
 
-
-<!-- ABOUT THE PROJECT -->
-## About The Project
-
-![Screenshot Image](assets/image/screenshot.png)
-
-build my portfolio
-
-For a live version click <a href="https://felipeenne.github.io/Personal-Portfolio/"> here</a>.
-
-### Built With 
-
-
-* HTML
-* CSS3
-* Git
-
-
-
-<!-- GETTING STARTED -->
-## Getting Started
-
-Just clone or download the project and open the index.html in your browser.
-
-
-<!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
-
-<!-- CONTACT -->
-## Contact
-* Felipe Enne - felipeenne@gmail.com
-
-<!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
-
-* Microverse.

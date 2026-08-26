@@ -1,6 +1,0 @@
----
-deployment:
-  tasks:
-    - export DEPLOYPATH=/home2/feli6722/public_html/
-    - /bin/cp  index.html $DEPLOYPATH
-    - /bin/cp -R assets $DEPLOYPATH
