@@ -1,0 +1,71 @@
+profile:
+  name: "Felipe Enne Mendes Ribeiro"
+
+  title:
+    en: "Full Stack Developer"
+    pt: "Desenvolvedor Full Stack"
+
+  location: "Jacareí/SP"
+
+  contact:
+    email: "felipeenne@gmail.com"
+
+  links:
+    github: "https://github.com/FelipeEnne"
+    linkedin: "https://www.linkedin.com/in/felipe-enne/"
+    medium: ""
+    portfolio: ""
+
+  summary:
+    en: >
+      Full Stack Developer with 5+ years of experience building web
+      applications, REST APIs, internal tools, automations, and integrations
+      using JavaScript, TypeScript, Node.js, React, Python, PostgreSQL,
+      MongoDB, and Salesforce.
+
+    pt: >
+      Desenvolvedor Full Stack com mais de 5 anos de experiência no
+      desenvolvimento de aplicações web, APIs REST, ferramentas internas,
+      automações e integrações.
+
+skills:
+  languages:
+    - JavaScript
+    - TypeScript
+    - Python
+
+  backend:
+    - Node.js
+    - Express
+    - REST APIs
+
+  frontend:
+    - HTML5
+    - CSS3
+    - Bootstrap
+    - React
+
+  databases:
+    - PostgreSQL
+    - MongoDB
+
+  testing:
+    - Jest
+    - Puppeteer
+
+  devops:
+    - Docker
+    - Linux
+    - WSL
+    - Git
+    - GitHub
+    - Portainer
+
+  integrations:
+    - Salesforce
+    - Jira
+    - Stripe
+    - Pagar.me
+
+  data:
+    - QlikView
