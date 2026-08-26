@@ -8,3 +8,6 @@ generated/resumes/**
 # Generated portfolio artifacts
 generated/portfolio/**
 !generated/portfolio/.gitkeep
+
+# Generated static site
+_site/

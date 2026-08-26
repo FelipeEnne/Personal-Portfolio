@@ -585,6 +585,15 @@ Professional facts must continue to come from `career/*.yaml`.
 Project images are visual presentation configuration. They are not canonical
 professional facts and should not be inferred from career data.
 
+`portfolio/templates/index.html` is the visual template for static portfolio
+generation. It is not a source of professional facts. Generated portfolio
+contexts provide professional content to `portfolio/scripts/render_site.py`,
+which writes the static EN/PT site under `_site/`.
+
+`_site/` is generated output and must not be treated as canonical data or
+edited as the source site. Job descriptions must never influence context or
+static site generation for the public portfolio.
+
 ---
 
 # Portfolio Content Rules
