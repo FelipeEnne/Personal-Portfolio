@@ -1,0 +1,224 @@
+```yaml
+experiences:
+  - id: freelance
+    role: "Full Stack Developer"
+    company: "Workana / Self-Employed"
+    employment_type: "Freelance"
+    location: "Jacareí, São Paulo, Brazil"
+    start_date: "2026-07"
+    end_date: null
+    current: true
+
+    technologies:
+      - Node.js
+      - TypeScript
+      - React
+      - PostgreSQL
+      - MongoDB
+      - Docker
+      - Git
+      - REST APIs
+
+    highlights:
+      - >
+        Provide freelance software development services through Workana
+        and independent projects, focused on web applications, REST APIs,
+        integrations, automation, bug fixing, and system improvements.
+
+      - >
+        Develop solutions using Node.js, TypeScript, React, PostgreSQL,
+        MongoDB, Docker, Git, and API integrations, applying clean code
+        and maintainable delivery practices.
+
+      - >
+        Communicate directly with clients to clarify requirements,
+        estimate scope, prioritize tasks, and deliver functional
+        software solutions.
+
+    source_notes:
+      cv_role: "Full Stack Developer"
+      linkedin_role: "Full Stack Engineer"
+
+
+  - id: stays
+    role: "Full Stack Developer"
+    company: "Stays"
+    employment_type: "Full-time"
+    location: "Brazil"
+    start_date: "2022-04"
+    end_date: "2026-06"
+    current: false
+
+    technologies:
+      - JavaScript
+      - TypeScript
+      - Node.js
+      - PostgreSQL
+      - Salesforce
+      - Puppeteer
+      - Python
+      - REST APIs
+      - Stripe
+      - Pagar.me
+      - Conta Azul
+
+    highlights:
+      - >
+        Developed and maintained web applications, REST APIs, internal
+        tools, and backend integrations using JavaScript, Node.js,
+        TypeScript, PostgreSQL, Salesforce, and third-party services.
+
+      - >
+        Built and supported integrations between internal systems,
+        Salesforce, Conta Azul, Stripe, Pagar.me, and operational
+        platforms, improving data flow reliability and reducing
+        manual work.
+
+      - >
+        Investigated and resolved production issues by analyzing logs,
+        API responses, Salesforce flows, payment errors, financial
+        integrations, edge cases, and critical business processes.
+
+      - >
+        Developed internal automations with Puppeteer and Python scripts,
+        collaborating with product, support, operations, and engineering
+        teams to deliver practical improvements.
+
+
+  - id: edsx
+    role: "Full Stack Developer"
+    company: "EDSX"
+    employment_type: "Full-time"
+    location: "Switzerland"
+    start_date: "2021-11"
+    end_date: "2022-02"
+    current: false
+
+    technologies:
+      - JavaScript
+      - REST APIs
+      - Web Development
+      - Blockchain
+
+    highlights:
+      - >
+        Built and maintained full-stack web application features using
+        JavaScript, frontend technologies, backend logic, and API
+        integrations.
+
+      - >
+        Supported client-facing solutions and blockchain-related research,
+        collaborating with a remote international team and adapting
+        quickly to new technologies.
+
+
+  - id: embraer
+    role: "Data Analyst"
+    company: "Embraer"
+    employment_type: "Full-time"
+    location: "São José dos Campos, SP, Brazil"
+    start_date: "2021-06"
+    end_date: "2021-11"
+    current: false
+
+    technologies:
+      - QlikView
+      - Data Analysis
+      - Data Visualization
+      - Reporting
+
+    highlights:
+      - >
+        Built QlikView dashboards and reports to monitor operational
+        indicators, support internal teams, and improve data-driven
+        decision-making.
+
+      - >
+        Processed, cleaned, and analyzed operational data, identifying
+        patterns, inconsistencies, and process improvement opportunities.
+
+
+  - id: kuadro
+    role: "Full Stack Developer"
+    company: "Kuadro"
+    employment_type: "Full-time"
+    location: "São José dos Campos, SP, Brazil"
+    start_date: "2020-10"
+    end_date: "2021-06"
+    current: false
+
+    technologies:
+      - JavaScript
+      - React
+      - GraphQL
+      - Web Development
+      - Frontend Development
+      - Backend Development
+
+    highlights:
+      - >
+        Built and maintained internal web applications for educational
+        operations using JavaScript, React, GraphQL, frontend/backend
+        features, bug fixes, and system improvements.
+
+      - >
+        Worked with technical and non-technical stakeholders to understand
+        requirements, define scope, and improve internal tools in a
+        fast-paced edtech environment.
+
+    source_notes:
+      cv_role: "Full Stack Developer"
+      linkedin_role: "Full Stack Engineer"
+
+  - id: usp-teaching-assistant
+    role: "Teaching Assistant"
+    company: "University of São Paulo"
+    employment_type: "Academic"
+    location: "São Paulo, Brazil"
+    start_date: "2018-03"
+    end_date: "2019-12"
+    current: false
+
+    technologies:
+      - Statistics
+      - Operations Research
+      - Distance Learning
+
+    highlights:
+      - >
+        Teaching Assistant in Statistics and Operations Research,
+        supporting students, grading exercises and assisting with
+        distance learning tools.
+
+    source_notes:
+      cv_start_date: "2018-03"
+      linkedin_start_date: "2018-08"
+      date_conflict: true
+      note: >
+        The CV lists March 2018 as the start date, while LinkedIn lists
+        August 2018. March 2018 is being used as the canonical value
+        until manually confirmed.
+
+
+  - id: fatec-intern
+    role: "Intern"
+    company: "FATEC - Prof. Jessen Vidal"
+    employment_type: "Internship"
+    location: "São José dos Campos, SP, Brazil"
+    start_date: "2016-05"
+    end_date: "2016-06"
+    current: false
+
+    technologies:
+      - Data Collection
+      - Data Organization
+      - Reporting
+
+    highlights:
+      - >
+        Supported data collection, organization, and reporting activities.
+
+    source_notes:
+      source: "LinkedIn"
+      included_in_current_cv: false
+```
