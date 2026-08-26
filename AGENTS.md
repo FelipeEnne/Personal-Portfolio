@@ -133,7 +133,9 @@ Generated files belong under:
 
 `generated/resumes/`
 
-Current default outputs are written directly under `generated/resumes/`.
+Current default DOCX and PDF outputs are written under
+`generated/resumes/default/`. Resume contexts remain directly under
+`generated/resumes/`.
 
 A future job-specific workflow may organize artifacts as:
 
@@ -368,10 +370,14 @@ generated/resumes/resume-context-*.json
 resume/scripts/render_docx.py
       │
       ▼
-generated/resumes/*.docx
+generated/resumes/default/*.docx
+      │
+      ▼
+resume/scripts/render_pdf.py
+      │
+      ▼
+generated/resumes/default/*.pdf
 ```
-
-PDF generation is a future stage and is not currently implemented.
 
 Current schema:
 
@@ -995,6 +1001,7 @@ The resume generator currently includes:
 
 * `resume/scripts/build_context.py`
 * `resume/scripts/render_docx.py`
+* `resume/scripts/render_pdf.py`
 * `resume/schema/resume-context.schema.json`
 * `resume/requirements.txt`
 
@@ -1012,13 +1019,15 @@ python3 resume/scripts/build_context.py --lang en
 python3 resume/scripts/build_context.py --lang pt
 python3 resume/scripts/render_docx.py --lang en
 python3 resume/scripts/render_docx.py --lang pt
+python3 resume/scripts/render_pdf.py --lang en
+python3 resume/scripts/render_pdf.py --lang pt
 ```
 
 Do not assume that the `python` alias exists.
 
 ---
 
-# Current DOCX Rendering
+# Current DOCX and PDF Rendering
 
 The implemented rendering flow is:
 
@@ -1029,14 +1038,20 @@ resume-context.json
 docs/CV/template-*.docx
       │
       ▼
-generated/resumes/*.docx
+generated/resumes/default/*.docx
+      │
+      ▼
+resume/scripts/render_pdf.py
+      │
+      ▼
+generated/resumes/default/*.pdf
 ```
 
 Prefer modifying/filling the existing DOCX templates rather than recreating
 resume layout from scratch.
 
-The original templates must remain unchanged. PDF conversion remains a future,
-separate stage.
+The original templates must remain unchanged. PDF conversion must operate only
+on generated DOCX files and must not publish to `assets/doc/` automatically.
 
 ---
 
@@ -1050,9 +1065,9 @@ This includes:
 * `generated/resumes/*.docx`
 * `generated/resumes/*.pdf`
 
-The current `.gitignore` rules cover artifacts written directly under
-`generated/resumes/`. Before introducing nested job/default output directories,
-extend the ignore rules to cover artifacts recursively.
+The current `.gitignore` rules cover generated artifacts recursively, including
+the `default/` and future `jobs/` output directories, while preserving
+`generated/resumes/.gitkeep`.
 
 Source code, templates, schemas, configuration, and `.gitkeep` files may be
 tracked.

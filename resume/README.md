@@ -9,8 +9,9 @@ career/*.yaml
     -> resume/scripts/build_context.py
     -> generated/resumes/resume-context-<language>.json
     -> resume/scripts/render_docx.py + docs/CV/template-<language>.docx
-    -> generated/resumes/*.docx
-    -> generated/resumes/*.pdf (future stage)
+    -> generated/resumes/default/*.docx
+    -> resume/scripts/render_pdf.py
+    -> generated/resumes/default/*.pdf
 ```
 
 `career/*.yaml` remains the only canonical source of career facts. The
@@ -96,8 +97,8 @@ python3 resume/scripts/render_docx.py --lang pt
 The default outputs are:
 
 ```text
-generated/resumes/Felipe_Enne_Default_EN.docx
-generated/resumes/Felipe_Enne_Default_PT.docx
+generated/resumes/default/Felipe_Enne_Default_EN.docx
+generated/resumes/default/Felipe_Enne_Default_PT.docx
 ```
 
 The renderer copies paragraph prototypes from the corresponding template and
@@ -106,5 +107,26 @@ It preserves the template package's styles, numbering definitions, section
 properties, headers and footers. Hyperlinks are recreated as real external
 DOCX relationships.
 
-The renderer never writes to `docs/CV/` or `assets/doc/`. PDF conversion and
-publication remain separate future stages.
+The renderer never writes to `docs/CV/` or `assets/doc/`.
+
+## PDF rendering
+
+LibreOffice Writer with headless conversion support must be installed and
+available as either `libreoffice` or `soffice` in `PATH`.
+
+Convert the generated default DOCX files with:
+
+```bash
+python3 resume/scripts/render_pdf.py --lang en
+python3 resume/scripts/render_pdf.py --lang pt
+```
+
+The default outputs are:
+
+```text
+generated/resumes/default/Felipe_Enne_Default_EN.pdf
+generated/resumes/default/Felipe_Enne_Default_PT.pdf
+```
+
+PDF generation does not publish anything. Replacing files under `assets/doc/`
+remains a separate, explicit publication operation.

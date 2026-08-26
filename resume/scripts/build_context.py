@@ -268,15 +268,41 @@ def build_projects(data: Any, language: str, policy: Any) -> list[dict[str, Any]
         selection.get("max_highlights_per_project"),
         "default_resume.projects.max_highlights_per_project",
     )
+    language_limits = require_mapping(
+        selection.get("max_highlights_by_language", {}),
+        "default_resume.projects.max_highlights_by_language",
+    )
+    language_limit_policy = require_mapping(
+        language_limits.get(language, {}),
+        f"default_resume.projects.max_highlights_by_language.{language}",
+    )
+    selected_ids = {require_string(record.get("id"), "projects[].id") for record in records}
+    unknown_limit_ids = set(language_limit_policy) - selected_ids
+    if unknown_limit_ids:
+        raise CareerDataError(
+            "default_resume.projects.max_highlights_by_language."
+            f"{language} contains unknown or unselected IDs: "
+            + ", ".join(sorted(unknown_limit_ids))
+        )
     result = []
     for index, record in enumerate(records):
         path = f"projects[{index}]"
+        record_id = require_string(record.get("id"), f"{path}.id")
+        record_highlight_limit = (
+            positive_integer(
+                language_limit_policy[record_id],
+                "default_resume.projects.max_highlights_by_language."
+                f"{language}.{record_id}",
+            )
+            if record_id in language_limit_policy
+            else highlight_limit
+        )
         featured = require_boolean(record.get("featured"), f"{path}.featured")
         links = require_mapping(record.get("links"), f"{path}.links")
         evidence = require_mapping(record.get("skill_evidence"), f"{path}.skill_evidence")
         result.append(
             {
-                "id": require_string(record.get("id"), f"{path}.id"),
+                "id": record_id,
                 "name": require_string(record.get("name"), f"{path}.name"),
                 "type": optional_string(record.get("type"), f"{path}.type"),
                 "status": optional_string(record.get("status"), f"{path}.status"),
@@ -286,7 +312,7 @@ def build_projects(data: Any, language: str, policy: Any) -> list[dict[str, Any]
                 "concepts": string_list(record.get("concepts"), f"{path}.concepts"),
                 "highlights": localized_string_list(
                     record.get("highlights"), language, f"{path}.highlights"
-                )[:highlight_limit],
+                )[:record_highlight_limit],
                 "links": {
                     "github": optional_string(links.get("github"), f"{path}.links.github"),
                     "demo": optional_string(links.get("demo"), f"{path}.links.demo"),

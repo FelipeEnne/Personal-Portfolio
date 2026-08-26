@@ -81,11 +81,6 @@ projects:
           dados públicos de eventos do GitHub Archive.
 
         - >
-          Criei uma ingestão horária controlada com validação de arquivos
-          compactados do GH Archive e armazenamento de eventos brutos que
-          permite reprocessamento.
-
-        - >
           Implementei schemas explícitos, desduplicação determinística,
           linhagem de registros rejeitados e verificações de qualidade de
           dados.
@@ -169,10 +164,6 @@ projects:
         - >
           Projetei um fluxo de trabalho para automatizar a produção de
           audiolivros desde o texto-fonte até os arquivos de áudio gerados.
-
-        - >
-          Usei modelos locais de conversão de texto em fala para reduzir a
-          dependência de serviços de terceiros para geração de voz.
 
         - >
           Projetei automações para organização de arquivos, thumbnails,

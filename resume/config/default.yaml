@@ -35,6 +35,11 @@ default_resume:
 
     max_highlights_per_project: 2
 
+    max_highlights_by_language:
+      pt:
+        github-activity-lakehouse: 1
+        audiobook-production-automation: 1
+
   skills:
     include_groups:
       - languages

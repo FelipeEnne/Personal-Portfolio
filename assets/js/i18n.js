@@ -14,7 +14,7 @@
         'Full Stack Developer with 5+ years of experience building web applications, REST APIs, internal tools, automations, and integrations using JavaScript, TypeScript, Node.js, React, Python, PostgreSQL, MongoDB, and Salesforce.<br>Check out my <a href="#project">side-projects</a> below.',
       'terminal.location': 'Jacareí/SP, Brazil',
       'terminal.education':
-        'Master\'s Degree in Logistics Systems Engineering — University of São Paulo<br>Full Stack Web Development — Microverse',
+        'Master\'s Degree in Logistics Systems Engineering — USP<br>Full Stack Web Development — Microverse',
       'terminal.skills':
         '[ "JavaScript", "TypeScript", "Python", "Node.js", "Express", "React", "PostgreSQL", "MongoDB", "Salesforce", "Docker", "Jest", "Git" ]',
       'terminal.resumeLabel': 'felipeenne.pdf',

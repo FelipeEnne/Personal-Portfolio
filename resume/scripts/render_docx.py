@@ -17,6 +17,7 @@ from zipfile import ZIP_DEFLATED, BadZipFile, ZipFile
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 GENERATED_DIR = REPOSITORY_ROOT / "generated" / "resumes"
+DEFAULT_RESUME_DIR = GENERATED_DIR / "default"
 TEMPLATE_DIR = REPOSITORY_ROOT / "docs" / "CV"
 
 WORD_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
@@ -41,6 +42,7 @@ W_R = qn(WORD_NS, "r")
 W_RPR = qn(WORD_NS, "rPr")
 W_T = qn(WORD_NS, "t")
 W_NUMPR = qn(WORD_NS, "numPr")
+W_IND = qn(WORD_NS, "ind")
 W_HYPERLINK = qn(WORD_NS, "hyperlink")
 W_SECTPR = qn(WORD_NS, "sectPr")
 R_ID = qn(REL_NS, "id")
@@ -55,6 +57,7 @@ LANGUAGE_LABELS = {
         "certifications": "Certifications",
         "present": "Present",
         "links": "Links",
+        "link_joiner": " and ",
         "skill_categories": {
             "languages": "Languages",
             "backend": "Backend",
@@ -77,6 +80,7 @@ LANGUAGE_LABELS = {
         "certifications": "Certificações",
         "present": "Atual",
         "links": "Links",
+        "link_joiner": " e ",
         "skill_categories": {
             "languages": "Linguagens",
             "backend": "Backend",
@@ -233,9 +237,51 @@ def has_numbering(paragraph: ET.Element) -> bool:
     return properties is not None and properties.find(W_NUMPR) is not None
 
 
+def set_paragraph_flag(paragraph: ET.Element, name: str, enabled: bool = True) -> None:
+    properties = paragraph.find(W_PPR)
+    if properties is None:
+        properties = ET.Element(W_PPR)
+        paragraph.insert(0, properties)
+    flag = properties.find(qn(WORD_NS, name))
+    if flag is None:
+        flag = ET.SubElement(properties, qn(WORD_NS, name))
+    flag.set(qn(WORD_NS, "val"), "1" if enabled else "0")
+
+
+def set_paragraph_indent(
+    paragraph: ET.Element, *, left: int, hanging: int
+) -> None:
+    properties = paragraph.find(W_PPR)
+    if properties is None:
+        properties = ET.Element(W_PPR)
+        paragraph.insert(0, properties)
+    indent = properties.find(W_IND)
+    if indent is None:
+        indent = ET.SubElement(properties, W_IND)
+    indent.set(qn(WORD_NS, "left"), str(left))
+    indent.set(qn(WORD_NS, "hanging"), str(hanging))
+    indent.attrib.pop(qn(WORD_NS, "firstLine"), None)
+
+
+def set_paragraph_font_size(paragraph: ET.Element, half_points: int) -> None:
+    for run in paragraph.iter(W_R):
+        properties = run.find(W_RPR)
+        if properties is None:
+            properties = ET.Element(W_RPR)
+            run.insert(0, properties)
+        for name in ("sz", "szCs"):
+            size = properties.find(qn(WORD_NS, name))
+            if size is None:
+                size = ET.SubElement(properties, qn(WORD_NS, name))
+            size.set(qn(WORD_NS, "val"), str(half_points))
+
+
 def make_bullet(prototype: ET.Element, text: str) -> ET.Element:
     paragraph = deepcopy(prototype)
-    prefix = "" if has_numbering(paragraph) else "· "
+    numbered = has_numbering(paragraph)
+    prefix = "" if numbered else "· "
+    if not numbered:
+        set_paragraph_indent(paragraph, left=144, hanging=144)
     return set_single_run_text(paragraph, prefix + text)
 
 
@@ -354,10 +400,12 @@ def append_project_link_paragraph(
     regular_run = first_text_run(paragraph)
     clear_paragraph(paragraph)
     prefix = "" if has_numbering(paragraph) else "· "
+    if not has_numbering(paragraph):
+        set_paragraph_indent(paragraph, left=144, hanging=144)
     append_text(paragraph, regular_run, f"{prefix}{labels['links']}: ")
     for index, (label, target) in enumerate(links):
         if index:
-            append_text(paragraph, regular_run, " and ")
+            append_text(paragraph, regular_run, labels["link_joiner"])
         append_hyperlink(
             paragraph, relationships, hyperlink_prototype, label, target
         )
@@ -424,12 +472,13 @@ def render_body(
     items.append(
         build_contact_paragraph(prototypes["contact"], context, relationships)
     )
-    items.append(
-        set_single_run_text(
-            deepcopy(prototypes["summary"]),
-            require_string(context.get("summary"), "summary"),
-        )
+    summary_paragraph = set_single_run_text(
+        deepcopy(prototypes["summary"]),
+        require_string(context.get("summary"), "summary"),
     )
+    if language == "pt":
+        set_paragraph_font_size(summary_paragraph, 19)
+    items.append(summary_paragraph)
     items.append(deepcopy(prototypes["top_spacer"]))
 
     items.append(
@@ -448,7 +497,12 @@ def render_body(
         label = labels["skill_categories"].get(
             identifier, title_case_identifier(identifier)
         )
-        items.append(make_skill_paragraph(prototypes["skill"], label, skill_values))
+        skill_paragraph = make_skill_paragraph(
+            prototypes["skill"], label, skill_values
+        )
+        if language == "pt":
+            set_paragraph_font_size(skill_paragraph, 19)
+        items.append(skill_paragraph)
     items.append(deepcopy(prototypes["skills_spacer"]))
 
     items.append(
@@ -466,21 +520,28 @@ def render_body(
                 require_string(record.get("company"), f"{path}.company"),
                 format_period(record, language, path),
             )
+        ).upper()
+        experience_header = set_single_run_text(
+            deepcopy(prototypes["experience_header"]), header
         )
-        items.append(
-            set_single_run_text(deepcopy(prototypes["experience_header"]), header)
-        )
-        for highlight_index, highlight in enumerate(
-            require_list(record.get("highlights"), f"{path}.highlights")
-        ):
-            items.append(
-                make_bullet(
-                    prototypes["experience_bullet"],
-                    require_string(
-                        highlight, f"{path}.highlights[{highlight_index}]"
-                    ),
-                )
+        set_paragraph_flag(experience_header, "keepNext")
+        set_paragraph_flag(experience_header, "keepLines")
+        items.append(experience_header)
+        highlights = require_list(record.get("highlights"), f"{path}.highlights")
+        for highlight_index, highlight in enumerate(highlights):
+            bullet = make_bullet(
+                prototypes["experience_bullet"],
+                require_string(
+                    highlight, f"{path}.highlights[{highlight_index}]"
+                ),
             )
+            set_paragraph_flag(bullet, "keepLines")
+            set_paragraph_flag(
+                bullet, "keepNext", highlight_index < len(highlights) - 1
+            )
+            if language == "pt":
+                set_paragraph_font_size(bullet, 19)
+            items.append(bullet)
         if index < len(experiences) - 1:
             items.append(deepcopy(prototypes["experience_spacer"]))
 
@@ -497,16 +558,24 @@ def render_body(
         header = " - ".join(
             (
                 require_string(record.get("degree"), f"{path}.degree"),
-                require_string(record.get("institution"), f"{path}.institution"),
+                optional_string(
+                    record.get("institution_short"), f"{path}.institution_short"
+                )
+                or require_string(
+                    record.get("institution"), f"{path}.institution"
+                ),
                 format_period(record, language, path),
             )
-        )
+        ).upper()
         items.append(
             set_single_run_text(deepcopy(prototypes["education_header"]), header)
         )
         description = optional_string(record.get("description"), f"{path}.description")
         if description:
-            items.append(make_bullet(prototypes["education_bullet"], description))
+            bullet = make_bullet(prototypes["education_bullet"], description)
+            if language == "pt":
+                set_paragraph_font_size(bullet, 19)
+            items.append(bullet)
         if index < len(education) - 1:
             items.append(deepcopy(prototypes["education_spacer"]))
 
@@ -523,23 +592,32 @@ def render_body(
         items.append(
             set_single_run_text(
                 deepcopy(prototypes["project_header"]),
-                require_string(project.get("name"), f"{path}.name"),
+                require_string(project.get("name"), f"{path}.name").upper(),
             )
         )
         description = optional_string(project.get("description"), f"{path}.description")
         if description:
-            items.append(make_bullet(prototypes["project_bullet"], description))
-        for highlight_index, highlight in enumerate(
-            require_list(project.get("highlights"), f"{path}.highlights")
-        ):
-            items.append(
-                make_bullet(
-                    prototypes["project_bullet"],
-                    require_string(
-                        highlight, f"{path}.highlights[{highlight_index}]"
-                    ),
-                )
+            bullet = make_bullet(prototypes["project_bullet"], description)
+            if language == "pt":
+                set_paragraph_font_size(bullet, 19)
+            items.append(bullet)
+        project_highlights = [
+            require_string(
+                highlight, f"{path}.highlights[{highlight_index}]"
+            ).strip()
+            for highlight_index, highlight in enumerate(
+                require_list(project.get("highlights"), f"{path}.highlights")
             )
+        ]
+        if project_highlights:
+            bullet = make_bullet(
+                prototypes["project_bullet"],
+                " ".join(project_highlights),
+            )
+            if language == "pt":
+                set_paragraph_font_size(bullet, 19)
+            items.append(bullet)
+        links_start = len(items)
         append_project_link_paragraph(
             items,
             prototypes["project_bullet"],
@@ -548,6 +626,8 @@ def render_body(
             relationships,
             contact_hyperlink_run,
         )
+        if language == "pt" and len(items) > links_start:
+            set_paragraph_font_size(items[-1], 19)
         if index < len(projects) - 1:
             items.append(deepcopy(prototypes["education_spacer"]))
 
@@ -566,7 +646,8 @@ def render_body(
             issuer = require_string(certification.get("issuer"), f"{path}.issuer")
             items.append(
                 set_single_run_text(
-                    deepcopy(prototypes["education_header"]), f"{name} - {issuer}"
+                    deepcopy(prototypes["education_header"]),
+                    f"{name} - {issuer}".upper(),
                 )
             )
 
@@ -667,7 +748,10 @@ def main() -> int:
     suffix = args.lang.upper()
     context_path = args.context or GENERATED_DIR / f"resume-context-{args.lang}.json"
     template_path = args.template or TEMPLATE_DIR / f"template-{args.lang}.docx"
-    output_path = args.output or GENERATED_DIR / f"Felipe_Enne_Default_{suffix}.docx"
+    output_path = (
+        args.output
+        or DEFAULT_RESUME_DIR / f"Felipe_Enne_Default_{suffix}.docx"
+    )
 
     try:
         render_docx(template_path, context_path, output_path, args.lang)
