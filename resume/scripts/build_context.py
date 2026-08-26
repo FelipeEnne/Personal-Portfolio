@@ -23,6 +23,7 @@ except ImportError:  # pragma: no cover - depends on the execution environment
 REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 CAREER_DIR = REPOSITORY_ROOT / "career"
 DEFAULT_OUTPUT_DIR = REPOSITORY_ROOT / "generated" / "resumes"
+DEFAULT_CONFIG_PATH = REPOSITORY_ROOT / "resume" / "config" / "default.yaml"
 
 CANONICAL_FILES = {
     "profile": "profile.yaml",
@@ -124,14 +125,86 @@ def validate_unique_ids(records: list[Any], path: str) -> list[dict[str, Any]]:
     return validated
 
 
-def build_experiences(data: Any) -> list[dict[str, Any]]:
-    records = validate_unique_ids(require_list(data, "experience.yaml.experiences"), "experiences")
+def id_list(value: Any, path: str) -> list[str]:
+    values = require_list(value, path)
+    result: list[str] = []
+    seen: set[str] = set()
+    for index, item in enumerate(values):
+        canonical_id = require_string(item, f"{path}[{index}]")
+        if canonical_id in seen:
+            raise CareerDataError(f"duplicate id '{canonical_id}' in {path}")
+        seen.add(canonical_id)
+        result.append(canonical_id)
+    return result
+
+
+def select_records(
+    records: list[dict[str, Any]], policy: Any, path: str
+) -> list[dict[str, Any]]:
+    selection = require_mapping(policy, path)
+    include = id_list(selection.get("include"), f"{path}.include")
+    exclude = id_list(selection.get("exclude", []), f"{path}.exclude")
+    records_by_id = {record["id"]: record for record in records}
+    configured_ids = set(include) | set(exclude)
+    unknown = sorted(configured_ids - records_by_id.keys())
+    if unknown:
+        raise CareerDataError(
+            f"{path} references unknown canonical IDs: {', '.join(unknown)}"
+        )
+    overlap = sorted(set(include) & set(exclude))
+    if overlap:
+        raise CareerDataError(
+            f"{path} includes and excludes the same IDs: {', '.join(overlap)}"
+        )
+    return [records_by_id[canonical_id] for canonical_id in include]
+
+
+def positive_integer(value: Any, path: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+        raise CareerDataError(f"{path} must be a positive integer")
+    return value
+
+
+def build_experiences(data: Any, policy: Any) -> list[dict[str, Any]]:
+    all_records = validate_unique_ids(
+        require_list(data, "experience.yaml.experiences"), "experiences"
+    )
+    selection = require_mapping(policy, "default_resume.experiences")
+    records = select_records(all_records, selection, "default_resume.experiences")
+    limits = require_mapping(
+        selection.get("max_highlights"),
+        "default_resume.experiences.max_highlights",
+    )
+    canonical_ids = {record["id"] for record in all_records}
+    selected_ids = {record["id"] for record in records}
+    unknown_limits = sorted(set(limits) - canonical_ids)
+    if unknown_limits:
+        raise CareerDataError(
+            "default_resume.experiences.max_highlights references unknown "
+            f"canonical IDs: {', '.join(unknown_limits)}"
+        )
+    unselected_limits = sorted(set(limits) - selected_ids)
+    if unselected_limits:
+        raise CareerDataError(
+            "default_resume.experiences.max_highlights contains IDs not selected "
+            f"by include: {', '.join(unselected_limits)}"
+        )
     result = []
     for index, record in enumerate(records):
         path = f"experiences[{index}]"
+        record_id = require_string(record.get("id"), f"{path}.id")
+        if record_id not in limits:
+            raise CareerDataError(
+                "default_resume.experiences.max_highlights is missing selected "
+                f"ID '{record_id}'"
+            )
+        highlight_limit = positive_integer(
+            limits[record_id],
+            f"default_resume.experiences.max_highlights.{record_id}",
+        )
         result.append(
             {
-                "id": require_string(record.get("id"), f"{path}.id"),
+                "id": record_id,
                 "role": require_string(record.get("role"), f"{path}.role"),
                 "company": require_string(record.get("company"), f"{path}.company"),
                 "employment_type": optional_string(record.get("employment_type"), f"{path}.employment_type"),
@@ -140,14 +213,19 @@ def build_experiences(data: Any) -> list[dict[str, Any]]:
                 "end_date": optional_string(record.get("end_date"), f"{path}.end_date"),
                 "current": require_boolean(record.get("current"), f"{path}.current"),
                 "technologies": string_list(record.get("technologies"), f"{path}.technologies"),
-                "highlights": string_list(record.get("highlights"), f"{path}.highlights"),
+                "highlights": string_list(
+                    record.get("highlights"), f"{path}.highlights"
+                )[:highlight_limit],
             }
         )
     return result
 
 
-def build_education(data: Any, language: str) -> list[dict[str, Any]]:
-    records = validate_unique_ids(require_list(data, "education.yaml.education"), "education")
+def build_education(data: Any, language: str, policy: Any) -> list[dict[str, Any]]:
+    all_records = validate_unique_ids(
+        require_list(data, "education.yaml.education"), "education"
+    )
+    records = select_records(all_records, policy, "default_resume.education")
     result = []
     for index, record in enumerate(records):
         path = f"education[{index}]"
@@ -169,14 +247,20 @@ def build_education(data: Any, language: str) -> list[dict[str, Any]]:
     return result
 
 
-def build_projects(data: Any, language: str) -> list[dict[str, Any]]:
-    records = validate_unique_ids(require_list(data, "projects.yaml.projects"), "projects")
+def build_projects(data: Any, language: str, policy: Any) -> list[dict[str, Any]]:
+    all_records = validate_unique_ids(
+        require_list(data, "projects.yaml.projects"), "projects"
+    )
+    selection = require_mapping(policy, "default_resume.projects")
+    records = select_records(all_records, selection, "default_resume.projects")
+    highlight_limit = positive_integer(
+        selection.get("max_highlights_per_project"),
+        "default_resume.projects.max_highlights_per_project",
+    )
     result = []
     for index, record in enumerate(records):
         path = f"projects[{index}]"
         featured = require_boolean(record.get("featured"), f"{path}.featured")
-        if not featured:
-            continue
         links = require_mapping(record.get("links"), f"{path}.links")
         evidence = require_mapping(record.get("skill_evidence"), f"{path}.skill_evidence")
         result.append(
@@ -189,7 +273,9 @@ def build_projects(data: Any, language: str) -> list[dict[str, Any]]:
                 "description": localized_string(record.get("description"), language, f"{path}.description"),
                 "technologies": string_list(record.get("technologies"), f"{path}.technologies"),
                 "concepts": string_list(record.get("concepts"), f"{path}.concepts"),
-                "highlights": string_list(record.get("highlights"), f"{path}.highlights"),
+                "highlights": string_list(
+                    record.get("highlights"), f"{path}.highlights"
+                )[:highlight_limit],
                 "links": {
                     "github": optional_string(links.get("github"), f"{path}.links.github"),
                     "demo": optional_string(links.get("demo"), f"{path}.links.demo"),
@@ -203,7 +289,17 @@ def build_projects(data: Any, language: str) -> list[dict[str, Any]]:
     return result
 
 
-def build_certifications(data: Any) -> list[dict[str, Any]]:
+def build_certifications(data: Any, policy: Any) -> list[dict[str, Any]]:
+    selection = require_mapping(policy, "default_resume.certifications")
+    eligible_only = require_boolean(
+        selection.get("include_resume_eligible_only"),
+        "default_resume.certifications.include_resume_eligible_only",
+    )
+    if not eligible_only:
+        raise CareerDataError(
+            "default_resume.certifications.include_resume_eligible_only must be "
+            "true; ineligible course certificates cannot enter a resume"
+        )
     records = validate_unique_ids(
         require_list(data, "certifications.yaml.certifications"), "certifications"
     )
@@ -231,16 +327,44 @@ def build_certifications(data: Any) -> list[dict[str, Any]]:
     return result
 
 
-def build_context(canonical: dict[str, dict[str, Any]], language: str) -> dict[str, Any]:
+def build_context(
+    canonical: dict[str, dict[str, Any]], policy: Any, language: str
+) -> dict[str, Any]:
+    default_policy = require_mapping(policy, "default_resume")
     profile_file = canonical["profile"]
     profile = require_mapping(profile_file.get("profile"), "profile.yaml.profile")
     contact = require_mapping(profile.get("contact"), "profile.yaml.profile.contact")
     links = require_mapping(profile.get("links"), "profile.yaml.profile.links")
     skills = require_mapping(profile_file.get("skills"), "profile.yaml.skills")
 
+    skill_policy = require_mapping(
+        default_policy.get("skills"), "default_resume.skills"
+    )
+    included_skill_groups = id_list(
+        skill_policy.get("include_groups"), "default_resume.skills.include_groups"
+    )
+    excluded_skill_groups = id_list(
+        skill_policy.get("exclude_groups", []),
+        "default_resume.skills.exclude_groups",
+    )
+    unknown_skill_groups = sorted(
+        (set(included_skill_groups) | set(excluded_skill_groups)) - skills.keys()
+    )
+    if unknown_skill_groups:
+        raise CareerDataError(
+            "default_resume.skills references unknown canonical groups: "
+            + ", ".join(unknown_skill_groups)
+        )
+    overlap = sorted(set(included_skill_groups) & set(excluded_skill_groups))
+    if overlap:
+        raise CareerDataError(
+            "default_resume.skills includes and excludes the same groups: "
+            + ", ".join(overlap)
+        )
+
     skill_groups = []
-    for category, values in skills.items():
-        require_string(category, "profile.yaml.skills category")
+    for category in included_skill_groups:
+        values = skills[category]
         skill_groups.append(
             {"id": category, "items": string_list(values, f"profile.yaml.skills.{category}")}
         )
@@ -264,10 +388,24 @@ def build_context(canonical: dict[str, dict[str, Any]], language: str) -> dict[s
         },
         "summary": localized_string(profile.get("summary"), language, "profile.yaml.profile.summary"),
         "skills": skill_groups,
-        "experiences": build_experiences(canonical["experiences"].get("experiences")),
-        "education": build_education(canonical["education"].get("education"), language),
-        "projects": build_projects(canonical["projects"].get("projects"), language),
-        "certifications": build_certifications(canonical["certifications"].get("certifications")),
+        "experiences": build_experiences(
+            canonical["experiences"].get("experiences"),
+            default_policy.get("experiences"),
+        ),
+        "education": build_education(
+            canonical["education"].get("education"),
+            language,
+            default_policy.get("education"),
+        ),
+        "projects": build_projects(
+            canonical["projects"].get("projects"),
+            language,
+            default_policy.get("projects"),
+        ),
+        "certifications": build_certifications(
+            canonical["certifications"].get("certifications"),
+            default_policy.get("certifications"),
+        ),
     }
 
 
@@ -292,7 +430,15 @@ def main() -> int:
 
     try:
         canonical = load_yaml_files(CAREER_DIR)
-        context = build_context(canonical, args.lang)
+        try:
+            with DEFAULT_CONFIG_PATH.open(encoding="utf-8") as stream:
+                config = yaml.safe_load(stream)
+        except yaml.YAMLError as error:
+            raise CareerDataError(
+                f"invalid YAML in {DEFAULT_CONFIG_PATH}: {error}"
+            ) from error
+        config_data = require_mapping(config, str(DEFAULT_CONFIG_PATH))
+        context = build_context(canonical, config_data.get("default_resume"), args.lang)
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(
             json.dumps(context, ensure_ascii=False, indent=2) + "\n",
@@ -308,4 +454,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
