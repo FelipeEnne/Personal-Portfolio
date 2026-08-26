@@ -12,6 +12,9 @@ career/*.yaml
     -> generated/resumes/default/*.docx
     -> resume/scripts/render_pdf.py
     -> generated/resumes/default/*.pdf
+    -> human review
+    -> resume/scripts/publish_default.py
+    -> assets/doc/*.pdf
 ```
 
 `career/*.yaml` remains the only canonical source of career facts. The
@@ -27,6 +30,7 @@ resume to the portfolio is a separate, explicit operation.
 
 - Python 3.10 or newer
 - PyYAML
+- Poppler utilities (`pdfinfo`) for explicit PDF publication
 
 PyYAML can be installed with:
 
@@ -130,3 +134,42 @@ generated/resumes/default/Felipe_Enne_Default_PT.pdf
 
 PDF generation does not publish anything. Replacing files under `assets/doc/`
 remains a separate, explicit publication operation.
+
+## Review and explicit publication
+
+Review both generated PDFs before publishing them. Confirm their content,
+language, layout, links, and pagination. The complete default-resume flow is:
+
+```bash
+python3 resume/scripts/build_context.py --lang en
+python3 resume/scripts/build_context.py --lang pt
+
+python3 resume/scripts/render_docx.py --lang en
+python3 resume/scripts/render_docx.py --lang pt
+
+python3 resume/scripts/render_pdf.py --lang en
+python3 resume/scripts/render_pdf.py --lang pt
+
+# revisar PDFs
+
+python3 resume/scripts/publish_default.py
+```
+
+`publish_default.py` has fixed source and destination paths and does not accept
+path arguments. Before asking for the exact confirmation `YES`, it validates
+both sources as distinct, non-empty, two-page A4 PDFs. Both sources are
+validated before either public file is replaced. Temporary backups restore
+both previous public PDFs if replacement fails.
+
+For a deliberately approved non-interactive publication, use:
+
+```bash
+python3 resume/scripts/publish_default.py --yes
+```
+
+Do not pass `--yes` from generation scripts. Generation, human review, and
+publication remain separate operations.
+
+**Job-specific resumes must never be published through `publish_default.py`.**
+The script publishes only the fixed files under `generated/resumes/default/`
+to the two general public resume paths under `assets/doc/`.
