@@ -41,6 +41,7 @@ SCHEMA_PATH = REPOSITORY_ROOT / "portfolio" / "schema" / "portfolio-context.sche
 OUTPUT_DIR = REPOSITORY_ROOT / "_site"
 ASSETS_DIR = REPOSITORY_ROOT / "assets"
 FAVICON_PATH = REPOSITORY_ROOT / "favicon.ico"
+STYLESHEET_PATH = "assets/css/styles.css"
 
 UI = {
     "en": {
@@ -278,6 +279,55 @@ def validate_local_references(page_path: Path, site_root: Path) -> None:
             )
 
 
+def copy_public_asset(relative_path: str, destination_root: Path) -> None:
+    source = (REPOSITORY_ROOT / relative_path).resolve()
+    try:
+        source.relative_to(ASSETS_DIR.resolve())
+    except ValueError as error:
+        raise SiteRenderError(
+            f"public asset must be located below assets/: {relative_path}"
+        ) from error
+    if not source.is_file():
+        raise SiteRenderError(f"public asset not found: {relative_path}")
+
+    destination = destination_root / relative_path
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source, destination)
+
+
+def copy_public_assets(
+    contexts: dict[str, dict[str, Any]], destination_root: Path
+) -> None:
+    asset_paths = {STYLESHEET_PATH}
+    for language, context in contexts.items():
+        asset_paths.add(
+            require_string(
+                context.get("public_resume"),
+                f"portfolio context for {language}.public_resume",
+            )
+        )
+        for index, project in enumerate(
+            require_list(
+                context.get("projects"),
+                f"portfolio context for {language}.projects",
+            )
+        ):
+            project_data = require_mapping(
+                project, f"portfolio context for {language}.projects[{index}]"
+            )
+            image = project_data.get("image")
+            if image is not None:
+                asset_paths.add(
+                    require_string(
+                        image,
+                        f"portfolio context for {language}.projects[{index}].image",
+                    )
+                )
+
+    for asset_path in sorted(asset_paths):
+        copy_public_asset(asset_path, destination_root)
+
+
 def build_site() -> None:
     schema = load_schema()
     Draft202012Validator.check_schema(schema)
@@ -302,7 +352,7 @@ def build_site() -> None:
 
     staging_path = Path(tempfile.mkdtemp(prefix=".site-build-", dir=REPOSITORY_ROOT))
     try:
-        shutil.copytree(ASSETS_DIR, staging_path / "assets")
+        copy_public_assets(contexts, staging_path)
         shutil.copy2(FAVICON_PATH, staging_path / "favicon.ico")
         (staging_path / "pt").mkdir()
         (staging_path / "index.html").write_text(
