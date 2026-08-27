@@ -307,6 +307,19 @@ footer {
   font-size: 0.85em;
 }
 
+.terminal-cursor {
+  display: inline-block;
+  margin-left: 0.12em;
+  font-size: 0.75em;
+  animation: terminal-blink 1s steps(1) infinite;
+}
+
+@keyframes terminal-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .project-img {
     display: none;
