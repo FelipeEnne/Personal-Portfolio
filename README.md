@@ -43,12 +43,15 @@ make resume-job-pt
 make resume-job-en
 make resume-default-pt
 make resume-default-en
+make publish-default
 make test
 make clean
 ```
 
 Job-specific outputs stay in `generated/resumes/jobs/<slug>/`. Default resume
 targets generate files in `generated/resumes/default/` but never publish them.
+`publish-default` is the separate, explicitly confirmed step that replaces the
+public PDFs in `assets/doc/`.
 
 ## Documentation
 

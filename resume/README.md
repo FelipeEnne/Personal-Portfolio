@@ -50,6 +50,8 @@ make resume-job-pt JOB=resume/jobs/nortal.txt
 
 make resume-default-pt
 make resume-default-en
+
+make publish-default
 ```
 
 The `resume-job-*` targets run `build_job_context.py`,
@@ -60,6 +62,10 @@ The `resume-default-*` targets generate only the general resume files under
 `generated/resumes/default/`. They do **not** publish to `assets/doc/`.
 Public replacement remains an explicit, separate operation through
 `resume/scripts/publish_default.py` after human review.
+
+The `publish-default` target is a convenience wrapper for that script. It has
+no generation prerequisites and never passes `--yes`, so the interactive `YES`
+confirmation still applies.
 
 ## Advanced / direct script usage
 
@@ -175,7 +181,7 @@ python3 resume/scripts/render_pdf.py --lang pt
 
 # revisar PDFs
 
-python3 resume/scripts/publish_default.py
+python3 resume/scripts/publish_default.py  # ou: make publish-default
 ```
 
 `publish_default.py` has fixed source and destination paths and does not accept

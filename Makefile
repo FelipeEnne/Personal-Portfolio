@@ -1,4 +1,4 @@
-.PHONY: help test portfolio resume-default-en resume-default-pt resume-job-en resume-job-pt clean
+.PHONY: help test portfolio resume-default-en resume-default-pt resume-job-en resume-job-pt publish-default clean
 
 JOB ?= resume/jobs/vaga.txt
 
@@ -10,6 +10,7 @@ help:
 	@echo "  make resume-job-pt"
 	@echo "  make resume-job-pt JOB=resume/jobs/nortal.txt"
 	@echo "  make resume-job-en JOB=resume/jobs/nortal.txt"
+	@echo "  make publish-default"
 	@echo "  make test"
 
 test:
@@ -39,6 +40,11 @@ resume-job-pt:
 	python3 resume/scripts/build_job_resume.py \
 		--job $(JOB) \
 		--lang pt
+
+# Publication is intentionally separate from generation and keeps the
+# interactive YES confirmation; never pass --yes here.
+publish-default:
+	python3 resume/scripts/publish_default.py
 
 clean:
 	find . -type d -name __pycache__ -prune -exec rm -rf {} +

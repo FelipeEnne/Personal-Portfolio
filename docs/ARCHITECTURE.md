@@ -212,12 +212,15 @@ make resume-job-en
 make resume-job-pt JOB=resume/jobs/nortal.txt
 make resume-default-pt
 make resume-default-en
+make publish-default
 make clean
 ```
 
 `resume-default-*` generates but does not publish. `resume-job-*` runs the
-complete isolated job pipeline. `clean` removes only Python bytecode and
-`__pycache__` directories.
+complete isolated job pipeline. `publish-default` wraps `publish_default.py`
+without generation prerequisites and without `--yes`, keeping the explicit
+confirmation. `clean` removes only Python bytecode and `__pycache__`
+directories.
 
 ## 12. Repository structure
 
