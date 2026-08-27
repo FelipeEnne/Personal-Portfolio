@@ -11,3 +11,6 @@ generated/portfolio/**
 
 # Generated static site
 _site/
+
+# Python cache
+__pycache__

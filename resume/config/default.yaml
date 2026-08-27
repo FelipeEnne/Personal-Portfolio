@@ -29,16 +29,17 @@ default_resume:
 
   projects:
     include:
+      - salesforce-data360-customer-intelligence
       - github-activity-lakehouse
       - audiobook-production-automation
-      - climbing-the-volcano
 
     max_highlights_per_project: 2
 
     max_highlights_by_language:
       pt:
+        salesforce-data360-customer-intelligence: 1
         github-activity-lakehouse: 1
-        audiobook-production-automation: 1
+      audiobook-production-automation: 1
 
   skills:
     include_groups:
