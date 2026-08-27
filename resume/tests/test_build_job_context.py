@@ -6,6 +6,7 @@ from pathlib import Path
 
 from resume.scripts import build_context as base
 from resume.scripts import build_job_context as jobs
+from resume.scripts import expand_job_context as expansion
 from resume.scripts import render_docx, render_pdf
 
 
@@ -221,6 +222,51 @@ class BuildJobContextTests(unittest.TestCase):
         context = self.build_fixture("data-job.txt")
         lakehouse = next(item for item in context["projects"] if item["id"] == "github-activity-lakehouse")
         self.assertTrue(all(item in self.canonical["projects"]["projects"][0]["highlights"]["en"] for item in lakehouse["highlights"]))
+
+    def test_capacity_keeps_two_primary_projects_and_adds_third_when_it_fits(self) -> None:
+        context = self.build_fixture("data-job.txt")
+        analysis = context["job"]
+        calls = []
+
+        def fits(candidate: dict) -> int:
+            calls.append(candidate)
+            return 2
+
+        expanded, report = expansion.expand_context(
+            context, self.canonical, "en", analysis, fits
+        )
+        self.assertEqual([item["id"] for item in expanded["projects"][:2]],
+                         [item["id"] for item in context["projects"][:2]])
+        self.assertEqual(len(expanded["projects"]), 3)
+        self.assertTrue(report["third_project"]["kept"])
+
+    def test_capacity_rejects_third_project_when_it_exceeds_two_pages(self) -> None:
+        context = self.build_fixture("data-job.txt")
+        analysis = context["job"]
+
+        def overflows(candidate: dict) -> int:
+            return 3 if len(candidate["projects"]) > 2 else 2
+
+        expanded, report = expansion.expand_context(
+            context, self.canonical, "en", analysis, overflows
+        )
+        self.assertEqual(len(expanded["projects"]), 2)
+        self.assertFalse(report["third_project"]["kept"])
+
+    def test_capacity_removes_additional_skills_before_relevant_skills(self) -> None:
+        context = self.build_fixture("data-job.txt")
+        analysis = context["job"]
+
+        def only_small_context(candidate: dict) -> int:
+            return 3 if sum(len(group["items"]) for group in candidate["skills"]) > 12 else 2
+
+        expanded, report = expansion.expand_context(
+            context, self.canonical, "en", analysis, only_small_context
+        )
+        relevant = set(analysis["matched_skills"])
+        final_skills = {skill for group in expanded["skills"] for skill in group["items"]}
+        self.assertTrue(relevant.issubset(final_skills))
+        self.assertTrue(report["additional_skills"]["rejected"])
 
     def test_context_output_cannot_escape_jobs_directory(self) -> None:
         context = self.build_fixture("react-job.txt")
