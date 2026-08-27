@@ -39,7 +39,6 @@ default_resume:
       pt:
         salesforce-data360-customer-intelligence: 1
         github-activity-lakehouse: 1
-      audiobook-production-automation: 1
 
   skills:
     include_groups:
