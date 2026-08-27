@@ -5,7 +5,27 @@ and published through GitHub Pages.
 
 Live site: [felipeenne.github.io/Personal-Portfolio](https://felipeenne.github.io/Personal-Portfolio/)
 
-## Local build
+## Career data and resumes
+
+`career/*.yaml` is the source of truth for professional facts. The portfolio
+is a general public presentation of that data, and the public EN/PT resumes are
+generated separately from the same source. A job description may affect only a
+temporary job-specific resume; it never changes the public resume or portfolio.
+
+For the complete resume workflow, including explicit publication of approved
+PDFs, see [`resume/README.md`](resume/README.md).
+
+Generate a job-specific resume with:
+
+```bash
+python3 resume/scripts/build_job_resume.py \
+  --job resume/jobs/vaga.txt \
+  --lang pt
+```
+
+Job-specific outputs remain under `generated/resumes/jobs/<slug>/`.
+
+## Local portfolio build
 
 Install the Python dependencies and build both languages:
 
