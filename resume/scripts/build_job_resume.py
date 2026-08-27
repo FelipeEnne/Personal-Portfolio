@@ -8,9 +8,13 @@ import json
 import re
 import subprocess
 import sys
-import unicodedata
 from pathlib import Path
 from typing import Sequence
+
+try:
+    from resume.scripts import build_job_context
+except ModuleNotFoundError:  # Direct execution from resume/scripts/.
+    import build_job_context  # type: ignore[no-redef]
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
@@ -20,15 +24,6 @@ SCRIPTS_DIR = REPOSITORY_ROOT / "resume" / "scripts"
 
 class JobResumeError(ValueError):
     """Raised when the orchestration inputs or outputs are unsafe."""
-
-
-def slugify(value: str) -> str:
-    normalized = unicodedata.normalize("NFKD", value)
-    plain = "".join(char for char in normalized if not unicodedata.combining(char))
-    result = re.sub(r"[^A-Za-z0-9]+", "-", plain).strip("-").lower()
-    if not result:
-        raise JobResumeError("job title does not produce a valid filename")
-    return result
 
 
 def title_label(title: str | None, job_slug: str) -> str:
@@ -54,7 +49,10 @@ def build_job_resume(job: Path, language: str) -> tuple[Path, Path, Path]:
     run_step([python, str(SCRIPTS_DIR / "build_job_context.py"), "--job", str(job), "--lang", language])
     run_step([python, str(SCRIPTS_DIR / "expand_job_context.py"), "--job", str(job), "--lang", language])
 
-    job_slug = slugify(job.stem)
+    try:
+        job_slug = build_job_context.slugify(job.stem)
+    except build_job_context.JobContextError as error:
+        raise JobResumeError("job title does not produce a valid filename") from error
     context_path = JOBS_OUTPUT_DIR / job_slug / f"resume-context-{language}.json"
     try:
         context = json.loads(context_path.read_text(encoding="utf-8"))

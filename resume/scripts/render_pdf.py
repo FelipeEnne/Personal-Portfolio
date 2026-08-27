@@ -23,14 +23,6 @@ class PdfRenderError(RuntimeError):
     """Raised when LibreOffice cannot produce the requested PDF."""
 
 
-def is_relative_to(path: Path, parent: Path) -> bool:
-    try:
-        path.resolve().relative_to(parent.resolve())
-    except ValueError:
-        return False
-    return True
-
-
 def pdf_page_count(path: Path) -> int | None:
     executable = shutil.which("pdfinfo")
     if executable is None:
@@ -61,11 +53,11 @@ def find_libreoffice() -> str:
 
 
 def convert_docx_to_pdf(input_path: Path, output_path: Path) -> None:
-    if is_relative_to(output_path, PUBLIC_DOC_DIR):
+    if output_path.resolve().is_relative_to(PUBLIC_DOC_DIR.resolve()):
         raise PdfRenderError(
             "PDF rendering must not publish directly to assets/doc/"
         )
-    if is_relative_to(output_path, TEMPLATE_DIR):
+    if output_path.resolve().is_relative_to(TEMPLATE_DIR.resolve()):
         raise PdfRenderError("PDF output must not be written under docs/CV/")
     if not input_path.is_file():
         raise PdfRenderError(f"generated DOCX not found: {input_path}")
@@ -153,7 +145,7 @@ def main() -> int:
     try:
         if args.input:
             input_path = args.input.resolve()
-            job_specific = is_relative_to(input_path, JOBS_RESUME_DIR)
+            job_specific = input_path.resolve().is_relative_to(JOBS_RESUME_DIR.resolve())
             if args.output:
                 output_path = args.output.resolve()
             else:
@@ -169,7 +161,7 @@ def main() -> int:
 
         if job_specific:
             job_directory = input_path.parent
-            if not is_relative_to(output_path, job_directory):
+            if not output_path.resolve().is_relative_to(job_directory.resolve()):
                 raise PdfRenderError(
                     "job-specific PDF output must stay with its DOCX under "
                     "generated/resumes/jobs/"

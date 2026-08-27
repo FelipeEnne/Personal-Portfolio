@@ -8,7 +8,6 @@ import copy
 import json
 import shutil
 import sys
-import tempfile
 from pathlib import Path
 from typing import Any, Callable
 
@@ -73,7 +72,7 @@ def add_skill(context: dict[str, Any], group: str, skill: str) -> dict[str, Any]
 
 
 def page_count_for_context(
-    context: dict[str, Any], language: str, slug: str, temporary_root: Path
+    context: dict[str, Any], language: str, slug: str
 ) -> int:
     """Render a candidate into a temporary job directory and measure pdfinfo."""
     job_dir = JOBS_OUTPUT_DIR / f".capacity-{slug}-{language}"
@@ -190,13 +189,12 @@ def main() -> int:
             canonical, job_text, jobs.source_display(job_path), slug, args.lang
         )
         analysis = context["job"]
-        with tempfile.TemporaryDirectory(prefix="resume-capacity-") as temporary:
-            counter = lambda candidate: page_count_for_context(
-                candidate, args.lang, slug, Path(temporary)
-            )
-            expanded, report = expand_context(
-                context, canonical, args.lang, analysis, counter
-            )
+        counter = lambda candidate: page_count_for_context(
+            candidate, args.lang, slug
+        )
+        expanded, report = expand_context(
+            context, canonical, args.lang, analysis, counter
+        )
         output = JOBS_OUTPUT_DIR / slug / f"resume-context-{args.lang}.json"
         jobs.write_job_context(expanded, output)
     except (

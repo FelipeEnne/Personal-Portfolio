@@ -115,14 +115,6 @@ class RenderError(ValueError):
     """Raised when a context or template cannot be rendered safely."""
 
 
-def is_relative_to(path: Path, parent: Path) -> bool:
-    try:
-        path.resolve().relative_to(parent.resolve())
-    except ValueError:
-        return False
-    return True
-
-
 def require_mapping(value: Any, path: str) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise RenderError(f"{path} must be an object")
@@ -683,9 +675,9 @@ def render_docx(
     output_path: Path,
     language: str,
 ) -> None:
-    if is_relative_to(output_path, TEMPLATE_DIR):
+    if output_path.resolve().is_relative_to(TEMPLATE_DIR.resolve()):
         raise RenderError("DOCX output must not be written under docs/CV/")
-    if is_relative_to(output_path, PUBLIC_DOC_DIR):
+    if output_path.resolve().is_relative_to(PUBLIC_DOC_DIR.resolve()):
         raise RenderError("DOCX rendering must not write to assets/doc/")
     if template_path.resolve() == output_path.resolve():
         raise RenderError("output path must not overwrite the DOCX template")
@@ -710,12 +702,12 @@ def render_docx(
         job_data = require_mapping(job, "job")
         slug = require_string(job_data.get("slug"), "job.slug")
         job_directory = JOBS_RESUME_DIR / slug
-        if not is_relative_to(context_path, job_directory):
+        if not context_path.resolve().is_relative_to(job_directory.resolve()):
             raise RenderError(
                 "job-specific context must be read from its directory under "
                 "generated/resumes/jobs/"
             )
-        if not is_relative_to(output_path, job_directory):
+        if not output_path.resolve().is_relative_to(job_directory.resolve()):
             raise RenderError(
                 "job-specific DOCX output must stay in the same directory under "
                 "generated/resumes/jobs/"
