@@ -3,6 +3,81 @@ projects:
   # FEATURED PROJECTS
   # ============================================================
 
+  - id: salesforce-data360-customer-intelligence
+    name: "Salesforce Data360 Customer Intelligence"
+    type: "Personal Project"
+    status: "Completed"
+    featured: true
+
+    description:
+      en: >
+        Customer intelligence project integrating Salesforce Data Cloud data
+        with Python and PostgreSQL workflows.
+
+      pt: >
+        Projeto de inteligência de clientes que integra dados do Salesforce
+        Data Cloud a fluxos de trabalho com Python e PostgreSQL.
+
+    technologies:
+      - Python
+      - PostgreSQL
+      - Docker
+      - Docker Compose
+      - Salesforce
+      - Salesforce Data Cloud
+      - GitHub Actions
+      - pytest
+      - Ruff
+
+    concepts:
+      - Customer 360
+      - Data Integration
+      - Identity Resolution
+      - Calculated Insights
+      - Segmentation
+      - Data Quality
+      - Automated Testing
+      - CI/CD
+
+    highlights:
+      en:
+        - >
+          Integrated Salesforce Data Cloud data with Python and PostgreSQL
+          workflows for customer intelligence use cases.
+
+        - >
+          Implemented Customer 360, identity resolution, calculated insights
+          and segmentation concepts in the project data model.
+
+        - >
+          Added automated testing, linting and CI workflows using pytest,
+          Ruff and GitHub Actions.
+
+      pt:
+        - >
+          Integrei dados do Salesforce Data Cloud a fluxos de trabalho com
+          Python e PostgreSQL para casos de uso de inteligência de clientes.
+
+        - >
+          Implementei conceitos de Customer 360, resolução de identidade,
+          calculated insights e segmentação no modelo de dados do projeto.
+
+        - >
+          Adicionei testes automatizados, linting e fluxos de CI usando pytest,
+          Ruff e GitHub Actions.
+
+    links:
+      github: "https://github.com/FelipeEnne/salesforce-data360-customer-intelligence"
+      demo: null
+
+    skill_evidence:
+      professional: false
+      project_based: true
+
+    sources:
+      - github
+
+
   - id: github-activity-lakehouse
     name: "GitHub Activity Lakehouse"
     type: "Personal Project"
@@ -79,6 +154,11 @@ projects:
         - >
           Implementei camadas de dados Bronze, Silver e Gold para processar
           dados públicos de eventos do GitHub Archive.
+
+        - >
+          Criei uma ingestão horária controlada com validação de arquivos
+          compactados do GH Archive e armazenamento de eventos brutos que
+          permite reprocessamento.
 
         - >
           Implementei schemas explícitos, desduplicação determinística,
@@ -164,6 +244,10 @@ projects:
         - >
           Projetei um fluxo de trabalho para automatizar a produção de
           audiolivros desde o texto-fonte até os arquivos de áudio gerados.
+
+        - >
+          Usei modelos locais de conversão de texto em fala para reduzir a
+          dependência de serviços de terceiros para geração de voz.
 
         - >
           Projetei automações para organização de arquivos, thumbnails,
@@ -287,46 +371,192 @@ projects:
 
     description:
       en: >
-        Personal developer portfolio used to showcase professional
-        experience, technical skills and software projects.
+        Data-driven bilingual portfolio and resume generation system built
+        from canonical career data and published as a static GitHub Pages site.
 
       pt: >
-        Portfólio pessoal utilizado para apresentar experiência
-        profissional, competências técnicas e projetos de software.
+        Sistema bilíngue orientado por dados para portfólio e geração de
+        currículos, construído a partir de dados canônicos de carreira e
+        publicado como site estático no GitHub Pages.
 
     technologies:
       - HTML
       - CSS
+      - JavaScript
+      - Python
+      - PyYAML
+      - Jinja2
+      - JSON Schema
       - Git
       - GitHub
+      - GitHub Actions
+      - GitHub Pages
 
     concepts:
-      - Portfolio
-      - Responsive Web Development
+      - Data-driven Generation
       - Static Website
+      - Resume Automation
+      - Job-specific Resume Generation
+      - Relevance-based Selection
+      - Automated Testing
+      - CI/CD
 
     highlights:
       en:
         - >
-          Built and maintained a personal developer portfolio published
-          on the web.
+          Built a bilingual static portfolio that presents canonical profile,
+          skills, education and selected projects.
 
         - >
-          Serves as the presentation layer for professional experience,
-          skills and selected software projects.
+          Implemented public EN/PT resume generation from career YAML data,
+          including DOCX and PDF rendering with explicit publication.
+
+        - >
+          Implemented deterministic job-specific resume generation with
+          relevance-based selection of skills, projects and highlights.
+
+        - >
+          Published the static site on GitHub Pages with automated validation
+          and deployment through GitHub Actions.
 
       pt:
         - >
-          Desenvolvi e mantive um portfólio pessoal de desenvolvimento
-          publicado na web.
+          Desenvolvi um portfólio estático bilíngue que apresenta perfil,
+          competências, formação e projetos selecionados a partir dos dados
+          canônicos.
 
         - >
-          Funciona como camada de apresentação para experiência profissional,
-          competências e projetos de software selecionados.
+          Implementei a geração de currículos públicos EN/PT a partir de dados
+          YAML de carreira, incluindo renderização DOCX e PDF com publicação
+          explícita.
+
+        - >
+          Implementei a geração determinística de currículos específicos por
+          vaga, com seleção por relevância de skills, projetos e highlights.
+
+        - >
+          Publiquei o site estático no GitHub Pages com validação e deploy
+          automatizados por GitHub Actions.
 
     links:
       github: "https://github.com/FelipeEnne/Personal-Portfolio"
       demo: "https://felipeenne.github.io/Personal-Portfolio/"
+
+    skill_evidence:
+      professional: false
+      project_based: true
+
+    sources:
+      - github
+
+
+  - id: pwa-push-notifications
+    name: "PWA Push Notifications"
+    type: "Personal Project"
+    status: "Completed"
+    featured: false
+
+    description:
+      en: >
+        Progressive web application demonstrating push notifications and
+        cross-platform web notification flows.
+
+      pt: >
+        Aplicação web progressiva que demonstra notificações push e fluxos
+        de notificações web multiplataforma.
+
+    technologies:
+      - JavaScript
+      - PWA
+      - Service Worker
+      - Web Push
+      - VAPID
+      - REST APIs
+      - Responsive Web Development
+
+    concepts:
+      - Push Notifications
+      - Deep Linking
+      - Progressive Web App
+      - Cross-platform Validation
+      - API Integration
+
+    highlights:
+      en:
+        - >
+          Implemented a progressive web application with service-worker-based
+          push notification handling.
+
+        - >
+          Integrated Web Push and VAPID flows for delivering notifications
+          across supported platforms.
+
+      pt:
+        - >
+          Implementei uma aplicação web progressiva com tratamento de
+          notificações push baseado em service worker.
+
+        - >
+          Integrei fluxos de Web Push e VAPID para entregar notificações nas
+          plataformas compatíveis.
+
+    links:
+      github: "https://github.com/FelipeEnne/PWA-Push-Notifications"
+      demo: null
+
+    skill_evidence:
+      professional: false
+      project_based: true
+
+    sources:
+      - github
+
+
+  - id: next-questions
+    name: "Next Questions"
+    type: "Personal Project"
+    status: "Completed"
+    featured: false
+
+    description:
+      en: >
+        Web application built with Next.js for managing and presenting
+        questions through a React interface.
+
+      pt: >
+        Aplicação web construída com Next.js para gerenciar e apresentar
+        perguntas por meio de uma interface React.
+
+    technologies:
+      - Next.js
+      - React
+      - TypeScript
+      - API Routes
+
+    concepts:
+      - Web Application
+      - Server-side Rendering
+      - API Integration
+
+    highlights:
+      en:
+        - >
+          Built a Next.js application with React components and TypeScript.
+
+        - >
+          Implemented API Routes to support the application's question flows.
+
+      pt:
+        - >
+          Desenvolvi uma aplicação Next.js com componentes React e TypeScript.
+
+        - >
+          Implementei API Routes para dar suporte aos fluxos de perguntas da
+          aplicação.
+
+    links:
+      github: "https://github.com/FelipeEnne/next-questions"
+      demo: null
 
     skill_evidence:
       professional: false
