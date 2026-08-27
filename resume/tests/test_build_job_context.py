@@ -6,6 +6,7 @@ from pathlib import Path
 
 from resume.scripts import build_context as base
 from resume.scripts import build_job_context as jobs
+from resume.scripts import expand_job_context as expansion
 from resume.scripts import render_docx, render_pdf
 
 
@@ -74,6 +75,75 @@ class BuildJobContextTests(unittest.TestCase):
         self.assertNotIn("Kubernetes", context["job"]["matched_skills"])
         self.assertNotIn("Kubernetes", self.flattened_skills(context))
 
+    def test_section_headers_are_not_requirements(self) -> None:
+        context = self.build_fixture("backend-quality-job.txt")
+        requirements = context["job"]["required"]
+        self.assertNotIn("Requisitos", requirements)
+        self.assertNotIn("Habilidades", requirements)
+        self.assertNotIn("Valorizado", requirements)
+        self.assertNotIn("Benefícios", requirements)
+        self.assertEqual(len(context["job"]["responsibilities"]), 2)
+        self.assertNotIn("Assistência médica.", context["job"]["preferred"])
+
+    def test_rest_and_backend_labels_are_deduplicated_for_analysis(self) -> None:
+        context = self.build_fixture("backend-quality-job.txt")
+        requirements = context["job"]["required"]
+        self.assertIn("REST API", requirements)
+        self.assertNotIn("RESTful", requirements)
+        self.assertIn("Back-end", requirements)
+        self.assertNotIn("Backend", requirements)
+        self.assertEqual(context["job"]["matched_skills"].count("REST APIs"), 1)
+
+    def test_git_github_and_ci_cd_map_to_canonical_project_evidence(self) -> None:
+        context = self.build_fixture("backend-quality-job.txt")
+        matched = context["job"]["matched_skills"]
+        self.assertIn("Git", matched)
+        self.assertIn("GitHub", matched)
+        self.assertIn("pytest", matched)
+        self.assertIn("GitHub Actions", matched)
+        self.assertEqual(self.evidence_for(context, "pytest")["level"], "project")
+        self.assertEqual(
+            self.evidence_for(context, "GitHub Actions")["level"], "project"
+        )
+        self.assertTrue(
+            all(
+                "pytest" not in experience["technologies"]
+                and "GitHub Actions" not in experience["technologies"]
+                for experience in context["experiences"]
+            )
+        )
+
+    def test_backend_job_does_not_expand_unmatched_groups(self) -> None:
+        context = self.build_fixture("backend-quality-job.txt")
+        skills = self.flattened_skills(context)
+        for absent in (
+            "React", "Redux", "Bootstrap", "GraphQL", "Apache Spark", "PySpark"
+        ):
+            self.assertNotIn(absent, skills)
+
+    def test_personal_portfolio_does_not_beat_backend_projects_for_git(self) -> None:
+        context = self.build_fixture("backend-quality-job.txt")
+        project_ids = [project["id"] for project in context["projects"]]
+        self.assertEqual(
+            project_ids,
+            ["github-activity-lakehouse", "audiobook-production-automation"],
+        )
+        self.assertNotIn("personal-portfolio", project_ids)
+
+    def test_absent_technology_does_not_enter_matched_skills(self) -> None:
+        context = self.build_fixture("backend-quality-job.txt")
+        self.assertNotIn("MongoDB", context["job"]["matched_skills"])
+
+    def test_company_and_title_remain_null_without_clear_evidence(self) -> None:
+        context = self.build_fixture("unlabeled-job.txt")
+        self.assertIsNone(context["job"]["company"])
+        self.assertIsNone(context["job"]["title"])
+
+    def test_clear_leading_title_is_extracted_without_guessing_company(self) -> None:
+        context = self.build_fixture("backend-quality-job.txt")
+        self.assertEqual(context["job"]["title"], "Desenvolvedor Backend II (Python)")
+        self.assertIsNone(context["job"]["company"])
+
     def test_context_uses_only_canonical_skill_inventory(self) -> None:
         context = self.build_fixture("data-job.txt")
         inventory = {
@@ -108,6 +178,95 @@ class BuildJobContextTests(unittest.TestCase):
 
     def test_schema_validation_accepts_job_context(self) -> None:
         jobs.validate_job_context(self.build_fixture("react-job.txt"))
+
+    def test_highlight_matching_skill_beats_generic_highlight(self) -> None:
+        highlights = [
+            "Improved processes and collaborated with stakeholders.",
+            "Built API components using Python and FastAPI.",
+        ]
+        analysis = {"keywords": [], "responsibilities": [], "required": [], "preferred": []}
+        self.assertEqual(
+            jobs.rank_highlights(
+                highlights, {"python", "fastapi"}, 1,
+                ["Python"], analysis,
+            ),
+            [highlights[1]],
+        )
+
+    def test_highlight_tie_preserves_canonical_order(self) -> None:
+        highlights = ["Built Python APIs.", "Maintained Python services."]
+        analysis = {"keywords": [], "responsibilities": [], "required": [], "preferred": []}
+        self.assertEqual(
+            jobs.rank_highlights(highlights, {"python"}, 2, ["Python"], analysis),
+            highlights,
+        )
+
+    def test_low_relevance_experience_gets_one_highlight(self) -> None:
+        context = self.build_fixture("data-job.txt")
+        embraer = next(item for item in context["experiences"] if item["id"] == "embraer")
+        self.assertEqual(len(embraer["highlights"]), 1)
+
+    def test_relevant_experience_can_keep_two_highlights(self) -> None:
+        context = self.build_fixture("graphql-job.txt")
+        kuadro = next(item for item in context["experiences"] if item["id"] == "kuadro")
+        self.assertEqual(len(kuadro["highlights"]), 2)
+
+    def test_project_highlights_show_matching_evidence_without_inventing_text(self) -> None:
+        context = self.build_fixture("data-job.txt")
+        lakehouse = next(item for item in context["projects"] if item["id"] == "github-activity-lakehouse")
+        canonical = next(item for item in self.canonical["projects"]["projects"] if item["id"] == lakehouse["id"])
+        canonical_highlights = set(canonical["highlights"]["en"])
+        self.assertTrue(set(lakehouse["highlights"]).issubset(canonical_highlights))
+
+    def test_concept_only_evidence_does_not_create_highlight(self) -> None:
+        context = self.build_fixture("data-job.txt")
+        lakehouse = next(item for item in context["projects"] if item["id"] == "github-activity-lakehouse")
+        self.assertTrue(all(item in self.canonical["projects"]["projects"][0]["highlights"]["en"] for item in lakehouse["highlights"]))
+
+    def test_capacity_keeps_two_primary_projects_and_adds_third_when_it_fits(self) -> None:
+        context = self.build_fixture("data-job.txt")
+        analysis = context["job"]
+        calls = []
+
+        def fits(candidate: dict) -> int:
+            calls.append(candidate)
+            return 2
+
+        expanded, report = expansion.expand_context(
+            context, self.canonical, "en", analysis, fits
+        )
+        self.assertEqual([item["id"] for item in expanded["projects"][:2]],
+                         [item["id"] for item in context["projects"][:2]])
+        self.assertEqual(len(expanded["projects"]), 3)
+        self.assertTrue(report["third_project"]["kept"])
+
+    def test_capacity_rejects_third_project_when_it_exceeds_two_pages(self) -> None:
+        context = self.build_fixture("data-job.txt")
+        analysis = context["job"]
+
+        def overflows(candidate: dict) -> int:
+            return 3 if len(candidate["projects"]) > 2 else 2
+
+        expanded, report = expansion.expand_context(
+            context, self.canonical, "en", analysis, overflows
+        )
+        self.assertEqual(len(expanded["projects"]), 2)
+        self.assertFalse(report["third_project"]["kept"])
+
+    def test_capacity_removes_additional_skills_before_relevant_skills(self) -> None:
+        context = self.build_fixture("data-job.txt")
+        analysis = context["job"]
+
+        def only_small_context(candidate: dict) -> int:
+            return 3 if sum(len(group["items"]) for group in candidate["skills"]) > 12 else 2
+
+        expanded, report = expansion.expand_context(
+            context, self.canonical, "en", analysis, only_small_context
+        )
+        relevant = set(analysis["matched_skills"])
+        final_skills = {skill for group in expanded["skills"] for skill in group["items"]}
+        self.assertTrue(relevant.issubset(final_skills))
+        self.assertTrue(report["additional_skills"]["rejected"])
 
     def test_context_output_cannot_escape_jobs_directory(self) -> None:
         context = self.build_fixture("react-job.txt")

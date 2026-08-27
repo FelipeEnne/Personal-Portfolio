@@ -1,0 +1,22 @@
+Desenvolvedor Backend II (Python)
+
+> Responsabilidades:
+- Desenvolver APIs e aplicações back-end.
+- Criar e manter testes automatizados.
+
+> Requisitos:
+- Python
+- REST API
+- RESTful
+- Back-end
+- Backend
+- Git GitHub
+- Docker
+- Testes automatizados
+- CI/CD
+
+> Diferenciais:
+- FastAPI
+
+> Benefícios:
+- Assistência médica.
