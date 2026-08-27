@@ -517,11 +517,52 @@ def select_education(
     return [record for _, _, record in scored[:MAX_EDUCATION]]
 
 
+def highlight_score(
+    highlight: str,
+    matched_skills: list[str],
+    analysis: dict[str, Any],
+    job_tokens: set[str],
+) -> int:
+    """Score an existing canonical highlight against explicit job signals.
+
+    Technology matches are intentionally dominant.  The remaining token and
+    section overlap is only a tie-breaker, so generic language cannot outrank
+    a highlight that demonstrates a requested technology.
+    """
+    score = 0
+    for skill in matched_skills:
+        if any(phrase_position(highlight, phrase) is not None
+               for phrase in alias_phrases(skill)):
+            score += 100
+
+    for keyword in analysis.get("keywords", []):
+        aliases = KEYWORD_ALIASES.get(keyword, (keyword,))
+        if any(phrase_position(highlight, phrase) is not None for phrase in aliases):
+            score += 30
+
+    # Responsibilities/requirements provide useful context, but are weaker
+    # evidence than an explicit technology or normalized concept.
+    section_tokens = text_tokens(" ".join(
+        (*analysis.get("responsibilities", []),
+         *analysis.get("required", []),
+         *analysis.get("preferred", []))
+    ))
+    score += min(len(text_tokens(highlight) & (job_tokens | section_tokens)), 10)
+    return score
+
+
 def rank_highlights(
-    highlights: list[str], job_tokens: set[str], limit: int
+    highlights: list[str],
+    job_tokens: set[str],
+    limit: int,
+    matched_skills: list[str] | None = None,
+    analysis: dict[str, Any] | None = None,
 ) -> list[str]:
+    # Optional arguments preserve the small helper's existing call contract.
+    matched_skills = matched_skills or []
+    analysis = analysis or {}
     scored = [
-        (len(text_tokens(highlight) & job_tokens), index, highlight)
+        (highlight_score(highlight, matched_skills, analysis, job_tokens), index, highlight)
         for index, highlight in enumerate(highlights)
     ]
     scored.sort(key=lambda item: (-item[0], item[1]))
@@ -671,17 +712,28 @@ def build_job_context(
         for record in selected_experiences
     }
     for record in context["experiences"]:
+        # Only an explicit matched technology makes an experience highly
+        # relevant. Generic vocabulary overlap (for example, "data") is not
+        # sufficient to spend a second highlight.
         limit = (
             MAX_RELEVANT_HIGHLIGHTS
-            if experience_scores[record["id"]] > 0
+            if experience_scores[record["id"]] >= 100
             else MAX_GENERAL_HIGHLIGHTS
         )
         record["highlights"] = rank_highlights(
-            record["highlights"], job_tokens, limit
+            record["highlights"],
+            job_tokens,
+            limit,
+            analysis["matched_skills"],
+            analysis,
         )
     for record in context["projects"]:
         record["highlights"] = rank_highlights(
-            record["highlights"], job_tokens, MAX_PROJECT_HIGHLIGHTS
+            record["highlights"],
+            job_tokens,
+            MAX_PROJECT_HIGHLIGHTS,
+            analysis["matched_skills"],
+            analysis,
         )
 
     context["job"] = analysis

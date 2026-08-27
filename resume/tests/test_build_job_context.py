@@ -178,6 +178,50 @@ class BuildJobContextTests(unittest.TestCase):
     def test_schema_validation_accepts_job_context(self) -> None:
         jobs.validate_job_context(self.build_fixture("react-job.txt"))
 
+    def test_highlight_matching_skill_beats_generic_highlight(self) -> None:
+        highlights = [
+            "Improved processes and collaborated with stakeholders.",
+            "Built API components using Python and FastAPI.",
+        ]
+        analysis = {"keywords": [], "responsibilities": [], "required": [], "preferred": []}
+        self.assertEqual(
+            jobs.rank_highlights(
+                highlights, {"python", "fastapi"}, 1,
+                ["Python"], analysis,
+            ),
+            [highlights[1]],
+        )
+
+    def test_highlight_tie_preserves_canonical_order(self) -> None:
+        highlights = ["Built Python APIs.", "Maintained Python services."]
+        analysis = {"keywords": [], "responsibilities": [], "required": [], "preferred": []}
+        self.assertEqual(
+            jobs.rank_highlights(highlights, {"python"}, 2, ["Python"], analysis),
+            highlights,
+        )
+
+    def test_low_relevance_experience_gets_one_highlight(self) -> None:
+        context = self.build_fixture("data-job.txt")
+        embraer = next(item for item in context["experiences"] if item["id"] == "embraer")
+        self.assertEqual(len(embraer["highlights"]), 1)
+
+    def test_relevant_experience_can_keep_two_highlights(self) -> None:
+        context = self.build_fixture("graphql-job.txt")
+        kuadro = next(item for item in context["experiences"] if item["id"] == "kuadro")
+        self.assertEqual(len(kuadro["highlights"]), 2)
+
+    def test_project_highlights_show_matching_evidence_without_inventing_text(self) -> None:
+        context = self.build_fixture("data-job.txt")
+        lakehouse = next(item for item in context["projects"] if item["id"] == "github-activity-lakehouse")
+        canonical = next(item for item in self.canonical["projects"]["projects"] if item["id"] == lakehouse["id"])
+        canonical_highlights = set(canonical["highlights"]["en"])
+        self.assertTrue(set(lakehouse["highlights"]).issubset(canonical_highlights))
+
+    def test_concept_only_evidence_does_not_create_highlight(self) -> None:
+        context = self.build_fixture("data-job.txt")
+        lakehouse = next(item for item in context["projects"] if item["id"] == "github-activity-lakehouse")
+        self.assertTrue(all(item in self.canonical["projects"]["projects"][0]["highlights"]["en"] for item in lakehouse["highlights"]))
+
     def test_context_output_cannot_escape_jobs_directory(self) -> None:
         context = self.build_fixture("react-job.txt")
         with tempfile.TemporaryDirectory() as temporary:
