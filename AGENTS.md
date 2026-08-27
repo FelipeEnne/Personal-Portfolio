@@ -468,6 +468,16 @@ The implemented deterministic context builder is:
 
 `resume/scripts/build_job_context.py`
 
+The complete one-command job workflow is:
+
+`resume/scripts/build_job_resume.py`
+
+It runs the context builder, measured capacity expansion
+(`resume/scripts/expand_job_context.py`), DOCX rendering, and PDF rendering in
+that order. Job descriptions live under `resume/jobs/` and are private
+relevance inputs; generated job contexts, DOCX files, and PDFs remain local
+artifacts under `generated/resumes/jobs/<slug>/`.
+
 It accepts a temporary plain-text job description, resolves only canonical
 skills and facts, records evidence strength, and writes exclusively below
 `generated/resumes/jobs/<slug>/`. Job descriptions are relevance inputs, not
@@ -1043,6 +1053,8 @@ The resume generator currently includes:
 
 * `resume/scripts/build_context.py`
 * `resume/scripts/build_job_context.py`
+* `resume/scripts/expand_job_context.py`
+* `resume/scripts/build_job_resume.py`
 * `resume/scripts/render_docx.py`
 * `resume/scripts/render_pdf.py`
 * `resume/schema/resume-context.schema.json`

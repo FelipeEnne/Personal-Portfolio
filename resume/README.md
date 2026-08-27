@@ -184,8 +184,21 @@ projection of the same `career/*.yaml` facts, selected for relevance to one job
 description. It never modifies the default policy, canonical data, public
 portfolio, or public PDFs.
 
-Place a temporary plain-text job description under `resume/jobs/` or provide
-another `.txt` file, then build a localized context:
+Place a temporary plain-text job description under `resume/jobs/`. These files
+are private application inputs and should remain ignored by Git. The
+recommended one-command workflow is:
+
+```bash
+python3 resume/scripts/build_job_resume.py \
+  --job resume/jobs/vaga.txt \
+  --lang pt
+```
+
+Use `--lang en` for English. This runs, in order,
+`build_job_context.py`, `expand_job_context.py`, `render_docx.py`, and
+`render_pdf.py`, writing only below `generated/resumes/jobs/<slug>/`.
+
+The individual context command remains available for inspection:
 
 ```bash
 python3 resume/scripts/build_job_context.py \
@@ -210,8 +223,12 @@ Evidence is ranked as professional experience, practical project, education,
 course/study, then profile inventory. Experiences remain in canonical
 chronological order while relevant existing highlights are selected. Projects
 may be reordered and may include `featured: false` records when relevant. The
-first version keeps the canonical summary unchanged and limits skills,
-highlights, experiences, education, and projects for a two-page target.
+canonical summary remains unchanged. Highlights and projects are ranked by
+relevance without rewriting their text. The expansion step first keeps the
+directed selection, then tries one additional relevant project and finally
+canonical skills that fit the measured two-page limit. It never changes fonts,
+margins, or layout to force content to fit, and never allows more than two
+pages.
 
 Render the context without changing the default commands:
 
@@ -232,3 +249,15 @@ result exceeds two pages. Job-specific inputs and outputs are confined to
 Job descriptions are temporary relevance inputs, not career evidence. A
 job-specific pipeline must never invoke `publish_default.py` or replace
 `assets/doc/CV.pdf` or `assets/doc/Currículo.pdf`.
+
+The two pipelines remain separate:
+
+```text
+career/*.yaml
+     ├── default resume ──> generated/resumes/default/ ──> publish_default.py ──> assets/doc/
+     └── job description + job pipeline ──> generated/resumes/jobs/<slug>/
+```
+
+Only the default branch can publish public PDFs, and only through the explicit
+`publish_default.py` operation. Job-specific outputs must never be published
+through that script.
