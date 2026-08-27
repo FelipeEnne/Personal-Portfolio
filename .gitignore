@@ -1,5 +1,8 @@
 # Local career evidence
 career/certifications/*.pdf
+career/certifications/*.png
+career/certifications/*.jpg
+career/certifications/*.jpeg
 
 # Generated resume artifacts
 generated/resumes/**
@@ -12,5 +15,34 @@ generated/portfolio/**
 # Generated static site
 _site/
 
-# Python cache
-__pycache__
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Office temporary files
+~$*.docx
+~$*.xlsx
+
+# Logs and temp
+*.log
+tmp/
