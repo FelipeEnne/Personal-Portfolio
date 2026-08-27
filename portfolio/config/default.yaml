@@ -30,16 +30,28 @@ default_portfolio:
 
   projects:
     include:
+      - salesforce-data360-customer-intelligence
       - github-activity-lakehouse
       - audiobook-production-automation
+      - pwa-push-notifications
+      - next-questions
       - climbing-the-volcano
 
     presentation:
+      salesforce-data360-customer-intelligence:
+        image: "assets/image/salesforce-data360-customer-intelligence.png"
+
       github-activity-lakehouse:
         image: "assets/image/github-activity-lakehouse.png"
 
       audiobook-production-automation:
         image: "assets/image/audiobook.jpg"
+
+      pwa-push-notifications:
+        image: "assets/image/pwa-push-notifications.png"
+
+      next-questions:
+        image: "assets/image/next-questions.png"
 
       climbing-the-volcano:
         image: "assets/image/climb.jpg"
