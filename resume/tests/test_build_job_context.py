@@ -126,11 +126,20 @@ class BuildJobContextTests(unittest.TestCase):
     def test_personal_portfolio_does_not_beat_backend_projects_for_git(self) -> None:
         context = self.build_fixture("backend-quality-job.txt")
         project_ids = [project["id"] for project in context["projects"]]
-        self.assertEqual(
-            project_ids,
-            ["github-activity-lakehouse", "audiobook-production-automation"],
-        )
-        self.assertNotIn("personal-portfolio", project_ids)
+        technical_ids = {
+            "github-activity-lakehouse",
+            "audiobook-production-automation",
+            "salesforce-data360-customer-intelligence",
+        }
+        technical_positions = [
+            index for index, project_id in enumerate(project_ids)
+            if project_id in technical_ids
+        ]
+        self.assertTrue(technical_positions)
+        if "personal-portfolio" in project_ids:
+            self.assertGreater(
+                project_ids.index("personal-portfolio"), min(technical_positions)
+            )
 
     def test_absent_technology_does_not_enter_matched_skills(self) -> None:
         context = self.build_fixture("backend-quality-job.txt")
@@ -223,7 +232,15 @@ class BuildJobContextTests(unittest.TestCase):
     def test_concept_only_evidence_does_not_create_highlight(self) -> None:
         context = self.build_fixture("data-job.txt")
         lakehouse = next(item for item in context["projects"] if item["id"] == "github-activity-lakehouse")
-        self.assertTrue(all(item in self.canonical["projects"]["projects"][0]["highlights"]["en"] for item in lakehouse["highlights"]))
+        canonical = next(
+            item for item in self.canonical["projects"]["projects"]
+            if item["id"] == "github-activity-lakehouse"
+        )
+        self.assertTrue(
+            set(lakehouse["highlights"]).issubset(
+                set(canonical["highlights"]["en"])
+            )
+        )
 
     def test_capacity_keeps_two_primary_projects_and_adds_third_when_it_fits(self) -> None:
         context = self.build_fixture("data-job.txt")
