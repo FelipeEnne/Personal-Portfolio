@@ -1,0 +1,20 @@
+---
+description: Politica de commits Git neste repositorio
+alwaysApply: true
+---
+
+# Commits sao responsabilidade do usuario
+
+- Nunca executar `git commit`, `git commit --amend`, `git push`, `git reset --hard` ou `git revert`.
+- Terminar o trabalho deixando as alteracoes no diretorio de trabalho, sem `git add`.
+- Ao finalizar, resumir os arquivos alterados e sugerir a mensagem de commit em um bloco de codigo, para o usuario copiar.
+- Comandos de leitura (`git status`, `git diff`, `git log`) continuam permitidos.
+
+Exemplo de encerramento correto:
+
+Alterei `.gitignore`. Sugestao de commit:
+
+```bash
+git add .gitignore
+git commit -m "chore: broaden gitignore coverage"
+```
