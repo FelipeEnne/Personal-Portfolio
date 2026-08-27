@@ -15,15 +15,30 @@ temporary job-specific resume; it never changes the public resume or portfolio.
 For the complete resume workflow, including explicit publication of approved
 PDFs, see [`resume/README.md`](resume/README.md).
 
-Generate a job-specific resume with:
+## Main commands
 
 ```bash
-python3 resume/scripts/build_job_resume.py \
-  --job resume/jobs/vaga.txt \
-  --lang pt
+make test
+make portfolio
+make resume-job-pt
+make resume-job-en
+make resume-default-pt
+make resume-default-en
+make clean
 ```
 
-Job-specific outputs remain under `generated/resumes/jobs/<slug>/`.
+Use another job description with:
+
+```bash
+make resume-job-pt JOB=resume/jobs/nortal.txt
+```
+
+`resume-job-*` generates a job-specific resume under
+`generated/resumes/jobs/<slug>/`; `resume-default-*` generates the public
+default resume under `generated/resumes/default/` but does not publish it.
+`portfolio` builds the static site, `test` runs the test suite, and `clean`
+removes only temporary Python artifacts. See [`resume/README.md`](resume/README.md)
+for the complete resume workflow and publication rules.
 
 ## Local portfolio build
 
@@ -31,9 +46,7 @@ Install the Python dependencies and build both languages:
 
 ```bash
 python3 -m pip install -r portfolio/requirements.txt
-python3 portfolio/scripts/build_context.py --lang en
-python3 portfolio/scripts/build_context.py --lang pt
-python3 portfolio/scripts/render_site.py
+make portfolio
 ```
 
 Serve the generated site locally:

@@ -39,7 +39,29 @@ Install the Python dependencies with:
 python3 -m pip install -r resume/requirements.txt
 ```
 
-## Usage
+## Recommended Make workflow
+
+From the repository root, use the Makefile for the usual operations:
+
+```bash
+make resume-job-pt
+make resume-job-en
+make resume-job-pt JOB=resume/jobs/nortal.txt
+
+make resume-default-pt
+make resume-default-en
+```
+
+The `resume-job-*` targets run `build_job_context.py`,
+`expand_job_context.py`, `render_docx.py`, and `render_pdf.py` in sequence.
+Their outputs remain under `generated/resumes/jobs/<slug>/`.
+
+The `resume-default-*` targets generate only the general resume files under
+`generated/resumes/default/`. They do **not** publish to `assets/doc/`.
+Public replacement remains an explicit, separate operation through
+`resume/scripts/publish_default.py` after human review.
+
+## Advanced / direct script usage
 
 From the repository root:
 
