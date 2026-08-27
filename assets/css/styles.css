@@ -1,6 +1,7 @@
 body {
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
   background-color: #545454;
 }
 
@@ -170,6 +171,36 @@ header {
   background-color: #fff;
   border-radius: 4px;
   box-shadow: 1px 50px 100px rgba(50, 50, 93, 0.05), 1px 15px 35px rgba(50, 50, 93, 0.1), 1px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Progressive enhancement: cards remain visible when JavaScript is off. */
+.project-reveal-enabled .project-card {
+  opacity: 0;
+  transform: translateX(var(--project-enter-x, 0));
+  transition: opacity 600ms ease-out, transform 600ms ease-out;
+  will-change: opacity, transform;
+}
+
+.project-reveal-enabled .project-card:nth-child(odd) {
+  --project-enter-x: -40px;
+}
+
+.project-reveal-enabled .project-card:nth-child(even) {
+  --project-enter-x: 40px;
+}
+
+.project-reveal-enabled .project-card.project-card-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-reveal-enabled .project-card,
+  .project-reveal-enabled .project-card.project-card-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 .project-img {
