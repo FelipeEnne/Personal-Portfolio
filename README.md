@@ -1,63 +1,61 @@
 # Personal Portfolio
 
-Felipe Enne's static bilingual portfolio, generated from canonical career data
-and published through GitHub Pages.
+Felipe Enne's bilingual static portfolio and resume generation project.
 
 Live site: [felipeenne.github.io/Personal-Portfolio](https://felipeenne.github.io/Personal-Portfolio/)
 
-## Career data and resumes
+## Capabilities
 
-`career/*.yaml` is the source of truth for professional facts. The portfolio
-is a general public presentation of that data, and the public EN/PT resumes are
-generated separately from the same source. A job description may affect only a
-temporary job-specific resume; it never changes the public resume or portfolio.
+- Canonical professional data in `career/*.yaml`.
+- Static EN/PT portfolio for GitHub Pages.
+- Public/default and job-specific resume generation.
+- Deterministic, evidence-based matching, ranking, and two-page expansion.
+- DOCX/PDF output, automated tests, and explicit public publication.
 
-For the complete resume workflow, including explicit publication of approved
-PDFs, see [`resume/README.md`](resume/README.md).
+## Architecture
+
+```text
+career/*.yaml
+  ├── portfolio  ──> _site/ ──> GitHub Pages
+  ├── default resume ──> generated/resumes/default/
+  └── job resume + description ──> generated/resumes/jobs/<slug>/
+```
+
+The public resume PDFs in `assets/doc/` are updated only by the explicit
+publication step. See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the
+full architecture and [`resume/README.md`](resume/README.md) for resume details.
+
+## Quick start
+
+Install dependencies as needed, then use the Makefile:
+
+```bash
+make test
+make portfolio
+make resume-job-pt JOB=resume/jobs/vaga.txt
+```
 
 ## Main commands
 
 ```bash
-make test
 make portfolio
 make resume-job-pt
 make resume-job-en
 make resume-default-pt
 make resume-default-en
+make test
 make clean
 ```
 
-Use another job description with:
+Job-specific outputs stay in `generated/resumes/jobs/<slug>/`. Default resume
+targets generate files in `generated/resumes/default/` but never publish them.
 
-```bash
-make resume-job-pt JOB=resume/jobs/nortal.txt
-```
+## Documentation
 
-`resume-job-*` generates a job-specific resume under
-`generated/resumes/jobs/<slug>/`; `resume-default-*` generates the public
-default resume under `generated/resumes/default/` but does not publish it.
-`portfolio` builds the static site, `test` runs the test suite, and `clean`
-removes only temporary Python artifacts. See [`resume/README.md`](resume/README.md)
-for the complete resume workflow and publication rules.
-
-## Local portfolio build
-
-Install the Python dependencies and build both languages:
-
-```bash
-python3 -m pip install -r portfolio/requirements.txt
-make portfolio
-```
-
-Serve the generated site locally:
-
-```bash
-python3 -m http.server 8000 --directory _site
-```
-
-English is available at `http://localhost:8000/` and Portuguese at
-`http://localhost:8000/pt/`. See `portfolio/README.md` for architecture and
-data-source details.
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — current system architecture.
+- [`portfolio/README.md`](portfolio/README.md) — static portfolio pipeline.
+- [`resume/README.md`](resume/README.md) — resume generation and publication.
+- [`AGENTS.md`](AGENTS.md) — repository safety and source-of-truth rules.
 
 ## License
 
