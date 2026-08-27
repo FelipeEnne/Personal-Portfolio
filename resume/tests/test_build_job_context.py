@@ -3,10 +3,12 @@ from __future__ import annotations
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from resume.scripts import build_context as base
 from resume.scripts import build_job_context as jobs
 from resume.scripts import expand_job_context as expansion
+from resume.scripts import build_job_resume as job_resume
 from resume.scripts import render_docx, render_pdf
 
 
@@ -267,6 +269,29 @@ class BuildJobContextTests(unittest.TestCase):
         final_skills = {skill for group in expanded["skills"] for skill in group["items"]}
         self.assertTrue(relevant.issubset(final_skills))
         self.assertTrue(report["additional_skills"]["rejected"])
+
+    def test_job_resume_orchestrator_runs_four_steps_and_uses_title_filename(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            job = root / "vaga.txt"
+            job.write_text("fixture", encoding="utf-8")
+            jobs_dir = root / "generated/resumes/jobs"
+            context_dir = jobs_dir / "vaga"
+            context_dir.mkdir(parents=True)
+            (context_dir / "resume-context-pt.json").write_text(
+                '{"job": {"title": "Desenvolvedor de Software II"}}',
+                encoding="utf-8",
+            )
+            calls = []
+            with patch.object(job_resume, "REPOSITORY_ROOT", root), \
+                 patch.object(job_resume, "JOBS_OUTPUT_DIR", jobs_dir), \
+                 patch.object(job_resume, "SCRIPTS_DIR", root / "scripts"), \
+                 patch.object(job_resume, "run_step", side_effect=lambda command: calls.append(command)):
+                paths = job_resume.build_job_resume(job, "pt")
+            self.assertEqual(len(calls), 4)
+            self.assertEqual(calls[0][1], str(root / "scripts/build_job_context.py"))
+            self.assertEqual(paths[1].name, "Felipe_Enne_Desenvolvedor_de_Software_II_PT.docx")
+            self.assertEqual(paths[2].name, "Felipe_Enne_Desenvolvedor_de_Software_II_PT.pdf")
 
     def test_context_output_cannot_escape_jobs_directory(self) -> None:
         context = self.build_fixture("react-job.txt")
