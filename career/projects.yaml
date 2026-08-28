@@ -3,6 +3,108 @@ projects:
   # FEATURED PROJECTS
   # ============================================================
 
+  - id: wikipedia-live-analytics
+    name: "Wikipedia Live Analytics"
+    type: "Personal Project"
+    status: "Active"
+    featured: true
+
+    description:
+      en: >
+        Wikipedia recent-activity analytics platform with local event
+        collection, storage, aggregation and snapshot generation for a
+        static web dashboard.
+
+      pt: >
+        Plataforma de analytics de atividade recente da Wikipedia com coleta,
+        armazenamento, agregação e geração de snapshots locais para um
+        dashboard web estático.
+
+    technologies:
+      - Python
+      - MongoDB
+      - React
+      - TypeScript
+      - Docker
+      - Docker Compose
+      - GitHub Actions
+      - Recharts
+      - Wikimedia EventStreams
+
+    concepts:
+      - Event Streaming
+      - Real-time Analytics
+      - Data Pipelines
+      - Data Aggregation
+      - Data Visualization
+      - Data Retention
+      - TTL
+      - Data Validation
+      - CI/CD
+      - Automated Testing
+      - Static Site Deployment
+
+    highlights:
+      en:
+        - >
+          Implemented continuous recent-event ingestion through Wikimedia
+          EventStreams with reconnection, Wikipedia-only filtering,
+          normalization and duplicate suppression.
+
+        - >
+          Used MongoDB with seven-day retention and aggregation pipelines to
+          generate event, page, editor, bot/human, anonymous/registered,
+          timeline, language and top-page metrics.
+
+        - >
+          Built a React and TypeScript dashboard with 15-minute, 1-hour,
+          6-hour, 24-hour, 3-day and 7-day analytics windows.
+
+        - >
+          Deployed the static dashboard and generated JSON snapshot to GitHub
+          Pages through GitHub Actions, while keeping collection, storage and
+          analytics local.
+
+        - >
+          Added historical queries for explicit ranges within the data still
+          available in the seven-day retention window.
+
+      pt:
+        - >
+          Implementei ingestão contínua de eventos recentes via Wikimedia
+          EventStreams com reconexão, filtragem exclusiva para a Wikipedia,
+          normalização e supressão de duplicatas.
+
+        - >
+          Usei MongoDB com retenção de sete dias e pipelines de agregação para
+          gerar métricas de eventos, páginas, editores, bots/humanos, usuários
+          anônimos/registrados, timeline, idiomas e páginas mais editadas.
+
+        - >
+          Desenvolvi um dashboard em React e TypeScript com janelas analíticas
+          de 15 minutos, 1 hora, 6 horas, 24 horas, 3 dias e 7 dias.
+
+        - >
+          Publiquei o dashboard estático e o snapshot JSON gerado no GitHub
+          Pages via GitHub Actions, mantendo coleta, armazenamento e analytics
+          locais.
+
+        - >
+          Adicionei consultas históricas para intervalos explícitos dentro dos
+          dados ainda disponíveis na janela de retenção de sete dias.
+
+    links:
+      github: "https://github.com/FelipeEnne/wikipedia-live-analytics"
+      demo: "https://felipeenne.github.io/wikipedia-live-analytics/"
+
+    skill_evidence:
+      professional: false
+      project_based: true
+
+    sources:
+      - github
+
+
   - id: salesforce-data360-customer-intelligence
     name: "Salesforce Data360 Customer Intelligence"
     type: "Personal Project"
