@@ -46,3 +46,6 @@ Thumbs.db
 # Logs and temp
 *.log
 tmp/
+
+#audit
+security-audit/
